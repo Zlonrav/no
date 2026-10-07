@@ -95,61 +95,81 @@
       linear-gradient(160deg, var(--bg-1), var(--bg-2));
   }
 
-  /* ===== СЧЁТЧИК ДНЕЙ ===== */
-  .days-counter {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #1b7a1b 0%, #0f5f0f 100%);
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: bold;
-    font-size: 15pt;
-    letter-spacing: 0.3px;
-    box-shadow:
-      0 4px 14px rgba(27,122,27,0.35),
-      0 1px 3px rgba(0,0,0,0.15),
-      inset 0 -2px 4px rgba(0,0,0,0.15),
-      inset 0 2px 3px rgba(255,255,255,0.15);
-    cursor: pointer;
-    z-index: 100;
-    user-select: none;
-    -webkit-user-select: none;
-    -webkit-tap-highlight-color: transparent;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-  }
+/* ===== СЧЁТЧИК ДНЕЙ ===== */
+.days-counter {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1b7a1b 0%, #0f5f0f 100%);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 8pt;
+  letter-spacing: 0.2px;
+  box-shadow: 0 2px 6px rgba(27,122,27,0.3),
+              inset 0 -1px 2px rgba(0,0,0,0.15),
+              inset 0 1px 2px rgba(255,255,255,0.15);
+  cursor: pointer;
+  z-index: 100;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  opacity: 0.5;
+  transition: opacity 0.2s ease, transform 0.15s ease;
+  overflow: hidden;
+}
 
-  .days-counter:hover {
-    transform: translateY(-1px) scale(1.03);
-    box-shadow:
-      0 6px 18px rgba(27,122,27,0.45),
-      0 2px 4px rgba(0,0,0,0.18),
-      inset 0 -2px 4px rgba(0,0,0,0.15),
-      inset 0 2px 3px rgba(255,255,255,0.15);
-  }
+.days-counter:hover,
+.days-counter:focus-within {
+  opacity: 1;
+}
 
-  .days-counter:active {
-    transform: scale(0.96);
-  }
+.days-counter:active {
+  transform: scale(0.94);
+}
 
-  .days-counter.d3 { font-size: 13pt; }
-  .days-counter.d4 { font-size: 11pt; }
+.days-counter .value {
+  pointer-events: none;
+  line-height: 1;
+}
 
-  html[data-theme="dark"] .days-counter {
-    background: linear-gradient(135deg, #4ecb4e 0%, #2b8a2b 100%);
-    color: #0a1a0a;
-    box-shadow:
-      0 4px 14px rgba(78,203,78,0.35),
-      0 1px 3px rgba(0,0,0,0.4),
-      inset 0 -2px 4px rgba(0,0,0,0.2),
-      inset 0 2px 3px rgba(255,255,255,0.25);
-  }
+/* Нативный input под цифрой — прозрачный, но кликабельный */
+.days-counter input[type="date"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+}
+
+.days-counter input[type="date"]::-webkit-calendar-picker-indicator {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+html[data-theme="dark"] .days-counter {
+  background: linear-gradient(135deg, #4ecb4e 0%, #2b8a2b 100%);
+  color: #0a1a0a;
+  box-shadow: 0 2px 6px rgba(78,203,78,0.3),
+              inset 0 -1px 2px rgba(0,0,0,0.2),
+              inset 0 1px 2px rgba(255,255,255,0.25);
+}
 
   /* ===== ВЕРХНЯЯ ПАНЕЛЬ ===== */
   .topbar {
@@ -599,7 +619,10 @@
 <body>
 
 <!-- ===== СЧЁТЧИК ДНЕЙ ===== -->
-<div class="days-counter" id="days-counter" title="Дней трезвости">1</div>
+<div class="days-counter" id="days-counter" title="Дней трезвости">
+  <span class="value" id="days-value">1</span>
+  <input type="date" id="days-input" aria-label="Дата начала трезвости">
+</div>
 
 <!-- ===== ВЕРХНЯЯ ПАНЕЛЬ ===== -->
 <div class="topbar">
@@ -1908,66 +1931,73 @@
 </section>
 
 <script>
-  /* ============ СЧЁТЧИК ДНЕЙ ============ */
-  (function () {
-    const counter = document.getElementById('days-counter');
-    const KEY = 'sober-start';
-
-    function todayISO() {
-      const d = new Date();
-      return d.getFullYear() + '-' +
-             String(d.getMonth() + 1).padStart(2, '0') + '-' +
-             String(d.getDate()).padStart(2, '0');
-    }
-
-    function getStart() {
-      let v = null;
-      try { v = localStorage.getItem(KEY); } catch (e) {}
-      if (!v) {
-        v = todayISO();
-        try { localStorage.setItem(KEY, v); } catch (e) {}
-      }
-      return v;
-    }
-
-    function daysSince(iso) {
-      const start = new Date(iso + 'T00:00:00');
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      return Math.floor((today - start) / 86400000) + 1;
-    }
-
-    function plural(n, forms) {
-      const a = Math.abs(n) % 100;
-      const b = a % 10;
-      if (a > 10 && a < 20) return forms[2];
-      if (b > 1 && b < 5) return forms[1];
-      if (b === 1) return forms[0];
-      return forms[2];
-    }
-
-    function render() {
-      const n = daysSince(getStart());
-      counter.textContent = n;
-      counter.classList.remove('d3', 'd4');
-      const s = String(n);
-      if (s.length === 3) counter.classList.add('d3');
-      if (s.length >= 4) counter.classList.add('d4');
-      counter.title = n + ' ' + plural(n, ['день', 'дня', 'дней']) + ' трезвости';
-    }
-
-    render();
-
-    // Автообновление в полночь
-    (function scheduleMidnight() {
-      const now = new Date();
-      const next = new Date();
-      next.setHours(24, 0, 5, 0);
-      setTimeout(() => {
-        render();
-        setInterval(render, 86400000);
-      }, next - now);
-    })();
+	/* ============ СЧЁТЧИК ДНЕЙ ============ */
+	(function () {
+	  const counter = document.getElementById('days-counter');
+	  const value = document.getElementById('days-value');
+	  const input = document.getElementById('days-input');
+	  const KEY = 'sober-start';
+	
+	  function todayISO() {
+	    const d = new Date();
+	    return d.getFullYear() + '-' +
+	           String(d.getMonth() + 1).padStart(2, '0') + '-' +
+	           String(d.getDate()).padStart(2, '0');
+	  }
+	
+	  function getStart() {
+	    let v = null;
+	    try { v = localStorage.getItem(KEY); } catch (e) {}
+	    if (!v) {
+	      v = todayISO();
+	      try { localStorage.setItem(KEY, v); } catch (e) {}
+	    }
+	    return v;
+	  }
+	
+	  function daysSince(iso) {
+	    const start = new Date(iso + 'T00:00:00');
+	    const today = new Date();
+	    today.setHours(0, 0, 0, 0);
+	    return Math.floor((today - start) / 86400000) + 1;
+	  }
+	
+	  function plural(n, forms) {
+	    const a = Math.abs(n) % 100;
+	    const b = a % 10;
+	    if (a > 10 && a < 20) return forms[2];
+	    if (b > 1 && b < 5) return forms[1];
+	    if (b === 1) return forms[0];
+	    return forms[2];
+	  }
+	
+	  function render() {
+	    const n = daysSince(getStart());
+	    value.textContent = n;
+	    counter.title = n + ' ' + plural(n, ['день', 'дня', 'дней']) + ' трезвости';
+	  }
+	
+	  input.value = getStart();
+	  render();
+	
+	  input.addEventListener('change', () => {
+	    if (input.value) {
+	      try { localStorage.setItem(KEY, input.value); } catch (e) {}
+	      render();
+	    }
+	  });
+	
+	  // Автообновление в полночь
+	  (function scheduleMidnight() {
+	    const now = new Date();
+	    const next = new Date();
+	    next.setHours(24, 0, 5, 0);
+	    setTimeout(() => {
+	      render();
+	      setInterval(render, 86400000);
+	    }, next - now);
+	  })();
+	})();
 
     // Долгое нажатие (0.8 сек) — открыть выбор даты
     let pressTimer = null;
