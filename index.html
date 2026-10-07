@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='none' stroke='%23c1121f' stroke-width='14'/><line x1='22' y1='22' x2='78' y2='78' stroke='%23c1121f' stroke-width='14' stroke-linecap='round'/></svg>">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon.svg">
+<title>Нет!</title>
+<meta name="theme-color" content="#c1121f" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#16181c" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Нет!">
+<script>
+  // Применяем тему сразу, до отрисовки — без мигания
+  (function () {
+    try {
+      var t = localStorage.getItem('theme-pref');
+      document.documentElement.dataset.theme = (t === 'dark') ? 'dark' : 'light';
+    } catch (e) {
+      document.documentElement.dataset.theme = 'light';
+    }
+  })();
+</script>
+<style>
+  * { box-sizing: border-box; }
+
+  :root {
+    --red: #c1121f;
+    --blue: #0055aa;
+    --purple: #6b21a8;
+    --amber: #b45309;
+    --green: #1b7a1b;
+    --bg-1: #f4f6f8;
+    --bg-2: #e8edf2;
+    --ui-bg: rgba(255,255,255,0.7);
+    --ui-border: rgba(0,0,0,0.06);
+    --ui-color: #666;
+    --ui-color-hover: #1a1a1a;
+    --text-main: #1a1a1a;
+    --text-card: #222;
+    --card-bg: #fff;
+    --card-border: rgba(0,0,0,0.06);
+    --card-h3-border: rgba(0,0,0,0.07);
+    --group-line: #cfd6dd;
+    --card-shadow: 0 1px 2px rgba(0,0,0,0.06),
+                   0 4px 12px rgba(0,0,0,0.06),
+                   0 12px 28px rgba(0,0,0,0.05);
+    --card-shadow-hover: 0 2px 4px rgba(0,0,0,0.08),
+                         0 8px 20px rgba(0,0,0,0.10),
+                         0 20px 40px rgba(0,0,0,0.08);
+  }
+
+  html[data-theme="dark"] {
+    --bg-1: #16181c;
+    --bg-2: #0e1013;
+    --red: #ff5a63;
+    --blue: #5fa8ff;
+    --purple: #b07cff;
+    --amber: #f5a623;
+    --green: #4ecb4e;
+    --ui-bg: rgba(30,32,38,0.7);
+    --ui-border: rgba(255,255,255,0.08);
+    --ui-color: #8a8f96;
+    --ui-color-hover: #e8eaed;
+    --text-main: #e8eaed;
+    --text-card: #d4d8dd;
+    --card-bg: #1c1f24;
+    --card-border: rgba(255,255,255,0.06);
+    --card-h3-border: rgba(255,255,255,0.08);
+    --group-line: #2a2e34;
+    --card-shadow: 0 1px 2px rgba(0,0,0,0.4),
+                   0 8px 24px rgba(0,0,0,0.35);
+    --card-shadow-hover: 0 2px 4px rgba(0,0,0,0.5),
+                         0 12px 32px rgba(0,0,0,0.45);
+  }
+
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    padding: 30px 20px 60px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--text-main);
+    background:
+      radial-gradient(circle at 20% 0%, rgba(255,255,255,0.04), transparent 50%),
+      radial-gradient(circle at 80% 100%, rgba(255,255,255,0.03), transparent 50%),
+      linear-gradient(160deg, var(--bg-1) 0%, var(--bg-2) 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    transition: color 0.2s ease;
+  }
+
+  html[data-theme="light"] body {
+    background:
+      radial-gradient(circle at 20% 0%, rgba(255,255,255,0.9), transparent 50%),
+      radial-gradient(circle at 80% 100%, rgba(255,255,255,0.7), transparent 50%),
+      linear-gradient(160deg, var(--bg-1) 0%, var(--bg-2) 100%);
+  }
+
+  /* ===== ВЕРХНЯЯ ПАНЕЛЬ ===== */
+  .topbar {
+    max-width: 1400px;
+    margin: 0 auto 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .switcher {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 6px;
+    background: var(--ui-bg);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--ui-border);
+    border-radius: 14px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    width: fit-content;
+  }
+
+  .switcher button {
+    font-family: inherit;
+    font-size: 12pt;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    padding: 10px 22px;
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--ui-color);
+    cursor: pointer;
+    transition: all 0.18s ease;
+  }
+
+  .switcher button:hover {
+    color: var(--ui-color-hover);
+    background: rgba(128,128,128,0.08);
+  }
+
+  .switcher button.active {
+    color: #fff;
+    background: linear-gradient(135deg, #2b2b2b, #111);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+
+  html[data-theme="dark"] .switcher button.active {
+    color: #111;
+    background: linear-gradient(135deg, #e8eaed, #b8bcc2);
+  }
+
+  .top-controls {
+    display: flex;
+    gap: 8px;
+  }
+
+  .ctl-btn {
+    font-family: inherit;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border-radius: 14px;
+    background: var(--ui-bg);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--ui-border);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    color: var(--text-main);
+    font-size: 18pt;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.15s ease, background 0.15s ease;
+    line-height: 1;
+  }
+
+  .ctl-btn:hover {
+    transform: translateY(-1px);
+    background: rgba(128,128,128,0.12);
+  }
+
+  .ctl-btn:active {
+    transform: translateY(0);
+  }
+
+  /* ===== НАБОРЫ ===== */
+  .set { display: none; }
+  .set.active { display: block; }
+
+  /* ===== ЗАГОЛОВКИ ГРУПП ===== */
+  .group-title {
+    max-width: 1400px;
+    margin: 40px auto 16px;
+    font-size: 12pt;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--ui-color);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .group-title::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, var(--group-line), transparent);
+  }
+  .group-title:first-of-type { margin-top: 0; }
+
+  .group-title.red    { color: var(--red); }
+  .group-title.blue   { color: var(--blue); }
+  .group-title.purple { color: var(--purple); }
+  .group-title.amber  { color: var(--amber); }
+  .group-title.green  { color: var(--green); }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .card {
+    position: relative;
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 18px 20px 16px;
+    background: var(--card-bg);
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+    transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.2s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--card-shadow-hover);
+  }
+
+  .card::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+  }
+  .red::before    { background: var(--red); }
+  .blue::before   { background: var(--blue); }
+  .purple::before { background: var(--purple); }
+  .amber::before  { background: var(--amber); }
+  .green::before  { background: var(--green); }
+
+  .card h3 {
+    font-size: 13pt;
+    font-weight: bold;
+    margin: 0 0 12px;
+    padding-bottom: 10px;
+    line-height: 1.2;
+    letter-spacing: 0.2px;
+    border-bottom: 1px solid var(--card-h3-border);
+  }
+
+  .red    h3 { color: var(--red); }
+  .blue   h3 { color: var(--blue); }
+  .purple h3 { color: var(--purple); }
+  .amber  h3 { color: var(--amber); }
+  .green  h3 { color: var(--green); }
+
+  .card ul {
+    padding-left: 16px;
+    margin: 0;
+    list-style: none;
+  }
+  .card ul li {
+    font-size: 11pt;
+    line-height: 1.45;
+    margin-bottom: 5px;
+    position: relative;
+    color: var(--text-card);
+  }
+  .card ul li::before {
+    content: "•";
+    position: absolute;
+    left: -12px;
+    font-weight: bold;
+  }
+  .red    ul li::before { color: var(--red); }
+  .blue   ul li::before { color: var(--blue); }
+  .purple ul li::before { color: var(--purple); }
+  .amber  ul li::before { color: var(--amber); }
+  .green  ul li::before { color: var(--green); }
+
+  .purple ul li b.if,
+  .purple ul li b.to {
+    color: var(--purple);
+  }
+
+  /* ===== ДЫХАНИЕ ===== */
+  .breath-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(10,10,12,0.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    padding: 20px;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .breath-overlay[hidden] { display: none; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  .breath-stage {
+    position: relative;
+    width: min(70vw, 320px);
+    height: min(70vw, 320px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .breath-circle {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(193,18,31,0.35) 0%, rgba(193,18,31,0.85) 100%);
+    box-shadow: 0 0 60px rgba(193,18,31,0.4), inset 0 0 40px rgba(255,255,255,0.15);
+    transform: scale(0.5);
+    will-change: transform;
+  }
+
+  .breath-label {
+    position: relative;
+    z-index: 1;
+    color: #fff;
+    font-size: 26pt;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+    pointer-events: none;
+  }
+
+  .breath-counter {
+    position: absolute;
+    bottom: -34px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: rgba(255,255,255,0.55);
+    font-size: 11pt;
+    letter-spacing: 1px;
+  }
+
+  .breath-hint {
+    color: rgba(255,255,255,0.7);
+    font-size: 11pt;
+    text-align: center;
+    line-height: 1.5;
+    max-width: 280px;
+  }
+
+  .breath-close {
+    position: absolute;
+    top: max(20px, env(safe-area-inset-top));
+    right: 20px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #fff;
+    font-size: 22pt;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease;
+  }
+
+  .breath-close:hover {
+    background: rgba(255,255,255,0.2);
+  }
+
+  /* ===== ПЕЧАТЬ ===== */
+  @media print {
+    body { background: #fff; padding: 0; color: #000; }
+    .switcher, .top-controls, .topbar { display: none !important; }
+    .cards-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+  }
+
+  @media (max-width: 700px) {
+    body { padding: 20px 12px 40px; }
+    .cards-grid { gap: 14px; }
+    .card { padding: 16px 16px 14px; border-radius: 10px; }
+    .group-title { margin: 28px auto 12px; font-size: 11pt; }
+    .topbar { margin-bottom: 20px; }
+    .switcher button { padding: 8px 16px; font-size: 11pt; }
+    .ctl-btn { width: 44px; height: 44px; font-size: 16pt; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== ВЕРХНЯЯ ПАНЕЛЬ ===== -->
+<div class="topbar">
+  <div class="switcher">
+    <button data-target="alcohol" class="active">Алкоголь</button>
+    <button data-target="vape">Вэйп</button>
+  </div>
+  <div class="top-controls">
+	<button class="ctl-btn" id="breath-btn" title="Дыхание 4–4–6" aria-label="Открыть дыхательную практику">
+	  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+		<circle cx="12" cy="12" r="2.5" fill="currentColor" stroke="none"/>
+		<circle cx="12" cy="12" r="6.5"/>
+		<circle cx="12" cy="12" r="10" opacity="0.35"/>
+	  </svg>
+	</button>
+    <button class="ctl-btn" id="theme-btn" title="Тема" aria-label="Переключить тему">🌓</button>
+  </div>
+</div>
+
+<!-- ===== ОВЕРЛЕЙ ДЫХАНИЯ ===== -->
+<div class="breath-overlay" id="breath-overlay" hidden>
+  <button class="breath-close" id="breath-close" aria-label="Закрыть">×</button>
+  <div class="breath-stage">
+    <div class="breath-circle" id="breath-circle"></div>
+    <div class="breath-label" id="breath-label">Вдох</div>
+    <div class="breath-counter" id="breath-counter">Цикл 1</div>
+  </div>
+  <div class="breath-hint">
+    Вдох 4 сек — держи 4 сек — выдох 6 сек.<br>
+    Просто смотри на круг и дыши вместе с ним.
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- ======================= АЛКОГОЛЬ =========================== -->
+<!-- ============================================================ -->
+<section class="set active" id="alcohol">
+
+  <!-- ===== СРОЧНОЕ ===== -->
+  <div class="group-title red">Срочное — когда накрыло</div>
+  <div class="cards-grid">
+
+    <div class="card red">
+      <h3>0. СДЕЛАЛ ГЛОТОК</h3>
+      <ul>
+        <li>СТОП. Поставь стакан. Не допивай.</li>
+        <li>Вылей остаток. Выйди. Умойся.</li>
+        <li>Подержи запястья 30 сек под водой.</li>
+        <li>20 приседаний или 10 отжиманий.</li>
+        <li>Позвони кому-то. Не молчи.</li>
+        <li>Дыши 4–4–6. Повтори 10 раз.</li>
+        <li>«Ошибка — не приговор. Я продолжаю».</li>
+        <li>Проживи 20 мин. Тяга спадёт.</li>
+        <li>Следующий день — трезвый.</li>
+      </ul>
+    </div>
+
+    <div class="card red">
+      <h3>1. ЕСТЬ ТЯГА</h3>
+      <ul>
+        <li>Это волна. Пик — 15–30 мин.</li>
+        <li>Встань. Смени место.</li>
+        <li>Холодная вода на лицо и запястья.</li>
+        <li>20 приседаний или 10 отжиманий.</li>
+        <li>Дыхание: вдох 4 — пауза 4 — выдох 6.</li>
+        <li>Скажи вслух: «Я не пью сегодня».</li>
+        <li>Поставь таймер на 20 минут.</li>
+        <li>Если не отпустило — ещё 20.</li>
+      </ul>
+    </div>
+
+    <div class="card red">
+      <h3>2. ФРАЗЫ-ЯКОРЯ</h3>
+      <ul>
+        <li>«Я не пью сегодня».</li>
+        <li>«Я выбираю утро».</li>
+        <li>«Ошибка — не приговор».</li>
+        <li>«Один глоток — не разрешение».</li>
+        <li>«Я продолжаю».</li>
+        <li>«Волна спадёт».</li>
+      </ul>
+    </div>
+
+    <div class="card red">
+      <h3>3. ДАВЯТ ДРУЗЬЯ</h3>
+      <ul>
+        <li>«Я за рулём» — и всё.</li>
+        <li>«Сейчас не пью» — без объяснений.</li>
+        <li>«Врач сказал паузу».</li>
+        <li>«Проверяю, как без этого».</li>
+        <li>С юмором: «Веду 1:0».</li>
+        <li>Держи в руке другой напиток.</li>
+        <li>Приходи позже, уходи раньше.</li>
+        <li>Если давят — уходи.</li>
+      </ul>
+    </div>
+
+    <div class="card red">
+      <h3>4. HALT</h3>
+      <ul>
+        <li>H — Голодный? Поешь.</li>
+        <li>A — Злой? Выпусти пар.</li>
+        <li>L — Одинокий? Позвони.</li>
+        <li>T — Уставший? Отдохни.</li>
+        <li>Сначала устрани причину.</li>
+        <li>Потом решай про алкоголь.</li>
+      </ul>
+    </div>
+
+    <div class="card red">
+      <h3>5. ПОСЛЕ РАБОТЫ</h3>
+      <ul>
+        <li>Это переключатель, а не вкус.</li>
+        <li>Сразу в душ. Контраст.</li>
+        <li>10 минут тишины без телефона.</li>
+        <li>Чай в любимой кружке.</li>
+        <li>5 минут выписать мысли о работе.</li>
+        <li>Если не отпустило — спать.</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- ===== ПЛАН ===== -->
+  <div class="group-title blue">План — по дням и ситуациям</div>
+  <div class="cards-grid">
+
+    <div class="card blue">
+      <h3>6. БУДНИ (ПН–ЧТ)</h3>
+      <ul>
+        <li>Обычный режим.</li>
+        <li>Если тянет после работы — карточка 5.</li>
+        <li>Рано спать. Утром — цель.</li>
+        <li>Никаких «одно пиво» в четверг.</li>
+        <li>Сон — часть плана.</li>
+      </ul>
+    </div>
+
+    <div class="card blue">
+      <h3>7. ПЯТНИЦА</h3>
+      <ul>
+        <li>Машина. Гараж. Один.</li>
+        <li>18:00 — выезд, 18:30–22:00 — ремонт.</li>
+        <li>Термос с имбирным чаем рядом.</li>
+        <li>22:30 — домой. 23:00 — душ, спать.</li>
+        <li>Никаких «заеду в магазин».</li>
+        <li>Утром в 7 — рынок, мясо, маринад.</li>
+      </ul>
+    </div>
+
+    <div class="card blue">
+      <h3>8. СУББОТА / БАНЯ</h3>
+      <ul>
+        <li>За рулём — твоя защита.</li>
+        <li>12:00 — баня. 16:00 — домой.</li>
+        <li>После бани — без магазина.</li>
+        <li>Утром цель — подъём в 7:00.</li>
+        <li>Дела, что давно отложил.</li>
+        <li>Вечером рано спать.</li>
+      </ul>
+    </div>
+
+    <div class="card blue">
+      <h3>9. ВОСКРЕСЕНЬЕ</h3>
+      <ul>
+        <li>Дела, что отложил.</li>
+        <li>Машина, если куда-то ехать.</li>
+        <li>Вечером — подготовка к пн.</li>
+        <li>Рано спать.</li>
+        <li>Трезвая неделя закрыта.</li>
+      </ul>
+    </div>
+
+    <div class="card blue">
+      <h3>10. ОТПУСК / ПОЕЗДКА</h3>
+      <ul>
+        <li>Главный триггер — «можно».</li>
+        <li>План напитков — заранее.</li>
+        <li>Утро без похмелья — кайф.</li>
+        <li>Не быть голодным и уставшим.</li>
+        <li>Помни: ты уже ездил трезвым.</li>
+      </ul>
+    </div>
+
+    <div class="card blue">
+      <h3>11. РАЗБОР СРЫВА</h3>
+      <ul>
+        <li>Что было за час до?</li>
+        <li>Где я был? С кем?</li>
+        <li>Что чувствовал в теле?</li>
+        <li>О чём думал?</li>
+        <li>Какой триггер сработал?</li>
+        <li>Что сделаю иначе в след. раз?</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- ===== ЕСЛИ — ТО ===== -->
+  <div class="group-title purple">ЕСЛИ — ТО — готовые сценарии</div>
+  <div class="cards-grid">
+
+    <div class="card purple">
+      <h3>12. ПЯТНИЦА (ЕСЛИ — ТО)</h3>
+      <ul>
+        <li><b class="if">ЕСЛИ</b> 17:30, финиш работы — <b class="to">ТО</b> вода и орехи. Не выезжать голодным.</li>
+        <li><b class="if">ЕСЛИ</b> 18:00, сажусь в машину — <b class="to">ТО</b> целевой подкаст и маршрут без магазинов.</li>
+        <li><b class="if">ЕСЛИ</b> мысль «зайти за сигаретами/водой» — <b class="to">ТО</b> на АЗС, оплата через приложение у колонки.</li>
+        <li><b class="if">ЕСЛИ</b> в гараже накатит тяга или скука — <b class="to">ТО</b> 3 глотка имбирного чая + 20 приседаний.</li>
+        <li><b class="if">ЕСЛИ</b> 22:00 — <b class="to">ТО</b> закрываю гараж, за руль (руль — броня), домой спать.</li>
+      </ul>
+    </div>
+
+    <div class="card purple">
+      <h3>13. СУББОТА (ЕСЛИ — ТО)</h3>
+      <ul>
+        <li><b class="if">ЕСЛИ</b> собираюсь в баню — <b class="to">ТО</b> беру машину. Руль — жёсткий ограничитель.</li>
+        <li><b class="if">ЕСЛИ</b> в предбаннике наливают — <b class="to">ТО</b> своя бутылка: «Я за рулём, сегодня на детоксе».</li>
+        <li><b class="if">ЕСЛИ</b> давят «оставь тачку тут» — <b class="to">ТО</b> шучу: «Завтра в 7 рынок и мясо. Веду 1:0».</li>
+        <li><b class="if">ЕСЛИ</b> давление агрессивное — <b class="to">ТО</b> молча собираю вещи и уезжаю домой.</li>
+      </ul>
+    </div>
+
+    <div class="card purple">
+      <h3>14. КРИЗИС И ГЛОТОК (ЕСЛИ — ТО)</h3>
+      <ul>
+        <li><b class="if">ЕСЛИ</b> держу стакан и хочу выпить — <b class="to">ТО</b> разжимаю пальцы, ставлю стакан, ухожу.</li>
+        <li><b class="if">ЕСЛИ</b> сделал глоток — <b class="to">ТО</b> не допиваю. Ошибка — не приговор.</li>
+        <li><b class="if">ЕСЛИ</b> вышел из триггерной зоны — <b class="to">ТО</b> таймер на 20 мин: «Проживу трезвым».</li>
+        <li><b class="if">ЕСЛИ</b> физически трясёт — <b class="to">ТО</b> запястья под лёд 30 сек, умыться трижды.</li>
+        <li><b class="if">ЕСЛИ</b> 20 минут прошли — <b class="to">ТО</b> «Я продолжаю. Следующий день — трезвый».</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- ===== РЕЦЕПТЫ ===== -->
+  <div class="group-title amber">Рецепты — замена по вкусу и эффекту</div>
+  <div class="cards-grid">
+
+    <div class="card amber">
+      <h3>15. ТЕРМОЯДЕРНЫЙ ИМБИРЬ</h3>
+      <ul>
+        <li>Замена крепкого и пива в гараже.</li>
+        <li>В термос натереть свежий имбирь (3–4 см).</li>
+        <li>0,5 лимона, порезать с коркой — для правильной горечи.</li>
+        <li>Палочка корицы, залить кипятком.</li>
+        <li>Пить мелкими глотками, когда мозг требует обжига.</li>
+      </ul>
+    </div>
+
+    <div class="card amber">
+      <h3>16. ОСТРАЯ БАКАЛЕЙНАЯ ЖИЖА</h3>
+      <ul>
+        <li>Вместо пива в бане. Плотный, солёный вкус.</li>
+        <li>Основа — густой томатный сок.</li>
+        <li>1 ч. ложка табаско.</li>
+        <li>1 ст. ложка сока лайма.</li>
+        <li>Немного огуречного или оливкового рассола.</li>
+        <li>Чёрная соль сверху. Эндорфины от остроты.</li>
+      </ul>
+    </div>
+
+    <div class="card amber">
+      <h3>17. ГОРЬКИЙ ТОНИК</h3>
+      <ul>
+        <li>Для посиделок с компанией.</li>
+        <li>Качественный горький тоник + много льда.</li>
+        <li>Размять в кашу четвертинку лайма.</li>
+        <li>Концентрированный лимонный сок — вяжущий акцент.</li>
+        <li>Горечь хинина мозг считывает как маркер алкоголя. Снимает FOMO.</li>
+      </ul>
+    </div>
+
+    <div class="card amber">
+      <h3>18. КИСЛАЯ ШИПУЧКА</h3>
+      <ul>
+        <li>Снятие стресса в будни после работы.</li>
+        <li>Лечебно-столовая минералка с газом (Ессентуки 4/17, Боржоми).</li>
+        <li>Смешать 50/50 с кислым соком — гранат или яблоко.</li>
+        <li>Размятые листья мяты.</li>
+        <li>CO₂ и соли восстанавливают электролиты, переключают режим.</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- ===== ОПОРА ===== -->
+  <div class="group-title green">Опора — зачем и как держаться</div>
+  <div class="cards-grid">
+
+    <div class="card green">
+      <h3>19. 2 НЕДЕЛИ — СРОК</h3>
+      <ul>
+        <li>FOMO живёт ~14 дней.</li>
+        <li>Дальше чувство «упускаю» уходит.</li>
+        <li>Ты это уже проверял: 40 и 55 дней.</li>
+        <li>Не «терпи вечно» — просто доживи.</li>
+        <li>Каждый день — шаг к облегчению.</li>
+      </ul>
+    </div>
+
+    <div class="card green">
+      <h3>20. КОГДА К ВРАЧУ</h3>
+      <ul>
+        <li>Если не можешь остановиться после глотка.</li>
+        <li>Если тянет каждую неделю.</li>
+        <li>Если утреннее опохмеление.</li>
+        <li>Если провалы в памяти.</li>
+        <li>Если сам не справляешься.</li>
+        <li>Это не стыдно. Это разумно.</li>
+      </ul>
+    </div>
+
+    <div class="card green">
+      <h3>21. ЗАЧЕМ Я ЭТО ДЕЛАЮ</h3>
+      <ul>
+        <li>Утро в 7 без похмелья.</li>
+        <li>Рынок, мясо, маринад.</li>
+        <li>Гараж и ремонт.</li>
+        <li>Тренировки: подтягивания, выход силой.</li>
+        <li>Трезвый отпуск.</li>
+        <li>Деньги, здоровье, ясная голова.</li>
+      </ul>
+    </div>
+
+    <div class="card green">
+      <h3>22. НАГРАДЫ</h3>
+      <ul>
+        <li>2 недели — инструмент в гараж.</li>
+        <li>1 месяц — массаж.</li>
+        <li>2 месяца — поездка.</li>
+        <li>3 месяца — что-то крупное.</li>
+        <li>Награда — не еда и не алкоголь.</li>
+      </ul>
+    </div>
+
+    <div class="card green">
+      <h3>23. СЧЁТ ДНЕЙ</h3>
+      <ul>
+        <li>Отмечай каждый трезвый день.</li>
+        <li>Крестик в календаре.</li>
+        <li>Цепочка мотивирует.</li>
+        <li>Срыв — не обнуление. Продолжай.</li>
+        <li>40 и 55 дней — уже было. Значит, можешь.</li>
+      </ul>
+    </div>
+
+    <div class="card green">
+      <h3>24. ПРОШЛЫЙ ОПЫТ</h3>
+      <ul>
+        <li>40 дней зимой — трезво.</li>
+        <li>55 дней летом — трезво.</li>
+        <li>Отпуск прошёл трезвым.</li>
+        <li>Дела шли отлично.</li>
+        <li>Значит, я могу.</li>
+        <li>Значит, дело не в силе воли.</li>
+      </ul>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ============================================================ -->
+<!-- ========================== ВЭЙП ============================ -->
+<!-- ============================================================ -->
+<section class="set" id="vape">
+
+  <!-- ===== СРОЧНОЕ ===== -->
+  <div class="group-title red">Срочное — когда накрыло</div>
+  <div class="cards-grid">
+
+    <div class="card red">
+      <h3>0. МЕЧТАЮ ПО ДОРОГЕ</h3>
+      <ul>
+        <li>Это эйфорическая память, а не реальность.</li>
+        <li>Вспомни: после — голова, туман, тошнота.</li>
+        <li>Предвкушение всегда сильнее удовольствия.</li>
+        <li>Позвони кому-то. Включи подкаст.</li>
+        <li>Не сворачивай к магазину. Домой напрямую.</li>
+        <li>Через 20 минут мысль отпустит.</li>
+      </ul>
+    </div>
+
+    <div class="card red">
+      <h3>1. УЖЕ КУПИЛ</h3>
+      <ul>
+        <li>Не открывай упаковку. Выбрось.</li>
+        <li>«Одна затяжка» — так не бывает. Ты знаешь.</li>
+        <li>Верни в магазин, если можешь.</li>
+        <li>Отдай кому-то. Сразу.</li>
+        <li>Скажи себе: «Ошибка — не приговор. Я продолжаю».</li>
+        <li>Следующий день — без вэйпа.</li>
+      </ul>
+    </div>
+
+    <div class="card red">
+      <h3>2. УЖЕ ПАРЮ</h3>
+      <ul>
+        <li>Выбрось прямо сейчас. Не докуривай.</li>
+        <li>Вспомни самочувствие: голова, туман, тошнота.</li>
+        <li>Умойся. Выйди на воздух.</li>
+        <li>Не ругай себя. Это ошибка, а не приговор.</li>
+        <li>2–3 дня — и станет легко. Ты это знаешь.</li>
+        <li>Следующий день — трезвый.</li>
+      </ul>
+    </div>
+
+    <div class="card red">
+      <h3>3. ФРАЗЫ-ЯКОРЯ</h3>
+      <ul>
+        <li>«Я не парю».</li>
+        <li>«У меня нет вэйпа».</li>
+        <li>«Я не покупаю».</li>
+        <li>«Мне плохо после него».</li>
+        <li>«Я выбираю ясную голову».</li>
+        <li>«2–3 дня — и легко».</li>
+      </ul>
+    </div>
+
+    <div class="card red">
+      <h3>4. ПРЕДЛАГАЮТ / ДАВЯТ</h3>
+      <ul>
+        <li>«Я бросил» — и всё.</li>
+        <li>«Не хочу» — без объяснений.</li>
+        <li>«Мне плохо от него».</li>
+        <li>Не бери в руки. Откажись сразу.</li>
+        <li>Отойди от курящих.</li>
+        <li>Если давят — уходи.</li>
+      </ul>
+    </div>
+
+    <div class="card red">
+      <h3>5. HALT</h3>
+      <ul>
+        <li>H — Голодный? Поешь.</li>
+        <li>A — Злой? Выпусти пар.</li>
+        <li>L — Одинокий? Позвони.</li>
+        <li>T — Уставший? Отдохни.</li>
+        <li>Сначала устрани причину.</li>
+        <li>Потом решай про вэйп.</li>
+      </ul>
+    </div>
+
+    <div class="card red">
+      <h3>6. КУРИЛКА / ПЕРЕРЫВ</h3>
+      <ul>
+        <li>Не ходи в курилку. Ты это уже знаешь.</li>
+        <li>Если идёшь — жуй жвачку, не стой рядом.</li>
+        <li>Не бери у чужих. Даже «попробовать».</li>
+        <li>Через 5 минут уходи.</li>
+        <li>«Я на перерыв, не курю».</li>
+        <li>Лучше — пройдись, разомнись, попей воды.</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- ===== ПЛАН ===== -->
+  <div class="group-title blue">План — по ситуациям</div>
+  <div class="cards-grid">
+
+    <div class="card blue">
+      <h3>7. ДОРОГА ДОМОЙ</h3>
+      <ul>
+        <li>Это главный триггер. Помни это.</li>
+        <li>Маршрут без магазинов и АЗС.</li>
+        <li>Подкаст, музыка, звонок другу.</li>
+        <li>Если тянет — вода, орехи в бардачке.</li>
+        <li>Не останавливаться у маркетов. Никогда.</li>
+        <li>Дома вэйпа нет — значит, и не будет.</li>
+      </ul>
+    </div>
+
+    <div class="card blue">
+      <h3>8. РАБОЧИЙ ДЕНЬ</h3>
+      <ul>
+        <li>Не ходи в курилку — ты и так не ходишь.</li>
+        <li>Туалет — не место для пара.</li>
+        <li>Если скучно — встань, разомнись, попей воды.</li>
+        <li>Жвачка, вода, пастилки под рукой.</li>
+        <li>Помни: на работе ты и так не паришь.</li>
+        <li>Значит, дело не в тебе. Дело в доступе.</li>
+      </ul>
+    </div>
+
+    <div class="card blue">
+      <h3>9. ВЕЧЕР ДОМА</h3>
+      <ul>
+        <li>Дома вэйпа нет. Это твоя броня.</li>
+        <li>Если хочется — жвачка, семечки, чай.</li>
+        <li>Займи руки: книга, ремонт, игра.</li>
+        <li>Не листай соцсети — там триггеры.</li>
+        <li>Сон — часть плана.</li>
+        <li>Утром будет ясная голова. Это награда.</li>
+      </ul>
+    </div>
+
+    <div class="card blue">
+      <h3>10. ВЫХОДНЫЕ / КОМПАНИЯ</h3>
+      <ul>
+        <li>Компания — главный риск.</li>
+        <li>Если кто-то парит — отойди.</li>
+        <li>Не бери у чужих. Даже «одну».</li>
+        <li>Не покупай «на разок».</li>
+        <li>Ты уже знаешь: один вечер = неделя.</li>
+        <li>Приезжай позже, уходи раньше.</li>
+      </ul>
+    </div>
+
+    <div class="card blue">
+      <h3>11. РАЗБОР СРЫВА</h3>
+      <ul>
+        <li>Что было за час до?</li>
+        <li>Где я был? С кем?</li>
+        <li>Что чувствовал в теле?</li>
+        <li>О чём думал?</li>
+        <li>Какой триггер сработал?</li>
+        <li>Что сделаю иначе в след. раз?</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- ===== ЕСЛИ — ТО ===== -->
+  <div class="group-title purple">ЕСЛИ — ТО — готовые сценарии</div>
+  <div class="cards-grid">
+
+    <div class="card purple">
+      <h3>12. ДОРОГА (ЕСЛИ — ТО)</h3>
+      <ul>
+        <li><b class="if">ЕСЛИ</b> мечтаю по дороге — <b class="to">ТО</b> позвони кому-то, включи подкаст.</li>
+        <li><b class="if">ЕСЛИ</b> мысль «заехать в магазин» — <b class="to">ТО</b> не сворачивай. Домой напрямую.</li>
+        <li><b class="if">ЕСЛИ</b> всё-таки заехал — <b class="to">ТО</b> не заходи. Заведись и уезжай.</li>
+        <li><b class="if">ЕСЛИ</b> купил — <b class="to">ТО</b> не открывай. Выбрось. Сразу.</li>
+        <li><b class="if">ЕСЛИ</b> открыл и паришь — <b class="to">ТО</b> выбрось, умойся, выйди на воздух.</li>
+      </ul>
+    </div>
+
+    <div class="card purple">
+      <h3>13. КОМПАНИЯ (ЕСЛИ — ТО)</h3>
+      <ul>
+        <li><b class="if">ЕСЛИ</b> кто-то парит рядом — <b class="to">ТО</b> отойди на 5 минут.</li>
+        <li><b class="if">ЕСЛИ</b> предлагают — <b class="to">ТО</b> «Я бросил». И всё.</li>
+        <li><b class="if">ЕСЛИ</b> давят — <b class="to">ТО</b> «Мне плохо от него». Без объяснений.</li>
+        <li><b class="if">ЕСЛИ</b> сам тянусь к чужому — <b class="to">ТО</b> выйди, позвони, попей воды.</li>
+        <li><b class="if">ЕСЛИ</b> вечер затянулся — <b class="to">ТО</b> уходи. Не оставайся «на минуточку».</li>
+      </ul>
+    </div>
+
+    <div class="card purple">
+      <h3>14. СРЫВ (ЕСЛИ — ТО)</h3>
+      <ul>
+        <li><b class="if">ЕСЛИ</b> держу вэйп — <b class="to">ТО</b> выбрось прямо сейчас. Не откладывай.</li>
+        <li><b class="if">ЕСЛИ</b> сделал затяжку — <b class="to">ТО</b> не вторую. Выбрось.</li>
+        <li><b class="if">ЕСЛИ</b> тянет продолжить — <b class="to">ТО</b> вспомни: голова, туман, тошнота.</li>
+        <li><b class="if">ЕСЛИ</b> купил новый — <b class="to">ТО</b> не открывай. Верни или выбрось.</li>
+        <li><b class="if">ЕСЛИ</b> всё-таки парю — <b class="to">ТО</b> следующий день без вэйпа. Не «с понедельника».</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- ===== ЗАМЕНЫ ===== -->
+  <div class="group-title amber">Замены — для рта, рук и стресса</div>
+  <div class="cards-grid">
+
+    <div class="card amber">
+      <h3>15. ДЛЯ РТА</h3>
+      <ul>
+        <li>Жвачка без сахара. Всегда в кармане.</li>
+        <li>Мятные пастилки, леденцы.</li>
+        <li>Семечки. Долго, монотонно, отвлекает.</li>
+        <li>Зубочистка или спичка (без огня).</li>
+        <li>Яблоко, морковь, огурец.</li>
+        <li>Что угодно, что жуётся или держится во рту.</li>
+      </ul>
+    </div>
+
+    <div class="card amber">
+      <h3>16. ДЛЯ РУК</h3>
+      <ul>
+        <li>Эспандер. Сжимать в кармане.</li>
+        <li>Чётки, маленькие шарики.</li>
+        <li>Ручка, карандаш — крутить в пальцах.</li>
+        <li>Монета, ключи.</li>
+        <li>Спиннер, кубик.</li>
+        <li>Главное — занять чем-то руки.</li>
+      </ul>
+    </div>
+
+    <div class="card amber">
+      <h3>17. ТЕРМОЯДЕРНЫЙ ИМБИРЬ</h3>
+      <ul>
+        <li>Когда мозг требует «обжигающего».</li>
+        <li>В термос натереть свежий имбирь (3–4 см).</li>
+        <li>0,5 лимона, порезать с коркой — для горечи.</li>
+        <li>Палочка корицы, залить кипятком.</li>
+        <li>Пить мелкими глотками.</li>
+        <li>Тот же ритуал «рука-рот», но без вреда.</li>
+      </ul>
+    </div>
+
+    <div class="card amber">
+      <h3>18. КИСЛАЯ ШИПУЧКА</h3>
+      <ul>
+        <li>Снятие стресса после работы.</li>
+        <li>Ессентуки 4/17 или Боржоми.</li>
+        <li>Смешать 50/50 с кислым соком — гранат, яблоко.</li>
+        <li>Размятые листья мяты.</li>
+        <li>CO₂ и соли переключают режим.</li>
+        <li>Замена ритуалу «наградить себя».</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- ===== ОПОРА ===== -->
+  <div class="group-title green">Опора — зачем и как держаться</div>
+  <div class="cards-grid">
+
+    <div class="card green">
+      <h3>19. ТАЙМЛАЙН</h3>
+      <ul>
+        <li>Острая тяга — 1–2 недели.</li>
+        <li>Психологическая — до 3 месяцев.</li>
+        <li>Через 2–3 дня уже легко. Ты это знаешь.</li>
+        <li>Волны будут реже и слабее.</li>
+        <li>«Мечтание» уходит последним.</li>
+        <li>Каждый день без вэйпа — шаг.</li>
+      </ul>
+    </div>
+
+    <div class="card green">
+      <h3>20. МОИ ПРИЧИНЫ</h3>
+      <ul>
+        <li>Плохое самочувствие: голова, туман, тошнота.</li>
+        <li>Деньги.</li>
+        <li>Зависимость от штуки в кармане.</li>
+        <li>Свобода: не искать, не покупать, не думать.</li>
+        <li>Ясная голова.</li>
+        <li>Здоровье.</li>
+      </ul>
+    </div>
+
+    <div class="card green">
+      <h3>21. СЧЁТ ДНЕЙ</h3>
+      <ul>
+        <li>Отмечай каждый день без вэйпа.</li>
+        <li>Крестик в календаре.</li>
+        <li>Цепочка мотивирует.</li>
+        <li>Срыв — не обнуление. Продолжай.</li>
+        <li>2–3 дня — уже легко.</li>
+        <li>Неделя — уже привычка.</li>
+      </ul>
+    </div>
+
+    <div class="card green">
+      <h3>22. ПРОШЛЫЙ ОПЫТ</h3>
+      <ul>
+        <li>Могу не парить неделю — если нет вэйпа.</li>
+        <li>На работе не парю. В курилку не хожу.</li>
+        <li>Дома, если нет — не тянет.</li>
+        <li>Через 2–3 дня после срыва — легко.</li>
+        <li>Значит, дело в доступности.</li>
+        <li>Значит, я могу. Я уже это делал.</li>
+      </ul>
+    </div>
+
+    <div class="card green">
+      <h3>23. КОГДА К ВРАЧУ</h3>
+      <ul>
+        <li>Если не можешь продержаться день.</li>
+        <li>Если тянет постоянно, а не волнами.</li>
+        <li>Если тянет к сигаретам вместо вэйпа.</li>
+        <li>Если сам не справляешься.</li>
+        <li>Если появились проблемы со здоровьем.</li>
+        <li>Это не стыдно. Это разумно.</li>
+      </ul>
+    </div>
+
+    <div class="card green">
+      <h3>24. НАГРАДЫ</h3>
+      <ul>
+        <li>1 неделя — что-то приятное.</li>
+        <li>2 недели — массаж или инструмент.</li>
+        <li>1 месяц — поездка.</li>
+        <li>3 месяца — что-то крупное.</li>
+        <li>Награда — не еда. И точно не вэйп.</li>
+        <li>Заранее реши, что это.</li>
+      </ul>
+    </div>
+
+  </div>
+
+</section>
+
+<script>
+  /* ============ ПЕРЕКЛЮЧАТЕЛЬ НАБОРОВ ============ */
+  (function () {
+    const buttons = document.querySelectorAll('.switcher button');
+    const sets = {
+      alcohol: document.getElementById('alcohol'),
+      vape: document.getElementById('vape')
+    };
+
+    function activate(target) {
+      buttons.forEach(b => b.classList.toggle('active', b.dataset.target === target));
+      Object.keys(sets).forEach(key => {
+        sets[key].classList.toggle('active', key === target);
+      });
+      try { localStorage.setItem('cards-set', target); } catch (e) {}
+      window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+    }
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => activate(btn.dataset.target));
+    });
+
+    let saved = null;
+    try { saved = localStorage.getItem('cards-set'); } catch (e) {}
+    if (saved && sets[saved]) activate(saved);
+  })();
+
+	/* ============ ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ ============ */
+	(function () {
+	  const themeBtn = document.getElementById('theme-btn');
+
+	  function getPref() {
+		try { return localStorage.getItem('theme-pref') === 'dark' ? 'dark' : 'light'; }
+		catch (e) { return 'light'; }
+	  }
+
+	  function apply(t) {
+		document.documentElement.dataset.theme = t;
+	  }
+
+	  function update() {
+		const t = getPref();
+		apply(t);
+		themeBtn.textContent = t === 'dark' ? '☀️' : '🌙';
+		themeBtn.title = t === 'dark' ? 'Светлая тема' : 'Тёмная тема';
+		themeBtn.setAttribute('aria-label', themeBtn.title);
+	  }
+
+	  themeBtn.addEventListener('click', () => {
+		const next = getPref() === 'dark' ? 'light' : 'dark';
+		try { localStorage.setItem('theme-pref', next); } catch (e) {}
+		update();
+	  });
+
+	  update();
+	})();
+
+  /* ============ ДЫХАНИЕ 4–4–6 ============ */
+  (function () {
+    const overlay = document.getElementById('breath-overlay');
+    const circle = document.getElementById('breath-circle');
+    const label = document.getElementById('breath-label');
+    const counter = document.getElementById('breath-counter');
+    const openBtn = document.getElementById('breath-btn');
+    const closeBtn = document.getElementById('breath-close');
+
+    let labelTimer = null;
+    let cycle = 0;
+    let running = false;
+
+    const INHALE = 4000;
+    const HOLD = 4000;
+    const EXHALE = 6000;
+    const TOTAL = INHALE + HOLD + EXHALE; // 14s
+
+    function runLabelCycle() {
+      label.textContent = 'Вдох';
+      labelTimer = setTimeout(() => {
+        label.textContent = 'Держи';
+        labelTimer = setTimeout(() => {
+          label.textContent = 'Выдох';
+          labelTimer = setTimeout(() => {
+            cycle++;
+            counter.textContent = 'Цикл ' + cycle;
+            runLabelCycle();
+          }, EXHALE);
+        }, HOLD);
+      }, INHALE);
+    }
+
+    function start() {
+      if (running) return;
+      running = true;
+      cycle = 0;
+      counter.textContent = 'Цикл 1';
+
+      overlay.hidden = false;
+
+      // Сброс анимации
+      circle.style.animation = 'none';
+      void circle.offsetWidth;
+      circle.style.animation = `breath ${TOTAL}ms ease-in-out infinite`;
+
+      // Старт счётчика циклов после первого полного цикла
+      runLabelCycle();
+
+      // Блокируем скролл под оверлеем
+      document.body.style.overflow = 'hidden';
+    }
+
+    function stop() {
+      running = false;
+      clearTimeout(labelTimer);
+      labelTimer = null;
+      overlay.hidden = true;
+      circle.style.animation = 'none';
+      document.body.style.overflow = '';
+      label.textContent = 'Вдох';
+      counter.textContent = 'Цикл 1';
+    }
+
+    openBtn.addEventListener('click', start);
+    closeBtn.addEventListener('click', stop);
+
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) stop();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && running) stop();
+    });
+  })();
+
+  /* ============ PWA: регистрация Service Worker ============ */
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').catch(() => {});
+    });
+  }
+</script>
+
+<!-- Анимация дыхания -->
+<style>
+  @keyframes breath {
+    0%     { transform: scale(0.5); }   /* начало вдоха */
+    28.57% { transform: scale(1);   }   /* конец вдоха (4с из 14) */
+    57.14% { transform: scale(1);   }   /* конец задержки (8с из 14) */
+    100%   { transform: scale(0.5); }   /* конец выдоха (14с) */
+  }
+</style>
+
+</body>
+</html>

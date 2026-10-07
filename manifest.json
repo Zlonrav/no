@@ -1,0 +1,20 @@
+{
+  "name": "Нет! — карточки трезвости",
+  "short_name": "Нет!",
+  "description": "Карточки на случай тяги к алкоголю или вэйпу",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f4f6f8",
+  "theme_color": "#c1121f",
+  "lang": "ru",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
