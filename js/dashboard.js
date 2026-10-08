@@ -75,21 +75,19 @@
       if (start) {
         const n = window.Sober.daysSince(start);
         const word = window.Sober.plural(n, ['день', 'дня', 'дней']);
-        if (isWide) {
-          el.innerHTML =
-            tile.icon +
-            '<div class="wide-text">' +
-              '<span class="tile-value">' + n + '</span>' +
-              '<span class="tile-label">' + word + '</span>' +
-              '<span class="tile-sub">трезвости</span>' +
-            '</div>';
-        } else {
-          el.innerHTML =
-            tile.icon +
-            '<span class="tile-value">' + n + '</span>' +
-            '<span class="tile-label">' + word + '</span>' +
-            '<span class="tile-sub">трезвости</span>';
-        }
+         if (isWide) {
+           el.innerHTML =
+             tile.icon +
+             '<div class="wide-text">' +
+               '<span class="tile-value">' + n + '</span>' +
+               '<span class="tile-label">' + word + '</span>' +
+             '</div>';
+         } else {
+           el.innerHTML =
+             tile.icon +
+             '<span class="tile-value">' + n + '</span>' +
+             '<span class="tile-label">' + word + '</span>';
+         }
       } else {
         el.innerHTML = tile.icon + '<span class="tile-label">' + tile.label + '</span>';
       }
