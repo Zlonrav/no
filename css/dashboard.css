@@ -196,6 +196,21 @@ html[data-theme="dark"] body.dashboard-body {
   margin-top: 0;
 }
 
+/* ===== ЦВЕТ ПЛАШКИ «ДЫХАНИЕ» ===== */
+.tile-breath {
+  background: linear-gradient(135deg, #0891b2 0%, #155e75 100%);
+}
+
+/* ===== КОМПАКТНЫЙ СЧЁТЧИК В КВАДРАТНОЙ ПЛИТКЕ ===== */
+.tile-counter .tile-value {
+  font-size: 26pt;
+  margin: 2px 0 -2px;
+}
+
+.tile-counter .tile-sub {
+  margin-top: -2px;
+}
+
 /* ===== АДАПТИВ ===== */
 @media (max-width: 700px) {
   body.dashboard-body { padding: 16px; }
