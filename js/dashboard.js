@@ -36,6 +36,13 @@
       icon: '<svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-3-6.2"/><path d="M20 3v6h-6"/></svg>'
     },
     {
+      id: 'breath',
+      label: 'Дыхание',
+      action: 'breath',
+      color: 'breath',
+      icon: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.5" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="6.5"/><circle cx="12" cy="12" r="10" opacity="0.35"/></svg>'
+    },
+    {
       id: 'counter',
       label: 'Трезвость',
       href: 'pages/counter.html',
@@ -44,35 +51,37 @@
     }
   ];
 
-  const isOdd = (TILES.length % 2) !== 0;
-
-  TILES.forEach((tile, i) => {
-    const isLast = (i === TILES.length - 1);
-    const isWide = (isOdd && isLast);
-
-    const a = document.createElement('a');
-    a.className = 'tile tile-' + tile.color + (isWide ? ' wide' : '');
-    a.href = tile.href;
+  TILES.forEach((tile) => {
+    const isButton = tile.action === 'breath';
+    const el = document.createElement(isButton ? 'button' : 'a');
+    el.className = 'tile tile-' + tile.color;
+    if (!isButton) el.href = tile.href;
+    if (isButton) el.type = 'button';
 
     if (tile.id === 'counter' && window.Sober) {
       const start = window.Sober.getStart();
       if (start) {
         const n = window.Sober.daysSince(start);
         const word = window.Sober.plural(n, ['день', 'дня', 'дней']);
-        a.innerHTML =
+        el.innerHTML =
           tile.icon +
-          '<div class="wide-text">' +
-            '<span class="tile-value">' + n + '</span>' +
-            '<span class="tile-label">' + word + '</span>' +
-            '<span class="tile-sub">трезвости</span>' +
-          '</div>';
+          '<span class="tile-value">' + n + '</span>' +
+          '<span class="tile-label">' + word + '</span>' +
+          '<span class="tile-sub">трезвости</span>';
       } else {
-        a.innerHTML = tile.icon + '<span class="tile-label">' + tile.label + '</span>';
+        el.innerHTML = tile.icon + '<span class="tile-label">' + tile.label + '</span>';
       }
     } else {
-      a.innerHTML = tile.icon + '<span class="tile-label">' + tile.label + '</span>';
+      el.innerHTML = tile.icon + '<span class="tile-label">' + tile.label + '</span>';
     }
 
-    grid.appendChild(a);
+    if (isButton) {
+      el.addEventListener('click', () => {
+        const btn = document.getElementById('breath-btn');
+        if (btn) btn.click();
+      });
+    }
+
+    grid.appendChild(el);
   });
 })();
