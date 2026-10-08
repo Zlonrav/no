@@ -479,6 +479,11 @@ html[data-theme="dark"] .formula {
 }
 
 /* ===== СТРАНИЦА СЧЁТЧИКА ===== */
+/* ===== СТРАНИЦА СЧЁТЧИКА ===== */
+body.counter-body {
+  padding: 0;
+}
+
 .counter-page {
   min-height: 100vh;
   min-height: 100dvh;
