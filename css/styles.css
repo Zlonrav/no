@@ -385,4 +385,6 @@ html[data-theme="dark"] .formula {
   .group-title { margin: 28px auto 12px; font-size: 11pt; }
   .back-btn { width: 44px; height: 44px; top: 12px; left: 12px; }
   .back-btn svg { width: 20px; height: 20px; }
+  .intro h1 { font-size: 20pt; }
+  .intro .subtitle { font-size: 11pt; }
 }
