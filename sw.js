@@ -1,9 +1,28 @@
-const CACHE = 'net-cards-v11';
+const CACHE = 'net-cards-v2.1';
+
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
-  './icon.svg'
+  './icon.svg',
+  './icon-192.png',
+  './icon-512.png',
+
+  './css/styles.css',
+  './css/dashboard.css',
+
+  './js/theme-init.js',
+  './js/sober.js',
+  './js/app.js',
+  './js/dashboard.js',
+  './js/counter.js',
+  './js/trgz.js',
+
+  './pages/alcohol.html',
+  './pages/vape.html',
+  './pages/trgz.html',
+  './pages/prokrutka.html',
+  './pages/counter.html'
 ];
 
 self.addEventListener('install', (e) => {
@@ -25,7 +44,6 @@ self.addEventListener('activate', (e) => {
 self.addEventListener('fetch', (e) => {
   if (e.request.method !== 'GET') return;
 
-  // Для навигации (HTML) — сеть первым, кэш как резерв
   if (e.request.mode === 'navigate') {
     e.respondWith(
       fetch(e.request)
@@ -41,7 +59,6 @@ self.addEventListener('fetch', (e) => {
     return;
   }
 
-  // Для остальных — кэш первым, сеть в фоне
   e.respondWith(
     caches.open(CACHE).then((cache) =>
       cache.match(e.request).then((cached) => {
