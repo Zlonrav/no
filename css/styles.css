@@ -488,7 +488,6 @@ html[data-theme="dark"] .formula {
 @media (max-width: 700px) {
   .breath-btn { top: 14px; right: 14px; width: 44px; height: 44px; }
   .breath-btn svg { width: 20px; height: 20px; }
-  .dashboard-body .breath-btn { right: 68px; }
 }
 
 /* В печать не выводим */
