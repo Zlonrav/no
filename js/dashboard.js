@@ -19,7 +19,7 @@
       label: 'Вэйп',
       href: 'pages/vape.html',
       color: 'vape',
-      icon: '<svg viewBox="0 0 24 24"><path d="M4 16c-1.7 0-3-1.3-3-3s1.3-3 3-3c0-3 2.5-5.5 5.5-5.5S15 7 15 10c2 0 3.5 1.3 3.5 3s-1.5 3-3.5 3z"/></svg>'
+      icon: '<svg viewBox="0 0 24 24"><rect x="10" y="14" width="4" height="6" rx="1"/><path d="M12 14v-3"/><path d="M10 8c1.3-1 2.7-1 4 0"/><path d="M9 5c1.3-1 2.7-1 4 0"/></svg>'
     },
     {
       id: 'trgz',
