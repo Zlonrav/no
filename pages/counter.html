@@ -1,1 +1,129 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='none' stroke='%231b7a1b' stroke-width='14'/><circle cx='50' cy='50' r='14' fill='%231b7a1b'/></svg>">
+<title>Трезвость — Нет!</title>
+<meta name="theme-color" content="#1b7a1b" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#16181c" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<script src="../js/theme-init.js"></script>
+<link rel="stylesheet" href="../css/styles.css">
+<link rel="stylesheet" href="../css/dashboard.css">
+<style>
+  .counter-page {
+    max-width: 480px;
+    margin: 60px auto 0;
+    text-align: center;
+  }
 
+  .counter-value {
+    font-size: 96pt;
+    font-weight: bold;
+    color: var(--green);
+    line-height: 1;
+    letter-spacing: -2px;
+    text-shadow: 0 4px 20px rgba(27,122,27,0.20);
+    margin: 0;
+  }
+
+  .counter-word {
+    font-size: 18pt;
+    font-weight: bold;
+    color: var(--text-main);
+    margin: 8px 0 0;
+    letter-spacing: 0.5px;
+  }
+
+  .counter-start {
+    font-size: 11pt;
+    color: var(--ui-color);
+    margin: 24px 0 0;
+    letter-spacing: 0.3px;
+  }
+
+  .counter-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 40px auto 0;
+    max-width: 320px;
+  }
+
+  .counter-actions button {
+    font-family: inherit;
+    font-size: 11pt;
+    font-weight: bold;
+    padding: 14px 20px;
+    border-radius: 12px;
+    border: 1px solid var(--card-border);
+    background: var(--card-bg);
+    color: var(--text-main);
+    cursor: pointer;
+    transition: transform 0.15s ease, background 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .counter-actions button:hover {
+    transform: translateY(-1px);
+    background: rgba(27,122,27,0.08);
+  }
+
+  .counter-actions button:active {
+    transform: scale(0.98);
+  }
+
+  .counter-actions button.primary {
+    background: linear-gradient(135deg, #1f9e1f 0%, #0d5c0d 100%);
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 4px 12px rgba(27,122,27,0.25);
+  }
+
+  .counter-actions button.primary:hover {
+    background: linear-gradient(135deg, #1f9e1f 0%, #0d5c0d 100%);
+    box-shadow: 0 6px 18px rgba(27,122,27,0.35);
+  }
+
+  #counter-input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    width: 1px;
+    height: 1px;
+  }
+
+  @media (max-width: 700px) {
+    .counter-page { margin-top: 40px; }
+    .counter-value { font-size: 72pt; }
+    .counter-word { font-size: 15pt; }
+  }
+</style>
+</head>
+<body>
+
+<a class="back-btn" href="../index.html" aria-label="Назад">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/>
+  </svg>
+</a>
+
+<main class="counter-page">
+  <p class="counter-value" id="counter-value">1</p>
+  <p class="counter-word" id="counter-word">день трезвости</p>
+  <p class="counter-start" id="counter-start">с сегодняшнего дня</p>
+
+  <input type="date" id="counter-input" aria-label="Дата начала">
+
+  <div class="counter-actions">
+    <button class="primary" id="counter-change">Изменить дату начала</button>
+    <button id="counter-reset">Сбросить на сегодня</button>
+  </div>
+</main>
+
+<script src="../js/sober.js" defer></script>
+<script src="../js/app.js" defer></script>
+<script src="../js/counter.js" defer></script>
+</body>
+</html>
