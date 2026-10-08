@@ -1,12 +1,14 @@
 /* ============================================================
    APP.JS — общие утилиты для всех страниц
-   Подключается внизу <body> через <script src="..." defer></script>
    ============================================================ */
 
-/* ===== ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ (только там, где есть кнопка) ===== */
+/* ===== ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ ===== */
 (function () {
   const btn = document.getElementById('theme-btn');
   if (!btn) return;
+
+  const MOON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>';
+  const SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>';
 
   function getPref() {
     try { return localStorage.getItem('theme-pref') === 'dark' ? 'dark' : 'light'; }
@@ -20,8 +22,9 @@
   function update() {
     const t = getPref();
     apply(t);
-    btn.textContent = t === 'dark' ? '☀️' : '🌙';
-    btn.title = t === 'dark' ? 'Светлая тема' : 'Тёмная тема';
+    const isDark = (t === 'dark');
+    btn.innerHTML = isDark ? SUN : MOON;
+    btn.title = isDark ? 'Светлая тема' : 'Тёмная тема';
     btn.setAttribute('aria-label', btn.title);
   }
 
@@ -34,7 +37,7 @@
   update();
 })();
 
-/* ===== ДЫХАНИЕ 4–4–6 (только там, где есть оверлей) ===== */
+/* ===== ДЫХАНИЕ 4–4–6 ===== */
 (function () {
   const overlay = document.getElementById('breath-overlay');
   if (!overlay) return;
@@ -108,6 +111,8 @@
 /* ===== PWA: регистрация Service Worker ===== */
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch(() => {});
+    const inPages = location.pathname.indexOf('/pages/') !== -1;
+    const swPath = inPages ? '../sw.js' : 'sw.js';
+    navigator.serviceWorker.register(swPath).catch(() => {});
   });
 }
