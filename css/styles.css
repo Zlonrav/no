@@ -340,6 +340,167 @@ html[data-theme="dark"] .formula {
   .compare { grid-template-columns: 1fr; }
 }
 
+/* ===== КНОПКА ДЫХАНИЯ ===== */
+.breath-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: var(--ui-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--ui-border);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  color: var(--text-main);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  transition: transform 0.15s ease, background 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+  padding: 0;
+  font-family: inherit;
+}
+
+.breath-btn:hover {
+  transform: translateY(-1px);
+  background: rgba(128,128,128,0.12);
+}
+
+.breath-btn:active {
+  transform: scale(0.94);
+}
+
+.breath-btn svg {
+  display: block;
+  width: 22px;
+  height: 22px;
+}
+
+/* На пульте — сдвигаем влево, чтобы не налезала на кнопку темы */
+.dashboard-body .breath-btn {
+  right: 80px;
+}
+
+/* ===== ОВЕРЛЕЙ ДЫХАНИЯ ===== */
+.breath-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(10,10,12,0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  padding: 20px;
+  animation: breathFadeIn 0.3s ease;
+}
+
+.breath-overlay[hidden] { display: none; }
+
+@keyframes breathFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.breath-stage {
+  position: relative;
+  width: min(70vw, 320px);
+  height: min(70vw, 320px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.breath-circle {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(193,18,31,0.35) 0%, rgba(193,18,31,0.85) 100%);
+  box-shadow: 0 0 60px rgba(193,18,31,0.4), inset 0 0 40px rgba(255,255,255,0.15);
+  transform: scale(0.5);
+  will-change: transform;
+}
+
+.breath-label {
+  position: relative;
+  z-index: 1;
+  color: #fff;
+  font-size: 26pt;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+  pointer-events: none;
+}
+
+.breath-counter {
+  position: absolute;
+  bottom: -34px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: rgba(255,255,255,0.55);
+  font-size: 11pt;
+  letter-spacing: 1px;
+}
+
+.breath-hint {
+  color: rgba(255,255,255,0.7);
+  font-size: 11pt;
+  text-align: center;
+  line-height: 1.5;
+  max-width: 280px;
+}
+
+.breath-close {
+  position: absolute;
+  top: max(20px, env(safe-area-inset-top));
+  right: 20px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #fff;
+  font-size: 22pt;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease;
+  padding: 0;
+  font-family: inherit;
+}
+
+.breath-close:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+@keyframes breath {
+  0%     { transform: scale(0.5); }
+  28.57% { transform: scale(1); }
+  57.14% { transform: scale(1); }
+  100%   { transform: scale(0.5); }
+}
+
+@media (max-width: 700px) {
+  .breath-btn { top: 14px; right: 14px; width: 44px; height: 44px; }
+  .breath-btn svg { width: 20px; height: 20px; }
+  .dashboard-body .breath-btn { right: 68px; }
+}
+
+/* В печать не выводим */
+@media print {
+  .breath-btn, .breath-overlay { display: none !important; }
+}
+
 /* ===== ПЕЧАТЬ ===== */
 @media print {
   body { background: #fff; padding: 0; color: #000; }
