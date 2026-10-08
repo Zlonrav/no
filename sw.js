@@ -1,4 +1,4 @@
-const CACHE = 'net-cards-v2.11';
+const CACHE = 'net-cards-v2.12';
 
 const ASSETS = [
   './',
@@ -23,6 +23,7 @@ const ASSETS = [
   './pages/trgz.html',
   './pages/prokrutka.html',
   './pages/counter.html'
+  './pages/stress.html',
 ];
 
 self.addEventListener('install', (e) => {
