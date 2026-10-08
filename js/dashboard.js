@@ -58,10 +58,15 @@
     }
   ];
 
-  TILES.forEach((tile) => {
+  const isOdd = (TILES.length % 2) !== 0;
+
+  TILES.forEach((tile, i) => {
+    const isLast = (i === TILES.length - 1);
+    const isWide = (isOdd && isLast);
+
     const isButton = tile.action === 'breath';
     const el = document.createElement(isButton ? 'button' : 'a');
-    el.className = 'tile tile-' + tile.color;
+    el.className = 'tile tile-' + tile.color + (isWide ? ' wide' : '');
     if (!isButton) el.href = tile.href;
     if (isButton) el.type = 'button';
 
@@ -70,11 +75,21 @@
       if (start) {
         const n = window.Sober.daysSince(start);
         const word = window.Sober.plural(n, ['день', 'дня', 'дней']);
-        el.innerHTML =
-          tile.icon +
-          '<span class="tile-value">' + n + '</span>' +
-          '<span class="tile-label">' + word + '</span>' +
-          '<span class="tile-sub">трезвости</span>';
+        if (isWide) {
+          el.innerHTML =
+            tile.icon +
+            '<div class="wide-text">' +
+              '<span class="tile-value">' + n + '</span>' +
+              '<span class="tile-label">' + word + '</span>' +
+              '<span class="tile-sub">трезвости</span>' +
+            '</div>';
+        } else {
+          el.innerHTML =
+            tile.icon +
+            '<span class="tile-value">' + n + '</span>' +
+            '<span class="tile-label">' + word + '</span>' +
+            '<span class="tile-sub">трезвости</span>';
+        }
       } else {
         el.innerHTML = tile.icon + '<span class="tile-label">' + tile.label + '</span>';
       }
