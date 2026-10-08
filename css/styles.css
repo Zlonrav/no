@@ -478,6 +478,128 @@ html[data-theme="dark"] .formula {
   background: rgba(255,255,255,0.2);
 }
 
+/* ===== СТРАНИЦА СЧЁТЧИКА ===== */
+.counter-page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px 40px;
+  box-sizing: border-box;
+}
+
+.counter-card {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  padding: 36px 32px 28px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+  text-align: center;
+}
+
+.counter-card::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 5px;
+  background: var(--green);
+}
+
+.counter-value {
+  font-size: 96pt;
+  font-weight: bold;
+  color: var(--green);
+  line-height: 1;
+  letter-spacing: -3px;
+  margin: 0;
+  text-shadow: 0 4px 24px rgba(27,122,27,0.18);
+}
+
+.counter-word {
+  font-size: 16pt;
+  font-weight: bold;
+  color: var(--text-main);
+  margin: 12px 0 0;
+  letter-spacing: 0.3px;
+}
+
+.counter-start {
+  font-size: 11pt;
+  color: var(--ui-color);
+  margin: 10px 0 0;
+  letter-spacing: 0.3px;
+}
+
+.counter-divider {
+  height: 1px;
+  background: var(--card-h3-border);
+  margin: 28px 0 24px;
+}
+
+.counter-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.counter-actions button {
+  font-family: inherit;
+  font-size: 11pt;
+  font-weight: bold;
+  padding: 14px 20px;
+  border-radius: 12px;
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  color: var(--text-main);
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+  letter-spacing: 0.3px;
+}
+
+.counter-actions button:hover {
+  transform: translateY(-1px);
+  background: rgba(27,122,27,0.06);
+}
+
+.counter-actions button:active {
+  transform: scale(0.98);
+}
+
+.counter-actions button.primary {
+  background: linear-gradient(135deg, #1f9e1f 0%, #0d5c0d 100%);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(27,122,27,0.25);
+}
+
+.counter-actions button.primary:hover {
+  background: linear-gradient(135deg, #22a822 0%, #0f6b0f 100%);
+  box-shadow: 0 6px 18px rgba(27,122,27,0.35);
+}
+
+#counter-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 1px;
+  height: 1px;
+}
+
+@media (max-width: 700px) {
+  .counter-page { padding: 70px 16px 30px; }
+  .counter-card { padding: 28px 24px 22px; border-radius: 14px; }
+  .counter-value { font-size: 72pt; letter-spacing: -2px; }
+  .counter-word { font-size: 14pt; }
+  .counter-divider { margin: 22px 0 18px; }
+  .counter-actions button { padding: 12px 18px; font-size: 10.5pt; }
+}
+
 @keyframes breath {
   0%     { transform: scale(0.5); }
   28.57% { transform: scale(1); }
