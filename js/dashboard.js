@@ -31,7 +31,7 @@
     {
       id: 'prokrutka',
       label: 'Прокрутка',
-      href: 'pages/prokrutka.html',
+      href: 'pages/rumination.html',
       color: 'prokrutka',
       icon: '<svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-3-6.2"/><path d="M20 3v6h-6"/></svg>'
     },
