@@ -139,29 +139,20 @@
     line-height: 1;
   }
 
-  /* Нативный input под цифрой — прозрачный, но кликабельный */
+  /* Нативный input полностью спрятан, клик идёт через кружок */
   .days-counter input[type="date"] {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     opacity: 0;
-    cursor: pointer;
+    pointer-events: none;
     border: 0;
     padding: 0;
     margin: 0;
     -webkit-appearance: none;
     appearance: none;
     background: transparent;
-    color: transparent;
-  }
-
-  .days-counter input[type="date"]::-webkit-calendar-picker-indicator {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
   }
 
   html[data-theme="dark"] .days-counter {
@@ -415,7 +406,6 @@
     color: var(--purple);
   }
 
-  /* ===== ТРГЗ: РАСШИРЕННЫЕ ЭЛЕМЕНТЫ ===== */
   .card p {
     font-size: 11pt;
     line-height: 1.5;
@@ -424,7 +414,6 @@
   }
 
   .card p:last-child { margin-bottom: 0; }
-
   .card p.center { text-align: center; }
 
   .card p.shout {
@@ -613,7 +602,7 @@
 <!-- ===== СЧЁТЧИК ДНЕЙ ===== -->
 <div class="days-counter" id="days-counter" title="Дней трезвости">
   <span class="value" id="days-value">1</span>
-  <input type="date" id="days-input" aria-label="Дата начала трезвости">
+  <input type="date" id="days-input">
 </div>
 
 <!-- ===== ВЕРХНЯЯ ПАНЕЛЬ ===== -->
@@ -1977,6 +1966,18 @@
         try { localStorage.setItem(KEY, input.value); } catch (e) {}
         render();
       }
+    });
+
+    // Клик по кружку — открываем нативный выбор даты
+    counter.addEventListener('click', () => {
+      if (typeof input.showPicker === 'function') {
+        try { input.showPicker(); return; } catch (e) {}
+      }
+      // Fallback
+      input.style.pointerEvents = 'auto';
+      input.focus();
+      input.click();
+      setTimeout(() => { input.style.pointerEvents = 'none'; }, 800);
     });
 
     // Автообновление в полночь
