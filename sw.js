@@ -22,7 +22,7 @@ const ASSETS = [
   './pages/vape.html',
   './pages/trgz.html',
   './pages/rumination.html',
-  './pages/counter.html'
+  './pages/counter.html',
   './pages/stress.html',
 ];
 
