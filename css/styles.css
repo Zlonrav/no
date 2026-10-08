@@ -336,35 +336,6 @@ html[data-theme="dark"] .formula {
 .compare .signal strong { color: var(--green); }
 .compare .chew strong { color: var(--purple); }
 
-/* ===== ИНТРО НА СТРАНИЦАХ РАЗДЕЛОВ ===== */
-.intro {
-  max-width: 1400px;
-  margin: 0 auto 40px;
-  text-align: center;
-}
-.intro h1 {
-  font-size: 26pt;
-  font-weight: bold;
-  color: var(--orange);
-  margin: 0 0 6px;
-  letter-spacing: 0.5px;
-}
-
-.intro .subtitle {
-  font-size: 13pt;
-  color: var(--ui-color);
-  margin: 0 0 18px;
-  font-weight: bold;
-}
-
-.intro p {
-  font-size: 11pt;
-  line-height: 1.55;
-  color: var(--text-card);
-  margin: 0 0 12px;
-  text-align: left;
-}
-
 @media (max-width: 500px) {
   .compare { grid-template-columns: 1fr; }
 }
