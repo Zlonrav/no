@@ -36,6 +36,13 @@
       icon: '<svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-3-6.2"/><path d="M20 3v6h-6"/></svg>'
     },
     {
+      id: 'stress',
+      label: 'Стресс',
+      href: 'pages/stress.html',
+      color: 'stress',
+      icon: '<svg viewBox="0 0 24 24"><path d="M13 2L3 14h8l-1 8 10-12h-8z"/></svg>'
+    },
+    {
       id: 'breath',
       label: 'Дыхание',
       action: 'breath',
