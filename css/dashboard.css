@@ -102,6 +102,11 @@ html[data-theme="dark"] body.dashboard-body {
               inset 0 2px 3px rgba(255,255,255,0.18);
 }
 
+/* ===== ЦВЕТ ПЛАШКИ «СТРЕСС» ===== */
+.tile-stress {
+  background: linear-gradient(135deg, #be185d 0%, #831843 100%);
+}
+
 .tile:hover {
   transform: translateY(-3px);
   box-shadow: 0 6px 16px rgba(0,0,0,0.14),
