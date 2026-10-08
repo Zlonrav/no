@@ -380,11 +380,6 @@ html[data-theme="dark"] .formula {
   height: 22px;
 }
 
-/* На пульте — сдвигаем влево, чтобы не налезала на кнопку темы */
-.dashboard-body .breath-btn {
-  right: 80px;
-}
-
 /* ===== ОВЕРЛЕЙ ДЫХАНИЯ ===== */
 .breath-overlay {
   position: fixed;
