@@ -7,7 +7,6 @@
   const pager = document.getElementById('pager');
   const pagerUp = document.getElementById('pager-up');
   const pagerDown = document.getElementById('pager-down');
-  const pagerIndicator = document.getElementById('pager-indicator');
   if (!pult) return;
 
   /* ===== ПОРЯДОК ПЛИТОК ===== */
@@ -127,7 +126,6 @@
       el.style.transform = 'translateY(' + (i - currentPage) * 100 + '%)';
     });
 
-    pagerIndicator.textContent = (currentPage + 1) + ' / ' + totalPages;
     pagerUp.disabled = currentPage === 0;
     pagerDown.disabled = currentPage === totalPages - 1;
   }
