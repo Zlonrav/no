@@ -263,3 +263,23 @@ html[data-theme="dark"] body.dashboard-body {
   .tile.wide .tile-value { font-size: 28pt; }
   .tile.wide .wide-text .tile-label { font-size: 11pt; }
 }
+
+/* ===== ШИРОКИЕ ЭКРАНЫ — 4 КОЛОНКИ ===== */
+@media (min-width: 900px) {
+  .dashboard {
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 1100px;
+    --tile-h: auto;
+    --tile-w: auto;
+  }
+
+  .tile {
+    aspect-ratio: 1 / 1;
+  }
+
+  .tile.wide {
+    grid-column: 1 / -1;
+    aspect-ratio: auto;
+    min-height: 140px;
+  }
+}
