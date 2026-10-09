@@ -413,14 +413,65 @@
     btn.disabled = true;
 
     const text = input.value;
-    const rawLines = text.split('\n');
     const wasWhispered = input.classList.contains('whispered');
 
+    // ===== Измеряем ширину через canvas, учитывая шрифт textarea =====
+    const style = getComputedStyle(input);
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    ctx.font = style.fontWeight + ' ' + style.fontSize + ' ' + style.fontFamily;
+    const letterSpacing = parseFloat(style.letterSpacing) || 0;
+    const padLeft = parseFloat(style.paddingLeft) || 0;
+    const padRight = parseFloat(style.paddingRight) || 0;
+    const maxWidth = input.clientWidth - padLeft - padRight;
+
+    // Ручной учёт letter-spacing (canvas его не знает)
+    function measure(str) {
+      return ctx.measureText(str).width + (str.length - 1) * letterSpacing;
+    }
+
+    // Разбиваем каждую логическую строку на визуальные
+    const visualLines = [];
+    const logicalLines = text.split('\n');
+
+    logicalLines.forEach(line => {
+      if (line === '') { visualLines.push(''); return; }
+
+      const words = line.split(' ');
+      let current = '';
+
+      words.forEach((word, i) => {
+        const candidate = current ? current + ' ' + word : word;
+        if (measure(candidate) <= maxWidth) {
+          current = candidate;
+        } else {
+          if (current) visualLines.push(current);
+          // Если одно слово шире строки — режем посимвольно
+          if (measure(word) > maxWidth) {
+            let chunk = '';
+            for (let c = 0; c < word.length; c++) {
+              if (measure(chunk + word[c]) <= maxWidth) {
+                chunk += word[c];
+              } else {
+                visualLines.push(chunk);
+                chunk = word[c];
+              }
+            }
+            current = chunk;
+          } else {
+            current = word;
+          }
+        }
+      });
+      if (current) visualLines.push(current);
+    });
+
+    // ===== Строим сцену из визуальных строк =====
     const stage = document.createElement('div');
     stage.className = 'abyss-stage';
     if (wasWhispered) stage.classList.add('whispered');
 
-    rawLines.forEach(line => {
+    visualLines.forEach(line => {
       const div = document.createElement('div');
       div.className = 'abyss-line';
       div.textContent = line.length ? line : '\u00A0';
