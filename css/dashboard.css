@@ -6,7 +6,7 @@ html, body { margin: 0; padding: 0; }
 
 body.dashboard-body {
   min-height: 100vh;
-  min-height: 100dvh;
+  min-height: 100svh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -78,6 +78,7 @@ html[data-theme="dark"] body.dashboard-body {
 
   /* Максимальный размер плитки: по высоте (4 ряда + 3 gap) */
   --tile-h: calc((100vh - 2 * var(--pad) - 3 * var(--gap)) / 4);
+     --tile-h: calc((100svh - 2 * var(--pad) - 3 * var(--gap)) / 4);
 
   /* Итоговый размер — минимум из трёх */
   --tile: min(var(--tile-w), var(--tile-h), 220px);
@@ -239,6 +240,7 @@ html[data-theme="dark"] body.dashboard-body {
     --pad: 12px;
     --tile-w: calc((100vw - 2 * var(--pad) - var(--gap)) / 2);
     --tile-h: calc((100vh - 2 * var(--pad) - 3 * var(--gap)) / 4);
+       --tile-h: calc((100svh - 2 * var(--pad) - 3 * var(--gap)) / 4);
     --tile: min(var(--tile-w), var(--tile-h), 180px);
   }
 
