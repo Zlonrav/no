@@ -8,9 +8,10 @@ body.dashboard-body {
   min-height: 100vh;
   min-height: 100svh;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   padding: 20px;
+  padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
   font-family: Arial, Helvetica, sans-serif;
   color: var(--text-main);
   background:
@@ -18,7 +19,8 @@ body.dashboard-body {
     radial-gradient(circle at 80% 100%, rgba(255,255,255,0.7), transparent 50%),
     linear-gradient(160deg, var(--bg-1) 0%, var(--bg-2) 100%);
   background-attachment: fixed;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 html[data-theme="dark"] body.dashboard-body {
@@ -70,21 +72,19 @@ html[data-theme="dark"] body.dashboard-body {
 
 /* ===== СЕТКА ПЛАШЕК ===== */
 .dashboard {
-  --gap: 12px;
-  --pad: 20px;
-
-  --tile-w: calc((100vw - 2 * var(--pad) - 2 * var(--gap)) / 3);
-  --tile-h: calc((100svh - 2 * var(--pad) - 3 * var(--gap)) / 4);
-  --tile: min(var(--tile-w), var(--tile-h), 160px);
+  --gap: 14px;
 
   display: grid;
-  grid-template-columns: repeat(3, var(--tile));
-  grid-auto-rows: var(--tile);
+  grid-template-columns: 1fr 1fr;
   gap: var(--gap);
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
 }
 
 /* ===== ПЛАШКА ===== */
 .tile {
+  aspect-ratio: 1 / 1;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -192,6 +192,7 @@ html[data-theme="dark"] body.dashboard-body {
 /* ===== РАСТЯНУТАЯ ПЛАШКА ===== */
 .tile.wide {
   grid-column: 1 / -1;
+  aspect-ratio: 2 / 1;
   flex-direction: row;
   gap: 20px;
 }
@@ -232,24 +233,21 @@ html[data-theme="dark"] body.dashboard-body {
 
 /* ===== АДАПТИВ ===== */
 @media (max-width: 700px) {
-  body.dashboard-body { padding: 12px; }
+  body.dashboard-body { padding: 14px; }
 
   .dashboard {
-    --gap: 8px;
-    --pad: 12px;
-    --tile-w: calc((100vw - 2 * var(--pad) - 2 * var(--gap)) / 3);
-    --tile-h: calc((100svh - 2 * var(--pad) - 3 * var(--gap)) / 4);
-    --tile: min(var(--tile-w), var(--tile-h), 120px);
+    --gap: 12px;
+    max-width: 100%;
   }
 
   .theme-toggle { top: 14px; right: 14px; width: 44px; height: 44px; }
   .theme-toggle svg { width: 20px; height: 20px; }
 
-  .tile svg { width: 26px; height: 26px; }
-  .tile .tile-label { font-size: 9pt; }
-  .tile .tile-value { font-size: 18pt; }
-  .tile.wide .tile-value { font-size: 26pt; }
-  .tile.wide .wide-text .tile-label { font-size: 10pt; }
+  .tile svg { width: 36px; height: 36px; }
+  .tile .tile-label { font-size: 11pt; }
+  .tile .tile-value { font-size: 24pt; }
+  .tile.wide .tile-value { font-size: 34pt; }
+  .tile.wide .wide-text .tile-label { font-size: 12pt; }
 }
 
 @media (max-height: 600px) {
