@@ -448,7 +448,7 @@
 
       btn.disabled = false;
       busy = false;
-    }, totalTime * 300000);
+    }, totalTime * 1000 + 250);
   }
 
   btn.addEventListener('click', release);
