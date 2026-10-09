@@ -25,7 +25,6 @@
     position: relative;
   }
 
-  /* Мягкое свечение из глубины */
   body.abyss-body::before {
     content: "";
     position: fixed;
@@ -50,7 +49,7 @@
     background: rgba(255,255,255,0.12);
   }
 
-  /* Кнопка «Шептать» — зеркало back-btn по правому краю */
+  /* ===== КНОПКА «ШЕПТАТЬ» ===== */
   .abyss-whisper {
     position: fixed;
     top: max(20px, env(safe-area-inset-top));
@@ -111,7 +110,7 @@
     gap: 16px;
   }
 
-  /* Обёртка вокруг textarea — чтобы накладывать слой «стекла» */
+  /* Обёртка вокруг textarea */
   .abyss-input-wrap {
     position: relative;
     flex: 1 1 0;
@@ -134,47 +133,53 @@
     padding: 0;
     letter-spacing: 0.2px;
     transition:
-      transform 2.8s cubic-bezier(0.5, 0, 0.75, 1),
-      filter    2.8s ease-in,
-      opacity   2.8s ease-in;
+      transform 0.4s ease,
+      filter    0.4s ease,
+      opacity   0.4s ease;
     will-change: transform, filter, opacity;
   }
 
-  .abyss-textarea::placeholder {
+  /* Подсказка — отдельным элементом, чтобы оставалась чёткой */
+  .abyss-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    pointer-events: none;
     color: rgba(232, 234, 237, 0.28);
+    font-family: Arial, Helvetica, sans-serif;
     font-style: italic;
+    font-size: 15pt;
+    line-height: 1.6;
+    letter-spacing: 0.2px;
+    transition: opacity 0.3s ease;
   }
 
+  .abyss-placeholder.hidden {
+    opacity: 0;
+  }
+
+  /* ===== РЕЖИМ «ШЁПОТ» — размываем сам текст ===== */
+  .abyss-textarea.whispered {
+    filter: blur(6px);
+    transition: filter 0.4s ease;
+  }
+
+  /* ===== ОТПУСКАНИЕ (sinking) ===== */
   .abyss-textarea.sinking {
     transform: translateY(100px) scale(0.98);
-    filter: blur(12px);
+    filter: blur(14px);
     opacity: 0;
     pointer-events: none;
+    transition:
+      transform 2.8s cubic-bezier(0.5, 0, 0.75, 1),
+      filter    2.8s ease-in,
+      opacity   2.8s ease-in;
   }
 
-  /* ===== МАТОВОЕ СТЕКЛО (режим «Шептать») ===== */
-  .abyss-frost {
-    position: absolute;
-    inset: 0;
-    border-radius: 10px;
-    background: rgba(12, 18, 34, 0.45);
-    backdrop-filter: blur(10px) saturate(60%);
-    -webkit-backdrop-filter: blur(10px) saturate(60%);
+  .abyss-placeholder.sinking {
     opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.35s ease;
-    z-index: 2;
-  }
-
-  .abyss-frost.active {
-    opacity: 1;
-  }
-
-  /* Фолбэк для старых Android без backdrop-filter */
-  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-    .abyss-frost {
-      background: rgba(12, 18, 34, 0.85);
-    }
+    transition: opacity 2.8s ease-in;
   }
 
   /* ===== КНОПКА «ОТПУСТИТЬ» ===== */
@@ -218,7 +223,8 @@
       padding: 82px 18px calc(20px + env(safe-area-inset-bottom, 0px));
       gap: 14px;
     }
-    .abyss-textarea { font-size: 13pt; }
+    .abyss-textarea,
+    .abyss-placeholder { font-size: 13pt; }
     .abyss-button { padding: 14px 28px; font-size: 11pt; min-width: 180px; }
     .abyss-whisper { top: max(14px, env(safe-area-inset-top)); right: max(14px, env(safe-area-inset-right)); width: 44px; height: 44px; }
     .abyss-whisper svg { width: 20px; height: 20px; }
@@ -251,9 +257,8 @@
     <textarea
       id="abyss-input"
       class="abyss-textarea"
-      placeholder="Напиши всё, что не даёт покоя. Это уйдёт навсегда"
       spellcheck="false"></textarea>
-    <div class="abyss-frost" id="abyss-frost"></div>
+    <div class="abyss-placeholder" id="abyss-placeholder">Напиши всё, что не даёт покоя. Это уйдёт навсегда</div>
   </div>
 
   <button id="abyss-release" class="abyss-button">Отпустить</button>
@@ -263,14 +268,21 @@
 <script>
 (function () {
   const input = document.getElementById('abyss-input');
+  const placeholder = document.getElementById('abyss-placeholder');
   const btn = document.getElementById('abyss-release');
-  const frost = document.getElementById('abyss-frost');
   const whisperBtn = document.getElementById('abyss-whisper');
   let busy = false;
 
+  /* ===== Плейсхолдер ===== */
+  function updatePlaceholder() {
+    placeholder.classList.toggle('hidden', input.value.length > 0);
+  }
+  input.addEventListener('input', updatePlaceholder);
+  updatePlaceholder();
+
   /* ===== Режим «Шептать» ===== */
   function applyWhisper(on) {
-    frost.classList.toggle('active', on);
+    input.classList.toggle('whispered', on);
     whisperBtn.classList.toggle('active', on);
     whisperBtn.title = on ? 'Шёпот включён' : 'Шептать';
     whisperBtn.setAttribute('aria-label', whisperBtn.title);
@@ -285,10 +297,10 @@
   applyWhisper(getWhisper());
 
   whisperBtn.addEventListener('click', () => {
-    applyWhisper(!frost.classList.contains('active'));
+    applyWhisper(!input.classList.contains('whispered'));
   });
 
-  /* ===== Мягкий шёпот воды через Web Audio ===== */
+  /* ===== Мягкий шёпот воды ===== */
   function playWater() {
     try {
       const Ctx = window.AudioContext || window.webkitAudioContext;
@@ -335,6 +347,7 @@
 
     playWater();
     input.classList.add('sinking');
+    placeholder.classList.add('sinking');
 
     setTimeout(() => {
       input.style.transition = 'none';
@@ -342,6 +355,9 @@
       input.classList.remove('sinking');
       void input.offsetWidth;
       input.style.transition = '';
+
+      placeholder.classList.remove('sinking');
+      updatePlaceholder();
 
       btn.disabled = false;
       busy = false;
