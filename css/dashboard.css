@@ -131,6 +131,11 @@ html[data-theme="dark"] body.dashboard-body {
   background: linear-gradient(160deg, #2d2d3a 0%, #1a2040 55%, #0a1535 100%);
 }
 
+/* ===== ЦВЕТ ПЛАШКИ «ПОНЯТЬ» ===== */
+.tile-understand {
+  background: linear-gradient(135deg, #1e3a8a 0%, #0f1e4a 100%);
+}
+
 .tile:active {
   transform: translateY(-1px) scale(0.98);
 }
