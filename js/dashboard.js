@@ -50,6 +50,13 @@
       icon: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.5" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="6.5"/><circle cx="12" cy="12" r="10" opacity="0.35"/></svg>'
     },
     {
+      id: 'abyss',
+      label: 'Бездна',
+      href: 'pages/abyss.html',
+      color: 'abyss',
+      icon: '<svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9 9 0 0 1 9 9 7 7 0 0 1-7 7 5 5 0 0 1-5-5 3 3 0 0 1 3-3 1.5 1.5 0 0 1 1.5 1.5"/></svg>'
+    },
+    {
       id: 'counter',
       label: 'Трезвость',
       href: 'pages/counter.html',
