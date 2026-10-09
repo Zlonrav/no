@@ -21,24 +21,26 @@
 
 <button class="theme-toggle" id="theme-btn" title="Тема" aria-label="Переключить тему"></button>
 
-<div class="pult" id="pult"></div>
-
-<div class="pager" id="pager" hidden>
-  <button class="pager-btn pager-btn-up" id="pager-up" aria-label="Вверх">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M18 15l-6-6-6 6"/>
-    </svg>
-  </button>
-  <button class="pager-btn pager-btn-down" id="pager-down" aria-label="Вниз">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M6 9l6 6 6-6"/>
-    </svg>
-  </button>
-</div>
-
+<button id="breath-btn" hidden aria-hidden="true"></button>
+  
+<main class="dashboard" id="dashboard"></main>
+  
 <script src="js/sober.js" defer></script>
 <script src="js/app.js" defer></script>
 <script src="js/dashboard.js" defer></script>
 
+<div class="breath-overlay" id="breath-overlay" hidden>
+  <button class="breath-close" id="breath-close" aria-label="Закрыть">×</button>
+  <div class="breath-stage">
+    <div class="breath-circle" id="breath-circle"></div>
+    <div class="breath-label" id="breath-label">Вдох</div>
+    <div class="breath-counter" id="breath-counter">Цикл 1</div>
+  </div>
+  <div class="breath-hint">
+    Вдох 4 сек — держи 4 сек — выдох 6 сек.<br>
+    Просто смотри на круг и дыши вместе с ним.
+  </div>
+</div>
+  
 </body>
 </html>
