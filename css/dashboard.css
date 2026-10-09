@@ -125,6 +125,11 @@ html[data-theme="dark"] body.dashboard-body {
               inset 0 2px 3px rgba(255,255,255,0.18);
 }
 
+/* ===== ЦВЕТ ПЛАШКИ «БЕЗДНА» ===== */
+.tile-abyss {
+  background: linear-gradient(160deg, #2d2d3a 0%, #1a2040 55%, #0a1535 100%);
+}
+
 .tile:active {
   transform: translateY(-1px) scale(0.98);
 }
