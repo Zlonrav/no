@@ -111,12 +111,13 @@
     gap: 16px;
   }
 
-  /* Обёртка вокруг textarea */
+  /* Обёртка вокруг textarea / stage */
   .abyss-input-wrap {
     position: relative;
     flex: 1 1 0;
     min-height: 0;
     display: flex;
+    overflow: hidden;
   }
 
   .abyss-textarea {
@@ -133,14 +134,15 @@
     resize: none;
     padding: 0;
     letter-spacing: 0.2px;
-    transition:
-      transform 0.4s ease,
-      filter    0.4s ease,
-      opacity   0.4s ease;
-    will-change: transform, filter, opacity;
+    transition: filter 0.4s ease, opacity 0.4s ease;
+    will-change: filter, opacity;
   }
 
-  /* Подсказка — отдельным элементом, чтобы оставалась чёткой */
+  .abyss-textarea.whispered {
+    filter: blur(5px);
+  }
+
+  /* Подсказка — отдельный элемент, остаётся чётким */
   .abyss-placeholder {
     position: absolute;
     top: 0;
@@ -160,27 +162,40 @@
     opacity: 0;
   }
 
-  /* ===== РЕЖИМ «ШЁПОТ» — размываем сам текст ===== */
-  .abyss-textarea.whispered {
-    filter: blur(5px);
-    transition: filter 0.4s ease;
-  }
-
-  /* ===== ОТПУСКАНИЕ (sinking) ===== */
-  .abyss-textarea.sinking {
-    transform: translateY(100px) scale(0.98);
-    filter: blur(14px);
-    opacity: 0;
+  /* ===== СЦЕНА ДЛЯ АНИМАЦИИ (накладывается на textarea) ===== */
+  .abyss-stage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     pointer-events: none;
-    transition:
-      transform 2.8s cubic-bezier(0.5, 0, 0.75, 1),
-      filter    2.8s ease-in,
-      opacity   2.8s ease-in;
+    overflow: hidden;
   }
 
-  .abyss-placeholder.sinking {
+  .abyss-line {
+    display: block;
+    color: #e8eaed;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15pt;
+    line-height: 1.6;
+    letter-spacing: 0.2px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    transform-origin: top center;
+    will-change: transform, filter, opacity;
+    /* Медленный старт, ускорение к концу — эффект «утекания» */
+    transition:
+      transform 1.7s cubic-bezier(0.55, 0.05, 0.85, 0.5),
+      filter    1.7s cubic-bezier(0.55, 0.05, 0.85, 0.5),
+      opacity   1.7s cubic-bezier(0.55, 0.05, 0.85, 0.5);
+  }
+
+  /* Физика воды: строка растягивается вниз, как капля по стеклу */
+  .abyss-line.sinking {
+    transform: translateY(140px) scaleY(2.4) scaleX(0.94);
+    filter: blur(10px);
     opacity: 0;
-    transition: opacity 2.8s ease-in;
   }
 
   /* ===== КНОПКА «ОТПУСТИТЬ» ===== */
@@ -220,13 +235,14 @@
   }
 
   @media (max-width: 700px) {
-  .abyss-container {
-    padding: 82px 18px 22px;
-    padding-bottom: calc(22px + env(safe-area-inset-bottom, 0px));
-    gap: 14px;
-  }
+    .abyss-container {
+      padding: 82px 18px 22px;
+      padding-bottom: calc(22px + env(safe-area-inset-bottom, 0px));
+      gap: 14px;
+    }
     .abyss-textarea,
-    .abyss-placeholder { font-size: 13pt; }
+    .abyss-placeholder,
+    .abyss-line { font-size: 13pt; }
     .abyss-button { padding: 14px 28px; font-size: 11pt; min-width: 180px; }
     .abyss-whisper { top: max(14px, env(safe-area-inset-top)); right: max(14px, env(safe-area-inset-right)); width: 44px; height: 44px; }
     .abyss-whisper svg { width: 20px; height: 20px; }
@@ -273,6 +289,7 @@
   const placeholder = document.getElementById('abyss-placeholder');
   const btn = document.getElementById('abyss-release');
   const whisperBtn = document.getElementById('abyss-whisper');
+  const wrap = input.parentNode;
   let busy = false;
 
   /* ===== Плейсхолдер ===== */
@@ -302,13 +319,13 @@
     applyWhisper(!input.classList.contains('whispered'));
   });
 
-  /* ===== Мягкий шёпот воды ===== */
+  /* ===== Шёпот воды ===== */
   function playWater() {
     try {
       const Ctx = window.AudioContext || window.webkitAudioContext;
       if (!Ctx) return;
       const ctx = new Ctx();
-      const duration = 2.8;
+      const duration = 3.2;
       const size = Math.floor(ctx.sampleRate * duration);
       const buffer = ctx.createBuffer(1, size, ctx.sampleRate);
       const data = buffer.getChannelData(0);
@@ -319,13 +336,13 @@
 
       const filter = ctx.createBiquadFilter();
       filter.type = 'bandpass';
-      filter.frequency.value = 900;
+      filter.frequency.value = 850;
       filter.Q.value = 0.8;
 
       const gain = ctx.createGain();
       gain.gain.setValueAtTime(0.0001, ctx.currentTime);
-      gain.gain.linearRampToValueAtTime(0.055, ctx.currentTime + 0.6);
-      gain.gain.linearRampToValueAtTime(0.035, ctx.currentTime + 1.6);
+      gain.gain.linearRampToValueAtTime(0.06, ctx.currentTime + 0.5);
+      gain.gain.linearRampToValueAtTime(0.04, ctx.currentTime + 1.8);
       gain.gain.linearRampToValueAtTime(0.0001, ctx.currentTime + duration);
 
       src.connect(filter);
@@ -339,7 +356,7 @@
     } catch (e) {}
   }
 
-  /* ===== Отпустить ===== */
+  /* ===== Отпустить: построчный уход волной снизу вверх ===== */
   function release() {
     if (busy) return;
     if (!input.value.trim()) return;
@@ -347,23 +364,58 @@
     busy = true;
     btn.disabled = true;
 
+    const text = input.value;
+    const rawLines = text.split('\n');
+
+    // Создаём сцену, которая ляжет поверх поля
+    const stage = document.createElement('div');
+    stage.className = 'abyss-stage';
+
+    rawLines.forEach(line => {
+      const div = document.createElement('div');
+      div.className = 'abyss-line';
+      div.textContent = line.length ? line : '\u00A0';
+      stage.appendChild(div);
+    });
+
+    // Прячем textarea и placeholder, показываем stage
+    input.style.visibility = 'hidden';
+    placeholder.style.display = 'none';
+    wrap.appendChild(stage);
+
     playWater();
-    input.classList.add('sinking');
-    placeholder.classList.add('sinking');
+
+    const lines = stage.querySelectorAll('.abyss-line');
+    const count = lines.length;
+
+    // Волна идёт снизу вверх: нижняя строка уходит первой
+    const step = Math.max(0.1, Math.min(0.22, 2.2 / count));
+    const lineDur = 1.7;
+
+    lines.forEach((el, i) => {
+      // i = count-1 (нижняя) → delay = 0
+      // i = 0 (верхняя)     → delay = max
+      const reverseIndex = count - 1 - i;
+      el.style.transitionDelay = (reverseIndex * step) + 's';
+      void el.offsetWidth;
+      el.classList.add('sinking');
+    });
+
+    const totalTime = (count - 1) * step + lineDur;
 
     setTimeout(() => {
-      input.style.transition = 'none';
+      stage.remove();
+      input.style.visibility = '';
+      placeholder.style.display = '';
       input.value = '';
-      input.classList.remove('sinking');
+      input.style.transition = 'none';
       void input.offsetWidth;
       input.style.transition = '';
-
-      placeholder.classList.remove('sinking');
       updatePlaceholder();
 
       btn.disabled = false;
       busy = false;
-    }, 2900);
+    }, totalTime * 1000 + 250);
   }
 
   btn.addEventListener('click', release);
