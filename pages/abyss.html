@@ -142,6 +142,7 @@
     resize: none;
     padding: 5px;
     margin: 0;
+    box-sizing: border-box;
     letter-spacing: 0.2px;
     overflow: hidden;
     transition:
@@ -168,6 +169,7 @@
     filter: url(#abyss-whisper-filter);
   }
 
+  /* Placeholder — остаётся чётким, совпадает с позицией текста */
   .abyss-placeholder {
     position: absolute;
     top: 0;
@@ -189,7 +191,7 @@
     opacity: 0;
   }
 
-  /* ===== СЦЕНА ===== */
+  /* ===== СЦЕНА ДЛЯ АНИМАЦИИ ===== */
   .abyss-stage {
     position: absolute;
     top: 0;
@@ -213,20 +215,23 @@
     white-space: pre-wrap;
     word-break: break-word;
     transform-origin: top center;
-    will-change: transform, opacity;
+    will-change: transform, opacity, filter, color, text-shadow;
     text-shadow:
       0 0 0 rgba(232, 234, 237, 0),
       0 0 0 rgba(232, 234, 237, 0),
       0 0 0 rgba(180, 200, 240, 0),
       0 0 0 rgba(120, 160, 220, 0);
     transition:
-      transform 1.6s cubic-bezier(0.55, 0.05, 0.85, 0.5),
-      opacity   1.6s cubic-bezier(0.55, 0.05, 0.85, 0.5);
+      transform    1.6s cubic-bezier(0.55, 0.05, 0.85, 0.5),
+      filter       1.6s cubic-bezier(0.55, 0.05, 0.85, 0.5),
+      opacity      1.6s cubic-bezier(0.55, 0.05, 0.85, 0.5),
+      text-shadow  1.6s cubic-bezier(0.55, 0.05, 0.85, 0.5),
+      color        1.6s cubic-bezier(0.55, 0.05, 0.85, 0.5);
   }
 
   /* Уход без шёпота */
   .abyss-line.sinking {
-    transform: translateY(120px) scaleY(1.5) scaleX(0.96);
+    transform: translateY(140px) scaleY(1.6) scaleX(0.94);
     color: rgba(232, 234, 237, 0.7);
     text-shadow:
       0 0 6px  rgba(232, 234, 237, 0.7),
@@ -247,9 +252,9 @@
     filter: url(#abyss-whisper-filter);
   }
 
-  /* Уход в шёпоте — те же 4 слоя, но шире; цвет гаснет, а не проявляется */
+  /* Уход в шёпоте */
   .abyss-stage.whispered .abyss-line.sinking {
-    transform: translateY(120px) scaleY(1.5) scaleX(0.96);
+    transform: translateY(140px) scaleY(1.6) scaleX(0.94);
     color: rgb(255 255 255 / 0%);
     text-shadow:
       0 0 8px  rgba(255, 255, 255, 0.55),
@@ -455,7 +460,7 @@
     const lines = stage.querySelectorAll('.abyss-line');
     const count = lines.length;
 
-    const step = Math.max(0.12, Math.min(0.28, 2.6 / count));
+    const step = Math.max(0.14, Math.min(0.30, 2.8 / count));
     const lineDur = 1.6;
 
     lines.forEach((el, i) => {
