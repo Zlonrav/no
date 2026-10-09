@@ -10,7 +10,7 @@ html, body {
 }
 
 body.dashboard-body {
-  min-height: 100svh;
+  min-height: 100vh;
   font-family: Arial, Helvetica, sans-serif;
   color: var(--text-main);
   background:
@@ -67,7 +67,7 @@ html[data-theme="dark"] body.dashboard-body {
   height: 22px;
 }
 
-/* ===== ПУЛЬТ — контейнер всех страниц ===== */
+/* ===== ПУЛЬТ ===== */
 .pult {
   position: fixed;
   inset: 0;
@@ -89,18 +89,17 @@ html[data-theme="dark"] body.dashboard-body {
 .dashboard {
   --gap: 12px;
   --pad: 20px;
-  --pad-bottom: 100px;
 
   --tile-w: calc((100vw - 2 * var(--pad) - var(--gap)) / 2);
-  --tile-h: calc((100svh - var(--pad) - var(--pad-bottom) - 3 * var(--gap)) / 4);
+  --tile-h: calc((100vh - 2 * var(--pad) - 180px - 3 * var(--gap)) / 4);
   --tile: min(var(--tile-w), var(--tile-h), 200px);
 
   display: grid;
   grid-template-columns: repeat(2, var(--tile));
   grid-auto-rows: var(--tile);
   gap: var(--gap);
-  align-content: center;
   justify-content: center;
+  align-content: center;
 }
 
 /* ===== ПЛИТКА ===== */
@@ -206,32 +205,25 @@ html[data-theme="dark"] body.dashboard-body {
   font-size: 14pt;
 }
 
-.tile.wide .wide-text .tile-sub {
-  margin-top: 0;
-}
-
-/* ===== ПЕЙДЖЕР (кнопки внизу) ===== */
+/* ===== ПЕЙДЖЕР — кнопки внизу как низкие плитки ===== */
 .pager {
   position: fixed;
   left: 0;
   right: 0;
-  bottom: max(20px, env(safe-area-inset-bottom));
+  bottom: 0;
+  padding: 8px 16px;
+  padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
+  gap: 12px;
   z-index: 150;
-  pointer-events: none;
 }
 
 .pager[hidden] { display: none; }
 
-.pager > * { pointer-events: auto; }
-
 .pager-btn {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
+  flex: 1;
+  height: 52px;
+  border-radius: 16px;
   background: var(--ui-bg);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -242,10 +234,18 @@ html[data-theme="dark"] body.dashboard-body {
   align-items: center;
   justify-content: center;
   transition: transform 0.15s ease, background 0.15s ease, opacity 0.2s ease;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08),
+              inset 0 -1px 2px rgba(0,0,0,0.06),
+              inset 0 1px 2px rgba(255,255,255,0.15);
   -webkit-tap-highlight-color: transparent;
   padding: 0;
   font-family: inherit;
+}
+
+html[data-theme="dark"] .pager-btn {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4),
+              inset 0 -1px 2px rgba(0,0,0,0.3),
+              inset 0 1px 2px rgba(255,255,255,0.08);
 }
 
 .pager-btn:hover:not(:disabled) {
@@ -254,29 +254,18 @@ html[data-theme="dark"] body.dashboard-body {
 }
 
 .pager-btn:active:not(:disabled) {
-  transform: scale(0.94);
+  transform: scale(0.98);
 }
 
 .pager-btn:disabled {
-  opacity: 0.25;
+  opacity: 0.2;
   cursor: default;
 }
 
 .pager-btn svg {
   display: block;
-  width: 20px;
-  height: 20px;
-}
-
-.pager-indicator {
-  font-size: 11pt;
-  font-weight: bold;
-  color: var(--ui-color);
-  letter-spacing: 1.2px;
-  min-width: 46px;
-  text-align: center;
-  user-select: none;
-  -webkit-user-select: none;
+  width: 22px;
+  height: 22px;
 }
 
 /* ===== АДАПТИВ ===== */
@@ -292,10 +281,9 @@ html[data-theme="dark"] body.dashboard-body {
   .dashboard {
     --gap: 10px;
     --pad: 12px;
-    --pad-bottom: 90px;
     --tile-w: calc((100vw - 2 * var(--pad) - var(--gap)) / 2);
-    --tile-h: calc((100svh - var(--pad) - var(--pad-bottom) - 3 * var(--gap)) / 4);
-    --tile: min(var(--tile-w), var(--tile-h), 180px);
+    --tile-h: calc((100vh - 2 * var(--pad) - 150px - 3 * var(--gap)) / 4);
+    --tile: min(var(--tile-w), var(--tile-h), 170px);
   }
 
   .tile svg { width: 30px; height: 30px; }
@@ -304,15 +292,17 @@ html[data-theme="dark"] body.dashboard-body {
   .tile.wide .tile-value { font-size: 32pt; }
   .tile.wide .wide-text .tile-label { font-size: 12pt; }
 
-  .pager-btn { width: 40px; height: 40px; }
-  .pager-indicator { font-size: 10pt; min-width: 40px; }
+  .pager { padding: 6px 12px; padding-bottom: calc(6px + env(safe-area-inset-bottom, 0px)); gap: 10px; }
+  .pager-btn { height: 46px; border-radius: 14px; }
+  .pager-btn svg { width: 20px; height: 20px; }
 }
 
 @media (max-height: 640px) {
   .dashboard {
-    --pad-bottom: 80px;
+    --tile-h: calc((100vh - 2 * var(--pad) - 130px - 3 * var(--gap)) / 4);
   }
   .tile svg { width: 26px; height: 26px; }
   .tile .tile-label { font-size: 9.5pt; }
   .tile .tile-value { font-size: 20pt; }
+  .pager-btn { height: 42px; }
 }
