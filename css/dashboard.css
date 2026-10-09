@@ -2,15 +2,16 @@
    DASHBOARD.CSS — стили главной страницы (пульта)
    ============================================================ */
 
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  overflow: hidden;
-}
+html, body { margin: 0; padding: 0; }
 
 body.dashboard-body {
   min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 20px;
+  padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
   font-family: Arial, Helvetica, sans-serif;
   color: var(--text-main);
   background:
@@ -18,6 +19,8 @@ body.dashboard-body {
     radial-gradient(circle at 80% 100%, rgba(255,255,255,0.7), transparent 50%),
     linear-gradient(160deg, var(--bg-1) 0%, var(--bg-2) 100%);
   background-attachment: fixed;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 html[data-theme="dark"] body.dashboard-body {
@@ -30,8 +33,8 @@ html[data-theme="dark"] body.dashboard-body {
 /* ===== ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ ===== */
 .theme-toggle {
   position: fixed;
-  top: max(20px, env(safe-area-inset-top));
-  right: max(20px, env(safe-area-inset-right));
+  top: 20px;
+  right: 20px;
   width: 48px;
   height: 48px;
   border-radius: 14px;
@@ -45,7 +48,7 @@ html[data-theme="dark"] body.dashboard-body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  z-index: 200;
+  z-index: 100;
   transition: transform 0.15s ease, background 0.15s ease;
   -webkit-tap-highlight-color: transparent;
   padding: 0;
@@ -67,50 +70,28 @@ html[data-theme="dark"] body.dashboard-body {
   height: 22px;
 }
 
-/* ===== ПУЛЬТ ===== */
-.pult {
-  position: fixed;
-  inset: 0;
-  overflow: hidden;
-  z-index: 1;
-}
-
-.page {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.55s cubic-bezier(0.7, 0, 0.3, 1);
-  will-change: transform;
-}
-
-/* ===== СЕТКА ПЛИТОК ===== */
+/* ===== СЕТКА ПЛАШЕК ===== */
 .dashboard {
-  --gap: 12px;
-  --pad: 20px;
-
-  --tile-w: calc((100vw - 2 * var(--pad) - var(--gap)) / 2);
-  --tile-h: calc((100vh - 2 * var(--pad) - 180px - 3 * var(--gap)) / 4);
-  --tile: min(var(--tile-w), var(--tile-h), 200px);
+  --gap: 14px;
 
   display: grid;
-  grid-template-columns: repeat(2, var(--tile));
-  grid-auto-rows: var(--tile);
+  grid-template-columns: 1fr 1fr;
   gap: var(--gap);
-  justify-content: center;
-  align-content: center;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
 }
 
-/* ===== ПЛИТКА ===== */
+/* ===== ПЛАШКА ===== */
 .tile {
+  aspect-ratio: 1 / 1;
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  border-radius: 18px;
+  gap: 10px;
+  border-radius: 20px;
   text-decoration: none;
   color: #fff;
   cursor: pointer;
@@ -126,6 +107,11 @@ html[data-theme="dark"] body.dashboard-body {
               inset 0 2px 3px rgba(255,255,255,0.18);
 }
 
+/* ===== ЦВЕТ ПЛАШКИ «СТРЕСС» ===== */
+.tile-stress {
+  background: linear-gradient(135deg, #be185d 0%, #831843 100%);
+}
+
 .tile:hover {
   transform: translateY(-3px);
   box-shadow: 0 6px 16px rgba(0,0,0,0.14),
@@ -134,13 +120,23 @@ html[data-theme="dark"] body.dashboard-body {
               inset 0 2px 3px rgba(255,255,255,0.18);
 }
 
+/* ===== ЦВЕТ ПЛАШКИ «БЕЗДНА» ===== */
+.tile-abyss {
+  background: linear-gradient(160deg, #2d2d3a 0%, #1a2040 55%, #0a1535 100%);
+}
+
+/* ===== ЦВЕТ ПЛАШКИ «ПОНЯТЬ» ===== */
+.tile-understand {
+  background: linear-gradient(135deg, #1e3a8a 0%, #0f1e4a 100%);
+}
+
 .tile:active {
   transform: translateY(-1px) scale(0.98);
 }
 
 .tile svg {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   stroke: currentColor;
   stroke-width: 1.8;
   stroke-linecap: round;
@@ -150,14 +146,14 @@ html[data-theme="dark"] body.dashboard-body {
 }
 
 .tile .tile-label {
-  font-size: 11pt;
+  font-size: 12pt;
   font-weight: bold;
   letter-spacing: 0.4px;
   text-shadow: 0 1px 2px rgba(0,0,0,0.20);
 }
 
 .tile .tile-value {
-  font-size: 26pt;
+  font-size: 28pt;
   font-weight: bold;
   line-height: 1;
   letter-spacing: 0.5px;
@@ -172,32 +168,43 @@ html[data-theme="dark"] body.dashboard-body {
   margin-top: -4px;
 }
 
-/* ===== ЦВЕТА ПЛИТОК ===== */
-.tile-alcohol    { background: linear-gradient(135deg, #d92b3a 0%, #8a0f1a 100%); }
-.tile-vape       { background: linear-gradient(135deg, #1a6dc9 0%, #003a78 100%); }
-.tile-trgz       { background: linear-gradient(135deg, #7c3aed 0%, #4c1d95 100%); }
-.tile-prokrutka  { background: linear-gradient(135deg, #ea580c 0%, #9a3412 100%); }
-.tile-understand { background: linear-gradient(135deg, #1e3a8a 0%, #0f1e4a 100%); }
-.tile-stress     { background: linear-gradient(135deg, #be185d 0%, #831843 100%); }
-.tile-abyss      { background: linear-gradient(160deg, #2d2d3a 0%, #1a2040 55%, #0a1535 100%); }
-.tile-breath     { background: linear-gradient(135deg, #0891b2 0%, #155e75 100%); }
-.tile-counter    { background: linear-gradient(135deg, #1f9e1f 0%, #0d5c0d 100%); }
+/* ===== ЦВЕТА ПЛАШЕК ===== */
+.tile-alcohol {
+  background: linear-gradient(135deg, #d92b3a 0%, #8a0f1a 100%);
+}
 
-/* ===== РАСТЯНУТАЯ ПЛИТКА (счётчик) ===== */
+.tile-vape {
+  background: linear-gradient(135deg, #1a6dc9 0%, #003a78 100%);
+}
+
+.tile-trgz {
+  background: linear-gradient(135deg, #7c3aed 0%, #4c1d95 100%);
+}
+
+.tile-prokrutka {
+  background: linear-gradient(135deg, #ea580c 0%, #9a3412 100%);
+}
+
+.tile-counter {
+  background: linear-gradient(135deg, #1f9e1f 0%, #0d5c0d 100%);
+}
+
+/* ===== РАСТЯНУТАЯ ПЛАШКА ===== */
 .tile.wide {
   grid-column: 1 / -1;
+  aspect-ratio: 2 / 1;
   flex-direction: row;
   gap: 20px;
 }
 
 .tile.wide .tile-value {
-  font-size: 38pt;
+  font-size: 40pt;
 }
 
 .tile.wide .wide-text {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: 2px;
 }
 
@@ -205,104 +212,48 @@ html[data-theme="dark"] body.dashboard-body {
   font-size: 14pt;
 }
 
-/* ===== ПЕЙДЖЕР — кнопки внизу как низкие плитки ===== */
-.pager {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 8px 16px;
-  padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
-  display: flex;
-  gap: 12px;
-  z-index: 150;
+.tile.wide .wide-text .tile-sub {
+  margin-top: 0;
 }
 
-.pager[hidden] { display: none; }
-
-.pager-btn {
-  flex: 1;
-  height: 52px;
-  border-radius: 16px;
-  background: var(--ui-bg);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid var(--ui-border);
-  color: var(--text-main);
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.15s ease, background 0.15s ease, opacity 0.2s ease;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08),
-              inset 0 -1px 2px rgba(0,0,0,0.06),
-              inset 0 1px 2px rgba(255,255,255,0.15);
-  -webkit-tap-highlight-color: transparent;
-  padding: 0;
-  font-family: inherit;
+/* ===== ЦВЕТ ПЛАШКИ «ДЫХАНИЕ» ===== */
+.tile-breath {
+  background: linear-gradient(135deg, #0891b2 0%, #155e75 100%);
 }
 
-html[data-theme="dark"] .pager-btn {
-  box-shadow: 0 4px 12px rgba(0,0,0,0.4),
-              inset 0 -1px 2px rgba(0,0,0,0.3),
-              inset 0 1px 2px rgba(255,255,255,0.08);
+/* ===== КОМПАКТНЫЙ СЧЁТЧИК В КВАДРАТНОЙ ПЛИТКЕ ===== */
+.tile-counter .tile-value {
+  font-size: 26pt;
+  margin: 2px 0 -2px;
 }
 
-.pager-btn:hover:not(:disabled) {
-  background: rgba(128,128,128,0.14);
-  transform: translateY(-1px);
-}
-
-.pager-btn:active:not(:disabled) {
-  transform: scale(0.98);
-}
-
-.pager-btn:disabled {
-  opacity: 0.2;
-  cursor: default;
-}
-
-.pager-btn svg {
-  display: block;
-  width: 22px;
-  height: 22px;
+.tile-counter .tile-sub {
+  margin-top: -2px;
 }
 
 /* ===== АДАПТИВ ===== */
 @media (max-width: 700px) {
-  .theme-toggle {
-    top: max(14px, env(safe-area-inset-top));
-    right: max(14px, env(safe-area-inset-right));
-    width: 44px;
-    height: 44px;
+  body.dashboard-body { padding: 14px; }
+
+  .dashboard {
+    --gap: 12px;
+    max-width: 100%;
   }
+
+  .theme-toggle { top: 14px; right: 14px; width: 44px; height: 44px; }
   .theme-toggle svg { width: 20px; height: 20px; }
 
-  .dashboard {
-    --gap: 10px;
-    --pad: 12px;
-    --tile-w: calc((100vw - 2 * var(--pad) - var(--gap)) / 2);
-    --tile-h: calc((100vh - 2 * var(--pad) - 150px - 3 * var(--gap)) / 4);
-    --tile: min(var(--tile-w), var(--tile-h), 170px);
-  }
-
-  .tile svg { width: 30px; height: 30px; }
-  .tile .tile-label { font-size: 10pt; }
-  .tile .tile-value { font-size: 22pt; }
-  .tile.wide .tile-value { font-size: 32pt; }
+  .tile svg { width: 36px; height: 36px; }
+  .tile .tile-label { font-size: 11pt; }
+  .tile .tile-value { font-size: 24pt; }
+  .tile.wide .tile-value { font-size: 34pt; }
   .tile.wide .wide-text .tile-label { font-size: 12pt; }
-
-  .pager { padding: 6px 12px; padding-bottom: calc(6px + env(safe-area-inset-bottom, 0px)); gap: 10px; }
-  .pager-btn { height: 46px; border-radius: 14px; }
-  .pager-btn svg { width: 20px; height: 20px; }
 }
 
-@media (max-height: 640px) {
-  .dashboard {
-    --tile-h: calc((100vh - 2 * var(--pad) - 130px - 3 * var(--gap)) / 4);
-  }
-  .tile svg { width: 26px; height: 26px; }
-  .tile .tile-label { font-size: 9.5pt; }
+@media (max-height: 600px) {
+  .tile svg { width: 28px; height: 28px; }
+  .tile .tile-label { font-size: 10pt; }
   .tile .tile-value { font-size: 20pt; }
-  .pager-btn { height: 42px; }
+  .tile.wide .tile-value { font-size: 28pt; }
+  .tile.wide .wide-text .tile-label { font-size: 11pt; }
 }
