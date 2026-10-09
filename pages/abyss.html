@@ -97,15 +97,16 @@
 
   /* ===== КОНТЕЙНЕР ===== */
   .abyss-container {
-    position: relative;
+    position: fixed;
+    inset: 0;
     z-index: 1;
     width: 100%;
     max-width: 720px;
-    height: 100dvh;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    padding: 90px 24px calc(24px + env(safe-area-inset-bottom, 0px));
+    padding: 90px 24px 28px;
+    padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px));
     box-sizing: border-box;
     gap: 16px;
   }
@@ -219,10 +220,11 @@
   }
 
   @media (max-width: 700px) {
-    .abyss-container {
-      padding: 82px 18px calc(20px + env(safe-area-inset-bottom, 0px));
-      gap: 14px;
-    }
+  .abyss-container {
+    padding: 82px 18px 22px;
+    padding-bottom: calc(22px + env(safe-area-inset-bottom, 0px));
+    gap: 14px;
+  }
     .abyss-textarea,
     .abyss-placeholder { font-size: 13pt; }
     .abyss-button { padding: 14px 28px; font-size: 11pt; min-width: 180px; }
