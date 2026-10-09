@@ -70,21 +70,15 @@ html[data-theme="dark"] body.dashboard-body {
 
 /* ===== СЕТКА ПЛАШЕК ===== */
 .dashboard {
-  --gap: 14px;
+  --gap: 12px;
   --pad: 20px;
 
-  /* Максимальный размер плитки: по ширине */
-  --tile-w: calc((100vw - 2 * var(--pad) - var(--gap)) / 2);
-
-  /* Максимальный размер плитки: по высоте (4 ряда + 3 gap) */
-  --tile-h: calc((100vh - 2 * var(--pad) - 3 * var(--gap)) / 4);
-     --tile-h: calc((100svh - 2 * var(--pad) - 3 * var(--gap)) / 4);
-
-  /* Итоговый размер — минимум из трёх */
-  --tile: min(var(--tile-w), var(--tile-h), 220px);
+  --tile-w: calc((100vw - 2 * var(--pad) - 2 * var(--gap)) / 3);
+  --tile-h: calc((100svh - 2 * var(--pad) - 3 * var(--gap)) / 4);
+  --tile: min(var(--tile-w), var(--tile-h), 160px);
 
   display: grid;
-  grid-template-columns: repeat(2, var(--tile));
+  grid-template-columns: repeat(3, var(--tile));
   grid-auto-rows: var(--tile);
   gap: var(--gap);
 }
@@ -241,22 +235,21 @@ html[data-theme="dark"] body.dashboard-body {
   body.dashboard-body { padding: 12px; }
 
   .dashboard {
-    --gap: 10px;
+    --gap: 8px;
     --pad: 12px;
-    --tile-w: calc((100vw - 2 * var(--pad) - var(--gap)) / 2);
-    --tile-h: calc((100vh - 2 * var(--pad) - 3 * var(--gap)) / 4);
-       --tile-h: calc((100svh - 2 * var(--pad) - 3 * var(--gap)) / 4);
-    --tile: min(var(--tile-w), var(--tile-h), 180px);
+    --tile-w: calc((100vw - 2 * var(--pad) - 2 * var(--gap)) / 3);
+    --tile-h: calc((100svh - 2 * var(--pad) - 3 * var(--gap)) / 4);
+    --tile: min(var(--tile-w), var(--tile-h), 120px);
   }
 
   .theme-toggle { top: 14px; right: 14px; width: 44px; height: 44px; }
   .theme-toggle svg { width: 20px; height: 20px; }
 
-  .tile svg { width: 32px; height: 32px; }
-  .tile .tile-label { font-size: 10.5pt; }
-  .tile .tile-value { font-size: 22pt; }
-  .tile.wide .tile-value { font-size: 30pt; }
-  .tile.wide .wide-text .tile-label { font-size: 11pt; }
+  .tile svg { width: 26px; height: 26px; }
+  .tile .tile-label { font-size: 9pt; }
+  .tile .tile-value { font-size: 18pt; }
+  .tile.wide .tile-value { font-size: 26pt; }
+  .tile.wide .wide-text .tile-label { font-size: 10pt; }
 }
 
 @media (max-height: 600px) {
