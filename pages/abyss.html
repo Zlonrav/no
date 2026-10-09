@@ -19,11 +19,8 @@
   body.abyss-body {
     background: linear-gradient(180deg, #17171c 0%, #0f1525 45%, #081430 100%);
     color: #e8eaed;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: block;
     padding: 0;
-    min-height: 100vh;
     min-height: 100dvh;
     position: relative;
   }
@@ -45,28 +42,87 @@
     border-color: rgba(255,255,255,0.10);
     color: #e8eaed;
     box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+    top: max(20px, env(safe-area-inset-top));
+    left: max(20px, env(safe-area-inset-left));
   }
 
   .abyss-body .back-btn:hover {
     background: rgba(255,255,255,0.12);
   }
 
+  /* Кнопка «Шептать» — зеркало back-btn по правому краю */
+  .abyss-whisper {
+    position: fixed;
+    top: max(20px, env(safe-area-inset-top));
+    right: max(20px, env(safe-area-inset-right));
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.10);
+    color: #e8eaed;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.2s ease, color 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+    padding: 0;
+    font-family: inherit;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+  }
+
+  .abyss-whisper:hover {
+    background: rgba(255,255,255,0.12);
+    transform: translateY(-1px);
+  }
+
+  .abyss-whisper:active {
+    transform: scale(0.94);
+  }
+
+  .abyss-whisper svg {
+    display: block;
+    width: 22px;
+    height: 22px;
+  }
+
+  .abyss-whisper.active {
+    background: linear-gradient(135deg, #1e3a8a 0%, #0f1e4a 100%);
+    border-color: rgba(120,160,255,0.35);
+    color: #cfe0ff;
+    box-shadow: 0 4px 16px rgba(30,58,138,0.55),
+                0 0 0 1px rgba(120,160,255,0.20);
+  }
+
+  /* ===== КОНТЕЙНЕР ===== */
   .abyss-container {
     position: relative;
     z-index: 1;
     width: 100%;
     max-width: 720px;
-    height: 100%;
+    height: 100dvh;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
-    padding: 90px 24px 40px;
+    padding: 90px 24px calc(24px + env(safe-area-inset-bottom, 0px));
     box-sizing: border-box;
-    gap: 20px;
+    gap: 16px;
+  }
+
+  /* Обёртка вокруг textarea — чтобы накладывать слой «стекла» */
+  .abyss-input-wrap {
+    position: relative;
+    flex: 1 1 0;
+    min-height: 0;
+    display: flex;
   }
 
   .abyss-textarea {
-    flex: 1;
+    flex: 1 1 auto;
     width: 100%;
+    min-height: 0;
     border: none;
     outline: none;
     background: transparent;
@@ -96,6 +152,32 @@
     pointer-events: none;
   }
 
+  /* ===== МАТОВОЕ СТЕКЛО (режим «Шептать») ===== */
+  .abyss-frost {
+    position: absolute;
+    inset: 0;
+    border-radius: 10px;
+    background: rgba(12, 18, 34, 0.45);
+    backdrop-filter: blur(10px) saturate(60%);
+    -webkit-backdrop-filter: blur(10px) saturate(60%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+    z-index: 2;
+  }
+
+  .abyss-frost.active {
+    opacity: 1;
+  }
+
+  /* Фолбэк для старых Android без backdrop-filter */
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .abyss-frost {
+      background: rgba(12, 18, 34, 0.85);
+    }
+  }
+
+  /* ===== КНОПКА «ОТПУСТИТЬ» ===== */
   .abyss-button {
     font-family: inherit;
     font-size: 12pt;
@@ -112,6 +194,7 @@
     box-shadow: 0 4px 16px rgba(0,0,0,0.4);
     align-self: center;
     min-width: 200px;
+    flex: 0 0 auto;
     -webkit-tap-highlight-color: transparent;
   }
 
@@ -131,9 +214,15 @@
   }
 
   @media (max-width: 700px) {
-    .abyss-container { padding: 80px 20px 30px; gap: 16px; }
+    .abyss-container {
+      padding: 82px 18px calc(20px + env(safe-area-inset-bottom, 0px));
+      gap: 14px;
+    }
     .abyss-textarea { font-size: 13pt; }
     .abyss-button { padding: 14px 28px; font-size: 11pt; min-width: 180px; }
+    .abyss-whisper { top: max(14px, env(safe-area-inset-top)); right: max(14px, env(safe-area-inset-right)); width: 44px; height: 44px; }
+    .abyss-whisper svg { width: 20px; height: 20px; }
+    .abyss-body .back-btn { top: max(14px, env(safe-area-inset-top)); left: max(14px, env(safe-area-inset-left)); }
   }
 </style>
 </head>
@@ -145,22 +234,61 @@
   </svg>
 </a>
 
+<button class="abyss-whisper" id="abyss-whisper" title="Шептать" aria-label="Режим шёпота">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3 11c2 3 5.5 5 9 5s7-2 9-5"/>
+    <path d="M6 13.5l-1.5 2"/>
+    <path d="M9.5 15.2l-1 2.3"/>
+    <path d="M12 16v2.5"/>
+    <path d="M14.5 15.2l1 2.3"/>
+    <path d="M18 13.5l1.5 2"/>
+  </svg>
+</button>
+
 <div class="abyss-container">
-  <textarea
-    id="abyss-input"
-    class="abyss-textarea"
-    placeholder="Напиши всё, что не даёт покоя. Это уйдёт навсегда"
-    spellcheck="false"></textarea>
+
+  <div class="abyss-input-wrap">
+    <textarea
+      id="abyss-input"
+      class="abyss-textarea"
+      placeholder="Напиши всё, что не даёт покоя. Это уйдёт навсегда"
+      spellcheck="false"></textarea>
+    <div class="abyss-frost" id="abyss-frost"></div>
+  </div>
+
   <button id="abyss-release" class="abyss-button">Отпустить</button>
+
 </div>
 
 <script>
 (function () {
   const input = document.getElementById('abyss-input');
   const btn = document.getElementById('abyss-release');
+  const frost = document.getElementById('abyss-frost');
+  const whisperBtn = document.getElementById('abyss-whisper');
   let busy = false;
 
-  /* Мягкий шёпот воды через Web Audio */
+  /* ===== Режим «Шептать» ===== */
+  function applyWhisper(on) {
+    frost.classList.toggle('active', on);
+    whisperBtn.classList.toggle('active', on);
+    whisperBtn.title = on ? 'Шёпот включён' : 'Шептать';
+    whisperBtn.setAttribute('aria-label', whisperBtn.title);
+    try { localStorage.setItem('abyss-whisper', on ? '1' : '0'); } catch (e) {}
+  }
+
+  function getWhisper() {
+    try { return localStorage.getItem('abyss-whisper') === '1'; }
+    catch (e) { return false; }
+  }
+
+  applyWhisper(getWhisper());
+
+  whisperBtn.addEventListener('click', () => {
+    applyWhisper(!frost.classList.contains('active'));
+  });
+
+  /* ===== Мягкий шёпот воды через Web Audio ===== */
   function playWater() {
     try {
       const Ctx = window.AudioContext || window.webkitAudioContext;
@@ -197,6 +325,7 @@
     } catch (e) {}
   }
 
+  /* ===== Отпустить ===== */
   function release() {
     if (busy) return;
     if (!input.value.trim()) return;
@@ -208,7 +337,6 @@
     input.classList.add('sinking');
 
     setTimeout(() => {
-      // Отключаем transition, чтобы очистка была мгновенной
       input.style.transition = 'none';
       input.value = '';
       input.classList.remove('sinking');
