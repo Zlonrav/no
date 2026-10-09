@@ -21,6 +21,12 @@ body.dashboard-body {
   background-attachment: fixed;
   overflow-y: auto;
   overflow-x: hidden;
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* старый Edge/IE */
+}
+
+body.dashboard-body::-webkit-scrollbar {
+  display: none;                /* Chrome, Safari, новый Edge */
 }
 
 html[data-theme="dark"] body.dashboard-body {
