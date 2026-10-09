@@ -36,18 +36,18 @@
       icon: '<svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-3-6.2"/><path d="M20 3v6h-6"/></svg>'
     },
     {
-      id: 'stress',
-      label: 'Стресс',
-      href: 'pages/stress.html',
-      color: 'stress',
-      icon: '<svg viewBox="0 0 24 24"><path d="M13 2L3 14h8l-1 8 10-12h-8z"/></svg>'
-    },
-    {
       id: 'understand',
       label: 'Понять',
       href: 'pages/understand.html',
       color: 'understand',
       icon: '<svg viewBox="0 0 24 24"><path d="M2 4h8a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H2z"/><path d="M22 4h-8a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h9z"/></svg>'
+    },
+    {
+      id: 'stress',
+      label: 'Стресс',
+      href: 'pages/stress.html',
+      color: 'stress',
+      icon: '<svg viewBox="0 0 24 24"><path d="M13 2L3 14h8l-1 8 10-12h-8z"/></svg>'
     },
     {
       id: 'breath',
