@@ -266,6 +266,13 @@ html[data-theme="dark"] body.dashboard-body {
 
 /* ===== ШИРОКИЕ ЭКРАНЫ — 4 КОЛОНКИ ===== */
 @media (min-width: 900px) {
+  body.dashboard-body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+  }
+
   .dashboard {
     grid-template-columns: repeat(4, 1fr);
     max-width: 1100px;
