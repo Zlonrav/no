@@ -18,8 +18,6 @@ const ASSETS = [
   './js/counter.js',
   './js/trgz.js',
 
-  './pages/alcohol.html',
-  './pages/vape.html',
   './pages/trgz.html',
   './pages/rumination.html',
   './pages/counter.html',
@@ -27,6 +25,7 @@ const ASSETS = [
   './pages/abyss.html',
   './pages/understand.html',
   './pages/addiction.html',
+  './pages/stezenko.html',
 ];
 
 self.addEventListener('install', (e) => {
