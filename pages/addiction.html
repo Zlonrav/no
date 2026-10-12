@@ -11,31 +11,6 @@
 <script src="../js/theme-init.js"></script>
 <link rel="stylesheet" href="../css/styles.css">
 <style>
-  .breath-cta {
-    max-width: 320px;
-    margin: 32px auto 0;
-    display: block;
-    font-family: inherit;
-    font-size: 12pt;
-    font-weight: bold;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    padding: 16px 28px;
-    border-radius: 14px;
-    border: 1px solid rgba(8,145,178,0.35);
-    background: linear-gradient(135deg, #0891b2 0%, #155e75 100%);
-    color: #fff;
-    cursor: pointer;
-    transition: transform 0.15s ease, box-shadow 0.2s ease;
-    box-shadow: 0 4px 14px rgba(8,145,178,0.35);
-    -webkit-tap-highlight-color: transparent;
-  }
-  .breath-cta:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 22px rgba(8,145,178,0.45);
-  }
-  .breath-cta:active { transform: scale(0.98); }
-
   .card { position: relative; }
 
   .card::after {
@@ -166,8 +141,6 @@
   </div>
 
 </div>
-
-<button class="breath-cta" id="breath-trigger">Подышать 4–4–6</button>
 
 <!-- ==================== ОПОРА ==================== -->
 <div class="group-title green">Опора</div>
@@ -351,25 +324,6 @@
   <span><i class="lg-alcohol"></i>алкоголь</span>
   <span><i class="lg-vape"></i>вэйп</span>
   <span><i class="lg-common"></i>общее</span>
-</div>
-
-<!-- Скрытая кнопка для дыхания -->
-<button id="breath-btn" hidden aria-hidden="true"></button>
-  
-<!-- Скрытая кнопка для дыхания -->
-<button id="breath-btn" hidden aria-hidden="true"></button>
-
-<div class="breath-overlay" id="breath-overlay" hidden>
-  <button class="breath-close" id="breath-close" aria-label="Закрыть">×</button>
-  <div class="breath-stage">
-    <div class="breath-circle" id="breath-circle"></div>
-    <div class="breath-label" id="breath-label">Вдох</div>
-    <div class="breath-counter" id="breath-counter">Цикл 1</div>
-  </div>
-  <div class="breath-hint">
-    Вдох 4 сек — держи 4 сек — выдох 6 сек.<br>
-    Просто смотри на круг и дыши вместе с ним.
-  </div>
 </div>
 
 <script src="../js/app.js" defer></script>
