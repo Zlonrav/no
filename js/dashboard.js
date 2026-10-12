@@ -12,7 +12,7 @@
       label: 'Зависимость',
       href: 'pages/addiction.html',
       color: 'addiction',
-      icon: '<svg viewBox="0 0 24 24"><path d="M3 12c2-3 5-5 9-5s7 2 9 5"/><path d="M3 12c2 3 5 5 9 5s7-2 9-5"/><path d="M5 12l1.5-2"/><path d="M9 12l1.5-2"/><path d="M13 12l1.5-2"/><path d="M17 12l1.5-2"/><path d="M5 12l1.5 2"/><path d="M9 12l1.5 2"/><path d="M13 12l1.5 2"/><path d="M17 12l1.5 2"/></svg>'
+      icon: '<svg viewBox="0 0 24 24"><path d="M12 3v10a4 4 0 0 0 8 0"/><path d="M12 3a2 2 0 1 1 4 0"/><path d="M18 17l2 2"/><path d="M20 17l-2 2"/></svg>'
     },
     {
       id: 'trgz',
