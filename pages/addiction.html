@@ -36,22 +36,29 @@
   }
   .breath-cta:active { transform: scale(0.98); }
 
+  /* Цветные точки-метки через ::after */
   .card { position: relative; }
-  .card .dot {
+
+  .card::after {
+    content: "";
     position: absolute;
     top: 18px;
     right: 18px;
     width: 10px;
     height: 10px;
     border-radius: 50%;
+    background: #8a8f96;
     box-shadow: 0 0 0 2px rgba(255,255,255,0.6);
   }
-  html[data-theme="dark"] .card .dot {
+
+  html[data-theme="dark"] .card::after {
     box-shadow: 0 0 0 2px rgba(30,32,38,0.6);
   }
-  .card .dot-alcohol { background: #c1121f; }
-  .card .dot-vape    { background: #1a6dc9; }
 
+  .card.dot-alcohol::after { background: #1a6dc9; }
+  .card.dot-vape::after    { background: #eab308; }
+
+  /* Легенда */
   .legend {
     max-width: 1400px;
     margin: 0 auto 20px;
@@ -74,8 +81,9 @@
     border-radius: 50%;
     display: inline-block;
   }
-  .legend .lg-alcohol { background: #c1121f; }
-  .legend .lg-vape    { background: #1a6dc9; }
+  .legend .lg-alcohol { background: #1a6dc9; }
+  .legend .lg-vape    { background: #eab308; }
+  .legend .lg-common  { background: #8a8f96; }
 </style>
 </head>
 <body>
@@ -87,9 +95,9 @@
 </a>
 
 <div class="legend">
-  <span><i class="lg-alcohol"></i>только для алкоголя</span>
-  <span><i class="lg-vape"></i>только для вэйпа</span>
-  <span>без точки — общее</span>
+  <span><i class="lg-alcohol"></i>алкоголь</span>
+  <span><i class="lg-vape"></i>вэйп</span>
+  <span><i class="lg-common"></i>общее</span>
 </div>
 
 <!-- ==================== ЭКСТРЕННО ==================== -->
@@ -150,44 +158,20 @@
   </div>
 
   <div class="card red">
-    <h3>4. ДАВЯТ ДРУЗЬЯ</h3>
-    <p><strong>1. Спокойно откажись</strong></p>
+    <h3>4. СОБЛАЗНЫ</h3>
+    <p><strong>В компании</strong></p>
     <ul>
-      <li><strong>«Я за рулём»</strong> — и всё.</li>
-      <li><strong>«Сейчас не пью»</strong> — без объяснений.</li>
+      <li>Спокойно откажись: <strong>«Я за рулём»</strong> / <strong>«Сейчас не пью»</strong>.</li>
+      <li>Держи в руке что-то другое: вода, лимонад, чай.</li>
+      <li>Приходи вовремя, уходи рано. Пришёл — когда все трезвые. Ушёл — в разгаре пьянки.</li>
+      <li>Если давят — уходи. Не оправдывайся. Просто встань и уйди.</li>
     </ul>
-    <p><strong>2. Держи в руке что-то другое</strong></p>
+    <p><strong>По пути</strong></p>
     <ul>
-      <li>Вода, лимонад, сок, чай. Пусть руки будут заняты.</li>
-    </ul>
-    <p><strong>3. Приходи вовремя, уходи рано</strong></p>
-    <ul>
-      <li>Пришёл — когда все трезвые.</li>
-      <li>Ушёл — в разгаре пьянки.</li>
-    </ul>
-    <p><strong>4. Если давят — уходи</strong></p>
-    <ul>
-      <li>Не оправдывайся. Не объясняй. Просто встань и уйди.</li>
-    </ul>
-  </div>
-
-  <div class="card red">
-    <h3>5. ПРЕДВКУШЕНИЕ</h3>
-    <p><strong>1. Не верь картинке</strong></p>
-    <ul>
-      <li>Эйфорическая память рисует удовольствие. Она врёт.</li>
-    </ul>
-    <p><strong>2. Правда</strong></p>
-    <ul>
-      <li>Вспомни, что происходит потом. Это не то, что обещает память, — а то, что есть на самом деле: отвратительное самочувствие, мутная голова, тошнота и тремор. Ничего из того, что рисовало воображение.</li>
-    </ul>
-    <p><strong>3. Обойди магазин</strong></p>
-    <ul>
-      <li>Не заходи в алкомаркет и вэйп магазин. Проходи мимо и не возвращайся.</li>
-    </ul>
-    <p><strong>4. Живи</strong></p>
-    <ul>
-      <li>Займись тем, что радует. Игра, отдых, еда, кино — что угодно.</li>
+      <li>Не верь картинке. Эйфорическая память врёт.</li>
+      <li>Вспомни правду: отвратительное самочувствие, мутная голова, тошнота, тремор.</li>
+      <li>Не заходи в алкомаркет и вэйп магазин. Проходи мимо.</li>
+      <li>Дома займись тем, что радует. Игра, отдых, еда, кино.</li>
     </ul>
   </div>
 
@@ -217,8 +201,7 @@
     <p>Не «сделаю иначе», а <strong>какой конкретный шаг</strong> появится в следующий раз.</p>
   </div>
 
-  <div class="card blue">
-    <span class="dot dot-vape"></span>
+  <div class="card blue dot-vape">
     <h3>ВЕЧЕР ДОМА</h3>
     <ul>
       <li>Если вэйпа нет — это твоя броня. Если купил, ты сломался.</li>
@@ -228,8 +211,7 @@
     </ul>
   </div>
 
-  <div class="card blue">
-    <span class="dot dot-vape"></span>
+  <div class="card blue dot-vape">
     <h3>ВЫХОДНЫЕ / КОМПАНИЯ</h3>
     <ul>
       <li>Компания — главный риск.</li>
@@ -255,7 +237,7 @@
       <li>Цепочка мотивирует.</li>
       <li>Срыв — не обнуление. Продолжай.</li>
       <li>Чувство «упускаю» (FOMO — Fear Of Missing Out) живёт ~14 дней. Дальше уходит.</li>
-      <li>Не «терпи вечно» — просто доживи.</li>
+      <li>Каждый день — шаг к облегчению.</li>
     </ul>
   </div>
 
@@ -281,8 +263,7 @@
     </ul>
   </div>
 
-  <div class="card green">
-    <span class="dot dot-alcohol"></span>
+  <div class="card green dot-alcohol">
     <h3>ЗА РУЛЁМ — ЗАЩИТА</h3>
     <ul>
       <li>За рулём ты не пьёшь. Это не запрет — это обстоятельство.</li>
@@ -292,8 +273,7 @@
     </ul>
   </div>
 
-  <div class="card green">
-    <span class="dot dot-alcohol"></span>
+  <div class="card green dot-alcohol">
     <h3>ПОДЪЁМ НЕ ПОЗЖЕ 9:00</h3>
     <ul>
       <li>Утром встал — день твой. Проспал — день потерян.</li>
@@ -303,8 +283,7 @@
     </ul>
   </div>
 
-  <div class="card green">
-    <span class="dot dot-alcohol"></span>
+  <div class="card green dot-alcohol">
     <h3>ФРАЗЫ-ЯКОРЯ</h3>
     <ul>
       <li>«Я не пью сегодня».</li>
@@ -317,8 +296,7 @@
     </ul>
   </div>
 
-  <div class="card green">
-    <span class="dot dot-alcohol"></span>
+  <div class="card green dot-alcohol">
     <h3>HALT</h3>
     <ul>
       <li><strong>H — Hungry</strong> (голодный). Поешь.</li>
@@ -329,8 +307,7 @@
     </ul>
   </div>
 
-  <div class="card green">
-    <span class="dot dot-vape"></span>
+  <div class="card green dot-vape">
     <h3>ТАЙМЛАЙН</h3>
     <ul>
       <li>Острая тяга — 1–2 недели.</li>
