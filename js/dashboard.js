@@ -15,6 +15,13 @@
       icon: '<svg viewBox="0 0 24 24"><circle cx="8" cy="12" r="5"/><circle cx="16" cy="12" r="5"/></svg>'
     },
     {
+      id: 'stress',
+      label: 'Стресс',
+      href: 'pages/stress.html',
+      color: 'stress',
+      icon: '<svg viewBox="0 0 24 24"><path d="M13 2L3 14h8l-1 8 10-12h-8z"/></svg>'
+    },
+    {
       id: 'prokrutka',
       label: 'Прокрутка',
       href: 'pages/rumination.html',
@@ -27,13 +34,6 @@
       href: 'pages/understand.html',
       color: 'understand',
       icon: '<svg viewBox="0 0 24 24"><path d="M2 4h8a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H2z"/><path d="M22 4h-8a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h9z"/></svg>'
-    },
-    {
-      id: 'stress',
-      label: 'Стресс',
-      href: 'pages/stress.html',
-      color: 'stress',
-      icon: '<svg viewBox="0 0 24 24"><path d="M13 2L3 14h8l-1 8 10-12h-8z"/></svg>'
     },
     {
       id: 'breath',
@@ -54,19 +54,35 @@
       label: 'Трезвость',
       href: 'pages/counter.html',
       color: 'counter',
+      wide: true,
       icon: '<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/></svg>'
     }
   ];
 
-  const isOdd = (TILES.length % 2) !== 0;
+  /* ===== СЧИТАЕМ КОЛОНКИ ===== */
+  const normalCount = TILES.filter(t => !t.wide).length;
 
-  TILES.forEach((tile, i) => {
-    const isLast = (i === TILES.length - 1);
-    const isWide = (isOdd && isLast);
+  function pickColumns() {
+    const isMobile = window.matchMedia('(max-width: 700px)').matches;
+    if (isMobile) return 2;
+    return Math.min(Math.ceil(normalCount / 2), 4);
+  }
 
+  function applyGrid() {
+    const cols = pickColumns();
+    const rows = Math.ceil(normalCount / cols);
+    document.documentElement.style.setProperty('--cols', cols);
+    document.documentElement.style.setProperty('--rows', rows);
+  }
+
+  applyGrid();
+  window.addEventListener('resize', applyGrid);
+
+  /* ===== РЕНДЕР ПЛИТОК ===== */
+  TILES.forEach((tile) => {
     const isButton = tile.action === 'breath';
     const el = document.createElement(isButton ? 'button' : 'a');
-    el.className = 'tile tile-' + tile.color + (isWide ? ' wide' : '');
+    el.className = 'tile tile-' + tile.color + (tile.wide ? ' wide' : '');
     if (!isButton) el.href = tile.href;
     if (isButton) el.type = 'button';
 
@@ -75,19 +91,19 @@
       if (start) {
         const n = window.Sober.daysSince(start);
         const word = window.Sober.plural(n, ['день', 'дня', 'дней']);
-         if (isWide) {
-           el.innerHTML =
-             tile.icon +
-             '<div class="wide-text">' +
-               '<span class="tile-value">' + n + '</span>' +
-               '<span class="tile-label">' + word + '</span>' +
-             '</div>';
-         } else {
-           el.innerHTML =
-             tile.icon +
-             '<span class="tile-value">' + n + '</span>' +
-             '<span class="tile-label">' + word + '</span>';
-         }
+        if (tile.wide) {
+          el.innerHTML =
+            tile.icon +
+            '<div class="wide-text">' +
+              '<span class="tile-value">' + n + '</span>' +
+              '<span class="tile-label">' + word + '</span>' +
+            '</div>';
+        } else {
+          el.innerHTML =
+            tile.icon +
+            '<span class="tile-value">' + n + '</span>' +
+            '<span class="tile-label">' + word + '</span>';
+        }
       } else {
         el.innerHTML = tile.icon + '<span class="tile-label">' + tile.label + '</span>';
       }
