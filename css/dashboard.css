@@ -8,7 +8,7 @@ body.dashboard-body {
   min-height: 100vh;
   min-height: 100svh;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   padding: 20px;
   padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
@@ -21,12 +21,12 @@ body.dashboard-body {
   background-attachment: fixed;
   overflow-y: auto;
   overflow-x: hidden;
-  scrollbar-width: none;        /* Firefox */
-  -ms-overflow-style: none;     /* старый Edge/IE */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 body.dashboard-body::-webkit-scrollbar {
-  display: none;                /* Chrome, Safari, новый Edge */
+  display: none;
 }
 
 html[data-theme="dark"] body.dashboard-body {
@@ -97,7 +97,6 @@ html[data-theme="dark"] body.dashboard-body {
 
 /* ===== ПЛАШКА ===== */
 .tile {
-  aspect-ratio: 1 / 1;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -120,27 +119,12 @@ html[data-theme="dark"] body.dashboard-body {
               inset 0 2px 3px rgba(255,255,255,0.18);
 }
 
-/* ===== ЦВЕТ ПЛАШКИ «СТРЕСС» ===== */
-.tile-stress {
-  background: linear-gradient(135deg, #be185d 0%, #831843 100%);
-}
-
 .tile:hover {
   transform: translateY(-3px);
   box-shadow: 0 6px 16px rgba(0,0,0,0.14),
               0 16px 36px rgba(0,0,0,0.12),
               inset 0 -2px 4px rgba(0,0,0,0.15),
               inset 0 2px 3px rgba(255,255,255,0.18);
-}
-
-/* ===== ЦВЕТ ПЛАШКИ «БЕЗДНА» ===== */
-.tile-abyss {
-  background: linear-gradient(160deg, #2d2d3a 0%, #1a2040 55%, #0a1535 100%);
-}
-
-/* ===== ЦВЕТ ПЛАШКИ «ПОНЯТЬ» ===== */
-.tile-understand {
-  background: linear-gradient(135deg, #1e3a8a 0%, #0f1e4a 100%);
 }
 
 .tile:active {
@@ -182,32 +166,20 @@ html[data-theme="dark"] body.dashboard-body {
 }
 
 /* ===== ЦВЕТА ПЛАШЕК ===== */
-.tile-alcohol {
-  background: linear-gradient(135deg, #d92b3a 0%, #8a0f1a 100%);
-}
+.tile-addiction  { background: linear-gradient(135deg, #d92b3a 0%, #8a0f1a 100%); }
+.tile-prokrutka  { background: linear-gradient(135deg, #ea580c 0%, #9a3412 100%); }
+.tile-understand { background: linear-gradient(135deg, #1e3a8a 0%, #0f1e4a 100%); }
+.tile-stress     { background: linear-gradient(135deg, #be185d 0%, #831843 100%); }
+.tile-breath     { background: linear-gradient(135deg, #0891b2 0%, #155e75 100%); }
+.tile-abyss      { background: linear-gradient(160deg, #2d2d3a 0%, #1a2040 55%, #0a1535 100%); }
+.tile-counter    { background: linear-gradient(135deg, #1f9e1f 0%, #0d5c0d 100%); }
 
-.tile-vape {
-  background: linear-gradient(135deg, #1a6dc9 0%, #003a78 100%);
-}
-
-.tile-trgz {
-  background: linear-gradient(135deg, #7c3aed 0%, #4c1d95 100%);
-}
-
-.tile-prokrutka {
-  background: linear-gradient(135deg, #ea580c 0%, #9a3412 100%);
-}
-
-.tile-counter {
-  background: linear-gradient(135deg, #1f9e1f 0%, #0d5c0d 100%);
-}
-
-/* ===== РАСТЯНУТАЯ ПЛАШКА ===== */
+/* ===== РАСТЯНУТАЯ ПЛАШКА (счётчик) ===== */
 .tile.wide {
   grid-column: 1 / -1;
-  aspect-ratio: 2 / 1;
   flex-direction: row;
   gap: 20px;
+  min-height: 140px;
 }
 
 .tile.wide .tile-value {
@@ -225,79 +197,24 @@ html[data-theme="dark"] body.dashboard-body {
   font-size: 14pt;
 }
 
-.tile.wide .wide-text .tile-sub {
-  margin-top: 0;
-}
-
-/* ===== ЦВЕТ ПЛАШКИ «ДЫХАНИЕ» ===== */
-.tile-breath {
-  background: linear-gradient(135deg, #0891b2 0%, #155e75 100%);
-}
-
-.tile-addiction {
-  background: linear-gradient(135deg, #d92b3a 0%, #8a0f1a 100%);
-}
-
-/* ===== КОМПАКТНЫЙ СЧЁТЧИК В КВАДРАТНОЙ ПЛИТКЕ ===== */
-.tile-counter .tile-value {
-  font-size: 26pt;
-  margin: 2px 0 -2px;
-}
-
-.tile-counter .tile-sub {
-  margin-top: -2px;
-}
-
 /* ===== АДАПТИВ ===== */
 @media (max-width: 700px) {
-  body.dashboard-body { padding: 14px; }
-
-  .dashboard {
-    --gap: 12px;
-    max-width: 100%;
-  }
+  body.dashboard-body { padding: 14px; padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px)); }
 
   .theme-toggle { top: 14px; right: 14px; width: 44px; height: 44px; }
   .theme-toggle svg { width: 20px; height: 20px; }
 
-  .tile svg { width: 36px; height: 36px; }
-  .tile .tile-label { font-size: 11pt; }
+  .tile svg { width: 32px; height: 32px; }
+  .tile .tile-label { font-size: 10.5pt; }
   .tile .tile-value { font-size: 24pt; }
   .tile.wide .tile-value { font-size: 34pt; }
   .tile.wide .wide-text .tile-label { font-size: 12pt; }
 }
 
 @media (max-height: 600px) {
-  .tile svg { width: 28px; height: 28px; }
-  .tile .tile-label { font-size: 10pt; }
+  .tile svg { width: 26px; height: 26px; }
+  .tile .tile-label { font-size: 9.5pt; }
   .tile .tile-value { font-size: 20pt; }
   .tile.wide .tile-value { font-size: 28pt; }
   .tile.wide .wide-text .tile-label { font-size: 11pt; }
-}
-
-/* ===== ШИРОКИЕ ЭКРАНЫ — 4 КОЛОНКИ ===== */
-@media (min-width: 900px) {
-  body.dashboard-body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-  }
-
-  .dashboard {
-    grid-template-columns: repeat(4, 1fr);
-    max-width: 1100px;
-    --tile-h: auto;
-    --tile-w: auto;
-  }
-
-  .tile {
-    aspect-ratio: 1 / 1;
-  }
-
-  .tile.wide {
-    grid-column: 1 / -1;
-    aspect-ratio: auto;
-    min-height: 140px;
-  }
 }
