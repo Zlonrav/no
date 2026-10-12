@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='none' stroke='%23c1121f' stroke-width='14'/><line x1='22' y1='22' x2='78' y2='78' stroke='%23c1121f' stroke-width='14' stroke-linecap='round'/></svg>">
+<title>Зависимость — Нет!</title>
+<meta name="theme-color" content="#c1121f" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#16181c" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<script src="../js/theme-init.js"></script>
+<link rel="stylesheet" href="../css/styles.css">
+<style>
+  .subtabs {
+    max-width: 1400px;
+    margin: 0 auto 24px;
+    display: flex;
+    justify-content: center;
+    gap: 2px;
+    padding: 0 4px;
+    flex-wrap: wrap;
+  }
+  .subtabs button {
+    font-family: inherit;
+    font-size: 11pt;
+    font-weight: 600;
+    padding: 8px 14px;
+    border: none;
+    background: transparent;
+    color: var(--ui-color);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s ease;
+    letter-spacing: 0.2px;
+  }
+  .subtabs button:hover { color: var(--text-main); }
+  .subtabs button.active {
+    color: var(--red);
+    font-weight: bold;
+    border-bottom-color: var(--red);
+  }
+  .version { display: none; }
+  .version.active { display: block; }
+
+  /* Кнопка дыхания внизу */
+  .breath-cta {
+    max-width: 320px;
+    margin: 32px auto 0;
+    display: block;
+    font-family: inherit;
+    font-size: 12pt;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 16px 28px;
+    border-radius: 14px;
+    border: 1px solid rgba(8,145,178,0.35);
+    background: linear-gradient(135deg, #0891b2 0%, #155e75 100%);
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 14px rgba(8,145,178,0.35);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .breath-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(8,145,178,0.45);
+  }
+  .breath-cta:active { transform: scale(0.98); }
+</style>
+</head>
+<body>
+
+<a class="back-btn" href="../index.html" aria-label="Назад">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/>
+  </svg>
+</a>
+
+<div class="subtabs" id="subtabs">
+  <button data-version="emergency" class="active">Экстренно</button>
+  <button data-version="alcohol">Алкоголь</button>
+  <button data-version="vape">Вэйп</button>
+</div>
+
+<!-- ==================== ЭКСТРЕННО ==================== -->
+<div class="version active" data-version="emergency">
+
+  <div class="group-title red">Экстренная помощь</div>
+  <div class="cards-grid">
+
+    <div class="card red">
+      <h3>1. СТОП. ЭТО ЗВЕРЬ</h3>
+      <ul>
+        <li>Заметил мысль о выпивке или затяжке? Это он — Зверь (Голос Зависимости).</li>
+        <li>Не спорь. Не объясняй. Не уговаривай себя.</li>
+        <li>Просто: <strong>«А, это Зверь»</strong> или <strong>«Опять ты»</strong>.</li>
+        <li>Он парализован. У него нет рук, нет тела, нет власти. Только <strong>ТЫ</strong> можешь взять стакан или вэйп.</li>
+        <li>Заметил, распознал, понял — переключился на что угодно, кроме него.</li>
+      </ul>
+    </div>
+
+    <div class="card red">
+      <h3>2. СИЛЬНАЯ ТЯГА</h3>
+      <p><strong>1. Осознай: это просто волна</strong></p>
+      <ul>
+        <li>Пик длится 15–30 минут. Скоро отпустит. Твоя задача — просто переждать этот пик.</li>
+      </ul>
+      <p><strong>2. Переключи тело (смени обстановку)</strong></p>
+      <ul>
+        <li><strong>Смени место:</strong> выйди из комнаты, машины, компании.</li>
+        <li><strong>Включи движение:</strong> если на улице — иди быстрым шагом. Дома — приседай, отжимайся или начни убираться.</li>
+        <li><strong>Займи руки:</strong> игра, книга, готовка. Движение сбивает тягу.</li>
+      </ul>
+      <p><strong>3. Обмани рецепторы</strong></p>
+      <ul>
+        <li><strong>Перебей вкус:</strong> выпей стакан ледяной воды, крепкий кофе или кислый лимонад.</li>
+        <li><strong>Съешь:</strong> дольку горького шоколада, фрукт, горсть орехов или мятную жвачку.</li>
+        <li><strong>Сбей температуру:</strong> умойся холодной водой, подставь запястья под ледяную струю.</li>
+      </ul>
+      <p><strong>4. Зафиксируй установку</strong></p>
+      <ul>
+        <li>Скажи вслух и уверенно: <strong>«Я сегодня не пью»</strong> или <strong>«Я сегодня не парю». Только на один этот день.</strong></li>
+      </ul>
+      <p><strong>5. Поставь таймер</strong></p>
+      <ul>
+        <li>Включи 20 минут. Через этот отрезок времени волна пойдёт на спад. Ты справишься.</li>
+      </ul>
+    </div>
+
+    <div class="card red">
+      <h3>3. СДЕЛАЛ ГЛОТОК / УЖЕ ПАРЮ</h3>
+      <p><strong>1. Закурил — не докуривай!</strong></p>
+      <p>Одна затяжка — не разрешение на вторую. Выбрось вэйп. Прямо сейчас.</p>
+      <p><strong>2. Выпил — не допивай!</strong></p>
+      <p>Один глоток — не разрешение продолжать. Вылей остаток. Прямо сейчас.</p>
+      <p><strong>3. Уйди оттуда!</strong></p>
+      <p>Выйди из комнаты, из компании, из гаража. Туда, где не пьют и не курят.</p>
+      <p><strong>4. Действуй!</strong></p>
+      <p>Подыши 4–4–6 — 10 раз, медленно (вдох 4 сек — пауза 4 — выдох 6). Переключи тело. Займи руки. Читай карточку №2.</p>
+      <p><strong>5. Скажи себе</strong></p>
+      <p><strong>«Ошибка — не приговор. Я продолжаю трезвую и здоровую жизнь прямо сейчас, не "с понедельника".»</strong></p>
+    </div>
+
+    <div class="card red">
+      <h3>4. ДАВЯТ ДРУЗЬЯ</h3>
+      <p><strong>1. Спокойно откажись</strong></p>
+      <ul>
+        <li><strong>«Я за рулём»</strong> — и всё.</li>
+        <li><strong>«Сейчас не пью»</strong> — без объяснений.</li>
+      </ul>
+      <p><strong>2. Держи в руке что-то другое</strong></p>
+      <ul>
+        <li>Вода, лимонад, сок, чай. Пусть руки будут заняты.</li>
+      </ul>
+      <p><strong>3. Приходи вовремя, уходи рано</strong></p>
+      <ul>
+        <li>Пришёл — когда все трезвые.</li>
+        <li>Ушёл — в разгаре пьянки.</li>
+      </ul>
+      <p><strong>4. Если давят — уходи</strong></p>
+      <ul>
+        <li>Не оправдывайся. Не объясняй. Просто встань и уйди.</li>
+      </ul>
+    </div>
+
+    <div class="card red">
+      <h3>5. ПРЕДВКУШЕНИЕ</h3>
+      <p><strong>1. Не верь картинке</strong></p>
+      <ul>
+        <li>Эйфорическая память рисует удовольствие. Она врёт.</li>
+      </ul>
+      <p><strong>2. Правда</strong></p>
+      <ul>
+        <li>Вспомни, что происходит потом. Это не то, что обещает память, — а то, что есть на самом деле: отвратительное самочувствие, мутная голова, тошнота и тремор. Ничего из того, что рисовало воображение.</li>
+      </ul>
+      <p><strong>3. Обойди магазин</strong></p>
+      <ul>
+        <li>Не заходи в алкомаркет и вэйп магазин. Проходи мимо и не возвращайся.</li>
+      </ul>
+      <p><strong>4. Живи</strong></p>
+      <ul>
+        <li>Займись тем, что радует. Игра, отдых, еда, кино — что угодно.</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <button class="breath-cta" id="breath-trigger">Подышать 4–4–6</button>
+
+</div>
+
+<!-- ==================== АЛКОГОЛЬ ==================== -->
+<div class="version" data-version="alcohol">
+
+  <!-- Вставь сюда содержимое старого pages/alcohol.html (все группы карточек, без шапки и без <script>) -->
+
+</div>
+
+<!-- ==================== ВЭЙП ==================== -->
+<div class="version" data-version="vape">
+
+  <!-- Вставь сюда содержимое старого pages/vape.html (все группы карточек, без шапки и без <script>) -->
+
+</div>
+
+<!-- Скрытая кнопка для дыхания -->
+<button id="breath-btn" hidden aria-hidden="true"></button>
+
+<div class="breath-overlay" id="breath-overlay" hidden>
+  <button class="breath-close" id="breath-close" aria-label="Закрыть">×</button>
+  <div class="breath-stage">
+    <div class="breath-circle" id="breath-circle"></div>
+    <div class="breath-label" id="breath-label">Вдох</div>
+    <div class="breath-counter" id="breath-counter">Цикл 1</div>
+  </div>
+  <div class="breath-hint">
+    Вдох 4 сек — держи 4 сек — выдох 6 сек.<br>
+    Просто смотри на круг и дыши вместе с ним.
+  </div>
+</div>
+
+<script src="../js/app.js" defer></script>
+<script>
+(function () {
+  const subButtons = document.querySelectorAll('.subtabs button');
+  const versions = document.querySelectorAll('.version');
+  if (!subButtons.length || !versions.length) return;
+
+  function activateVersion(target) {
+    subButtons.forEach(b => b.classList.toggle('active', b.dataset.version === target));
+    versions.forEach(v => v.classList.toggle('active', v.dataset.version === target));
+    try { localStorage.setItem('addiction-version', target); } catch (e) {}
+    window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+  }
+
+  subButtons.forEach(btn => {
+    btn.addEventListener('click', () => activateVersion(btn.dataset.version));
+  });
+
+  let saved = null;
+  try { saved = localStorage.getItem('addiction-version'); } catch (e) {}
+  if (saved && (saved === 'emergency' || saved === 'alcohol' || saved === 'vape')) {
+    activateVersion(saved);
+  }
+
+  // Кнопка «Подышать» на странице — открывает оверлей
+  const trigger = document.getElementById('breath-trigger');
+  const breathBtn = document.getElementById('breath-btn');
+  if (trigger && breathBtn) {
+    trigger.addEventListener('click', () => breathBtn.click());
+  }
+})();
+</script>
+</body>
+</html>
