@@ -54,10 +54,10 @@
   }
   .card.dot-alcohol::after { background: #1a6dc9; }
   .card.dot-vape::after    { background: #eab308; }
-
+  
   .legend {
     max-width: 1400px;
-    margin: 0 auto 20px;
+    margin: 48px auto 20px;
     display: flex;
     justify-content: center;
     gap: 20px;
@@ -89,12 +89,6 @@
     <path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/>
   </svg>
 </a>
-
-<div class="legend">
-  <span><i class="lg-alcohol"></i>алкоголь</span>
-  <span><i class="lg-vape"></i>вэйп</span>
-  <span><i class="lg-common"></i>общее</span>
-</div>
 
 <!-- ==================== ЭКСТРЕННО ==================== -->
 <div class="group-title red">Экстренная помощь</div>
@@ -350,6 +344,18 @@
 
 </div>
 
+</div>
+
+<!-- Легенда -->
+<div class="legend">
+  <span><i class="lg-alcohol"></i>алкоголь</span>
+  <span><i class="lg-vape"></i>вэйп</span>
+  <span><i class="lg-common"></i>общее</span>
+</div>
+
+<!-- Скрытая кнопка для дыхания -->
+<button id="breath-btn" hidden aria-hidden="true"></button>
+  
 <!-- Скрытая кнопка для дыхания -->
 <button id="breath-btn" hidden aria-hidden="true"></button>
 
