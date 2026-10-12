@@ -8,18 +8,11 @@
 
   const TILES = [
     {
-      id: 'alcohol',
-      label: 'Алкоголь',
-      href: 'pages/alcohol.html',
-      color: 'alcohol',
-      icon: '<svg viewBox="0 0 24 24"><path d="M6 3h12l-1 8a5 5 0 0 1-10 0z"/><path d="M12 11v9"/><path d="M8 20h8"/></svg>'
-    },
-    {
-      id: 'vape',
-      label: 'Вэйп',
-      href: 'pages/vape.html',
-      color: 'vape',
-      icon: '<svg viewBox="0 0 24 24"><path d="M7 12c-1.7 0-3-1.3-3-3s1.3-3 3-3c0.5-2 2.5-3.5 4.5-3.5S16 4 16 6c1.7 0 3 1.3 3 3s-1.3 3-3 3"/><rect x="8" y="14" width="8" height="7" rx="1.5"/></svg>'
+      id: 'addiction',
+      label: 'Зависимость',
+      href: 'pages/addiction.html',
+      color: 'addiction',
+      icon: '<svg viewBox="0 0 24 24"><path d="M3 12c2-3 5-5 9-5s7 2 9 5"/><path d="M3 12c2 3 5 5 9 5s7-2 9-5"/><path d="M5 12l1.5-2"/><path d="M9 12l1.5-2"/><path d="M13 12l1.5-2"/><path d="M17 12l1.5-2"/><path d="M5 12l1.5 2"/><path d="M9 12l1.5 2"/><path d="M13 12l1.5 2"/><path d="M17 12l1.5 2"/></svg>'
     },
     {
       id: 'trgz',
