@@ -20,7 +20,11 @@
 
   let saved = null;
   try { saved = localStorage.getItem('trgz-version'); } catch (e) {}
-  if (saved && (saved === 'intensive' || saved === 'short' || saved === 'emergency')) {
+
+  // Если сохранилась старая версия «Экстренная» — переключаем на «Интенсив»
+  if (saved === 'emergency') saved = 'intensive';
+
+  if (saved === 'intensive' || saved === 'short') {
     activateVersion(saved);
   }
 })();
