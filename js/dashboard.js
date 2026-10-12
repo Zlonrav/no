@@ -15,13 +15,6 @@
       icon: '<svg viewBox="0 0 24 24"><circle cx="8" cy="12" r="5"/><circle cx="16" cy="12" r="5"/></svg>'
     },
     {
-      id: 'trgz',
-      label: 'ТРГЗ',
-      href: 'pages/trgz.html',
-      color: 'trgz',
-      icon: '<svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3 8-8 9-5-1-8-4-8-9V6z"/><path d="M12 8v5"/><circle cx="12" cy="16" r="0.6" fill="currentColor" stroke="none"/></svg>'
-    },
-    {
       id: 'prokrutka',
       label: 'Прокрутка',
       href: 'pages/rumination.html',
