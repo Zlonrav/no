@@ -197,7 +197,9 @@ html[data-theme="dark"] body.dashboard-body {
 
 /* ===== АДАПТИВ ===== */
 @media (max-width: 700px) {
-  body.dashboard-body { padding: 14px; padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px)); }
+   body.dashboard-body { padding: 10px; padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px)); }
+
+   .dashboard {--gap: 12px; --pad: 0px;}
 
   .theme-toggle { top: 14px; right: 14px; width: 44px; height: 44px; }
   .theme-toggle svg { width: 20px; height: 20px; }
