@@ -80,11 +80,9 @@
 
   /* ===== РЕНДЕР ПЛИТОК ===== */
   TILES.forEach((tile) => {
-    const isButton = tile.action === 'breath';
-    const el = document.createElement(isButton ? 'button' : 'a');
+    const el = document.createElement('a');
     el.className = 'tile tile-' + tile.color + (tile.wide ? ' wide' : '');
-    if (!isButton) el.href = tile.href;
-    if (isButton) el.type = 'button';
+    el.href = tile.href;
 
     if (tile.id === 'counter' && window.Sober) {
       const start = window.Sober.getStart();
@@ -109,13 +107,6 @@
       }
     } else {
       el.innerHTML = tile.icon + '<span class="tile-label">' + tile.label + '</span>';
-    }
-
-    if (isButton) {
-      el.addEventListener('click', () => {
-        const btn = document.getElementById('breath-btn');
-        if (btn) btn.click();
-      });
     }
 
     grid.appendChild(el);
