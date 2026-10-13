@@ -38,7 +38,7 @@
     {
       id: 'breath',
       label: 'Дыхание',
-      action: 'breath',
+      href: 'pages/breath.html',
       color: 'breath',
       icon: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.5" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="6.5"/><circle cx="12" cy="12" r="10" opacity="0.35"/></svg>'
     },
