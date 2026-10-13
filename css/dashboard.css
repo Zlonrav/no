@@ -224,6 +224,11 @@ html[data-theme="dark"] body.dashboard-body {
   display: none;
 }
 
+/* ===== ЛОГОТИП (только десктоп) ===== */
+.logo {
+  display: none;
+}
+
 @media (min-width: 900px) {
   .logo {
     position: fixed;
@@ -234,9 +239,14 @@ html[data-theme="dark"] body.dashboard-body {
     align-items: center;
     gap: 12px;
     z-index: 200;
-    color: var(--red);
+    color: #d92b3a;
     font-family: Arial, Helvetica, sans-serif;
     pointer-events: none;
+  }
+
+  /* Тёмная тема — цвет плитки «Зависимость» ярче */
+  html[data-theme="dark"] .logo {
+    color: #ff4a5a;
   }
 
   .logo svg {
@@ -254,12 +264,12 @@ html[data-theme="dark"] body.dashboard-body {
     font-size: 20pt;
     font-weight: bold;
     letter-spacing: 0.5px;
-    color: var(--red);
+    color: currentColor;
     white-space: nowrap;
   }
 
   .logo-text strong {
-    color: var(--red);
+    color: currentColor;
     font-weight: bold;
   }
 }
