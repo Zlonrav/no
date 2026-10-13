@@ -284,29 +284,19 @@ html[data-theme="dark"] body {
 
 /* ===== ПЕРЕКРЁСТНЫЕ ССЫЛКИ В КАРТОЧКАХ ===== */
 .card a {
-  color: var(--blue);
+  color: inherit;
+  font-weight: inherit;
   text-decoration: none;
   border-bottom: 1px dashed currentColor;
-  font-weight: bold;
-  transition: color 0.15s ease, border-color 0.15s ease;
   -webkit-tap-highlight-color: transparent;
 }
 
 .card a:hover {
-  color: var(--red);
   border-bottom-style: solid;
 }
 
 .card a:active {
-  opacity: 0.7;
-}
-
-html[data-theme="dark"] .card a {
-  color: #7db4ff;
-}
-
-html[data-theme="dark"] .card a:hover {
-  color: #ff8a93;
+  opacity: 0.6;
 }
 
 /* В карточках, где цвет группы — синий, ссылки делаем заметнее */
