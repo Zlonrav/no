@@ -244,11 +244,6 @@ html[data-theme="dark"] body.dashboard-body {
     pointer-events: none;
   }
 
-  /* Тёмная тема — цвет плитки «Зависимость» ярче */
-  html[data-theme="dark"] .logo {
-    color: #ff4a5a;
-  }
-
   .logo svg {
     display: block;
     width: 32px;
