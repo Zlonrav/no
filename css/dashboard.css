@@ -217,18 +217,11 @@ html[data-theme="dark"] body.dashboard-body {
   .tile .tile-value { font-size: 20pt; }
   .tile.wide .tile-value { font-size: 28pt; }
   .tile.wide .wide-text .tile-label { font-size: 11pt; }
+  .logo {display: none;}
 }
+
 
 /* ===== ЛОГОТИП (только десктоп) ===== */
-.logo {
-  display: none;
-}
-
-/* ===== ЛОГОТИП (только десктоп) ===== */
-.logo {
-  display: none;
-}
-
 @media (min-width: 900px) {
   .logo {
     position: fixed;
