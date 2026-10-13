@@ -1,7 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /pages/alcohol.html
-Disallow: /pages/vape.html
-Disallow: /pages/abyss_first_version.html
 
 Sitemap: https://prosto-net.ru/sitemap.xml
