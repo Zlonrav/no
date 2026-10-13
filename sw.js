@@ -1,4 +1,4 @@
-const CACHE = 'net-cards-v3.22';
+const CACHE = 'net-cards-v3.23';
 
 const ASSETS = [
   './',
