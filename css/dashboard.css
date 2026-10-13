@@ -227,7 +227,7 @@ html[data-theme="dark"] body.dashboard-body {
 @media (min-width: 900px) {
   .logo {
     position: fixed;
-    top: 30px;
+    top: 70px;
     left: 50%;
     transform: translateX(-50%);
     display: inline-flex;
@@ -252,9 +252,9 @@ html[data-theme="dark"] body.dashboard-body {
 
   .logo-text {
     font-size: 20pt;
-    font-weight: normal;
+    font-weight: bold;
     letter-spacing: 0.5px;
-    color: var(--text-main);
+    color: var(--red);
     white-space: nowrap;
   }
 
