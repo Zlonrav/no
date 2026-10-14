@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='none' stroke='%231b7a1b' stroke-width='14'/><circle cx='50' cy='50' r='14' fill='%231b7a1b'/></svg>">
+<title>Награды — с названиями</title>
+<meta name="theme-color" content="#1b7a1b" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#16181c" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<script src="../js/theme-init.js"></script>
+<link rel="stylesheet" href="../css/styles.css">
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  body {
+    padding: 0;
+  }
+
+  .page {
+    height: 100vh;
+    height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .page::-webkit-scrollbar { display: none; }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 420px;
+    margin: auto 0;
+    gap: 40px;
+  }
+
+  .variant {
+    width: 100%;
+  }
+
+  .variant-title {
+    font-size: 11pt;
+    font-weight: bold;
+    color: var(--ui-color);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin: 0 0 16px;
+    text-align: center;
+  }
+
+  .awards-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .award {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    background: transparent;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    transition: transform 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
+    border-radius: 8px;
+  }
+
+  .award:hover { transform: translateY(-2px) scale(1.05); }
+  .award:active { transform: scale(0.95); }
+  .award.locked { opacity: 0.15; filter: grayscale(0.8); }
+
+  .award-name {
+    font-size: 8pt;
+    font-weight: bold;
+    color: var(--text-main);
+    text-align: center;
+    line-height: 1.1;
+    letter-spacing: 0.2px;
+    max-width: 56px;
+  }
+
+  /* Компактный вариант с маленьким шрифтом */
+  .awards-row.compact .award-name {
+    font-size: 7pt;
+    opacity: 0.75;
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="content">
+
+    <div class="variant">
+      <p class="variant-title">Вариант 1 — только щиты (как сейчас)</p>
+      <div class="awards-row" id="row-1"></div>
+    </div>
+
+    <div class="variant">
+      <p class="variant-title">Вариант 2 — с названиями под щитами</p>
+      <div class="awards-row" id="row-2"></div>
+    </div>
+
+    <div class="variant">
+      <p class="variant-title">Вариант 3 — с названиями, компактно</p>
+      <div class="awards-row compact" id="row-3"></div>
+    </div>
+
+  </div>
+</div>
+
+<script src="../js/awards.js" defer></script>
+<script>
+  window.addEventListener('load', () => {
+    // Все 16 наград, чтобы видеть линейку целиком
+    const all = window.Awards.list;
+    const currentDays = 988;
+
+    function renderRow(id, withName) {
+      const row = document.getElementById(id);
+      all.forEach(award => {
+        const got = currentDays >= award.days;
+        const btn = document.createElement('button');
+        btn.className = 'award' + (got ? '' : ' locked');
+        btn.type = 'button';
+        btn.innerHTML =
+          window.Awards.shieldSVG(award.color, award.days, 44) +
+          (withName ? '<span class="award-name">' + award.name + '</span>' : '');
+        row.appendChild(btn);
+      });
+    }
+
+    renderRow('row-1', false);
+    renderRow('row-2', true);
+    renderRow('row-3', true);
+  });
+</script>
+
+</body>
+</html>
