@@ -146,31 +146,38 @@
 
   /* ===== Полоски-«буквы» внутри textarea ===== */
   .voice-content {
-    position: absolute;
-    inset: 0;
-    padding: 5px;
-    box-sizing: border-box;
-    display: flex;
-    flex-wrap: wrap;
-    align-content: flex-start;
-    gap: 3px;
-    pointer-events: none;
-    overflow: hidden;
-    z-index: 2;
-  }
+  position: absolute;
+  inset: 0;
+  padding: 5px;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 6px);
+  grid-auto-rows: 80px;
+  justify-content: space-between;
+  align-content: start;
+  gap: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 2;
+}
 
-  .voice-line {
-    display: block;
-    width: 3px;
-    border-radius: 2px;
-    background: linear-gradient(180deg, #ff4a5a 0%, #c1121f 100%);
-    align-self: flex-start;
-    transition: height 0.05s linear;
-  }
+.voice-cell {
+  position: relative;
+  width: 6px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-  .voice-content.hidden {
-    display: none;
-  }
+.voice-line {
+  display: block;
+  width: 3px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #ff4a5a 0%, #c1121f 100%);
+  transition: height 0.05s linear;
+  min-height: 4px;
+}
 
   /* ===== Placeholder ===== */
   .abyss-placeholder {
@@ -436,7 +443,7 @@
 
       const now = performance.now();
       if (now - lastAdd >= ADD_INTERVAL) {
-        const h = 4 + (avg / 255) * 60;
+        const h = 4 + (avg / 255) * 72;
         addLine(h);
         lastAdd = now;
       }
@@ -447,13 +454,18 @@
   }
 
   function addLine(height) {
+    const cell = document.createElement('div');
+    cell.className = 'voice-cell';
+
     const el = document.createElement('span');
     el.className = 'voice-line';
     el.style.height = Math.max(4, height) + 'px';
-    content.appendChild(el);
 
-    const lines = content.querySelectorAll('.voice-line');
-    if (lines.length > MAX_LINES) lines[0].remove();
+    cell.appendChild(el);
+    content.appendChild(cell);
+
+    const cells = content.querySelectorAll('.voice-cell');
+    if (cells.length > MAX_LINES) cells[0].remove();
   }
 
   /* ===== Уход полосок вниз ===== */
