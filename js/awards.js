@@ -33,10 +33,25 @@
 
   function shieldSVG(color, days, size) {
     const textColor = getTextColor(color);
+    const gradId = 'g-' + color.replace('#', '') + '-' + days;
     return `
       <svg viewBox="0 0 80 80" width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="${gradId}" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="${color}" stop-opacity="1"/>
+            <stop offset="100%" stop-color="${color}" stop-opacity="0.65"/>
+          </linearGradient>
+        </defs>
         <path d="M40 6 L68 16 L68 40 C68 58 54 70 40 76 C26 70 12 58 12 40 L12 16 Z"
-              fill="${color}" stroke="rgba(0,0,0,0.15)" stroke-width="1.5" stroke-linejoin="round"/>
+              fill="url(#${gradId})"
+              stroke="rgba(0,0,0,0.25)"
+              stroke-width="1.5"
+              stroke-linejoin="round"/>
+        <path d="M40 9 L65 18 L65 40 C65 56 53 67 40 72"
+              fill="none"
+              stroke="rgba(255,255,255,0.25)"
+              stroke-width="1"
+              stroke-linejoin="round"/>
         <text x="40" y="48" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="${textColor}">${days}</text>
       </svg>
     `;
