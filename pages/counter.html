@@ -20,21 +20,15 @@
 
   body.counter-body {
     padding: 0;
-    background: var(--bg-2);
-  }
-
-  html[data-theme="dark"] body.counter-body {
-    background: var(--bg-2);
   }
 
   .counter-page {
     height: 100vh;
     height: 100dvh;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 80px 20px 40px;
+    padding: 40px 20px;
     box-sizing: border-box;
     overflow-y: auto;
     overflow-x: hidden;
@@ -46,10 +40,19 @@
     display: none;
   }
 
+  .counter-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 420px;
+    margin: auto 0;
+  }
+
+  /* ===== КАРТОЧКА СЧЁТЧИКА ===== */
   .counter-card {
     position: relative;
     width: 100%;
-    max-width: 420px;
     padding: 36px 32px 28px;
     background: var(--card-bg);
     border: 1px solid var(--card-border);
@@ -141,7 +144,6 @@
   /* ===== БЛОК НАГРАД ===== */
   .counter-awards-wrap {
     width: 100%;
-    max-width: 420px;
     margin-top: 24px;
     padding-top: 20px;
     border-top: 1px solid var(--card-h3-border);
@@ -149,10 +151,10 @@
   }
 
   .counter-awards {
-    display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    gap: 8px;
-    justify-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
     width: 100%;
   }
 
@@ -177,29 +179,10 @@
     transform: scale(0.95);
   }
 
+  /* Следующий (не получен) — сильно прозрачный */
   .award-shield.locked {
-    opacity: 0.3;
-    filter: grayscale(0.6);
-  }
-
-  .counter-awards-more {
-    display: block;
-    margin: 16px auto 0;
-    background: transparent;
-    border: none;
-    color: var(--ui-color);
-    font-family: inherit;
-    font-size: 10pt;
-    font-weight: bold;
-    letter-spacing: 0.5px;
-    cursor: pointer;
-    padding: 6px 12px;
-    transition: color 0.15s ease;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  .counter-awards-more:hover {
-    color: var(--text-main);
+    opacity: 0.15;
+    filter: grayscale(0.8);
   }
 
   /* ===== ОВЕРЛЕЙ ПОДТВЕРЖДЕНИЯ ===== */
@@ -368,7 +351,7 @@
     .counter-word { font-size: 14pt; }
     .counter-edit { bottom: 14px; right: 14px; width: 36px; height: 36px; }
     .counter-edit svg { width: 16px; height: 16px; }
-    .counter-awards { gap: 6px; }
+    .counter-awards { gap: 8px; }
     .counter-awards-wrap { margin-top: 20px; padding-top: 16px; }
   }
 </style>
@@ -382,27 +365,28 @@
 </a>
 
 <div class="counter-page">
+  <div class="counter-content">
 
-  <div class="counter-card">
-    <p class="counter-value" id="counter-value">1</p>
-    <p class="counter-word" id="counter-word">день трезвости</p>
-    <p class="counter-start" id="counter-start">с сегодняшнего дня</p>
+    <div class="counter-card">
+      <p class="counter-value" id="counter-value">1</p>
+      <p class="counter-word" id="counter-word">день трезвости</p>
+      <p class="counter-start" id="counter-start">с сегодняшнего дня</p>
 
-    <input type="date" id="counter-input" aria-label="Дата начала">
+      <input type="date" id="counter-input" aria-label="Дата начала">
 
-    <button class="counter-edit" id="counter-change" aria-label="Изменить дату">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 20h9"/>
-        <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/>
-      </svg>
-    </button>
+      <button class="counter-edit" id="counter-change" aria-label="Изменить дату">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 20h9"/>
+          <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="counter-awards-wrap">
+      <div class="counter-awards" id="counter-awards"></div>
+    </div>
+
   </div>
-
-  <div class="counter-awards-wrap">
-    <div class="counter-awards" id="counter-awards"></div>
-    <button class="counter-awards-more" id="counter-awards-more" hidden>Показать все</button>
-  </div>
-
 </div>
 
 <div class="counter-confirm" id="counter-confirm" hidden>
