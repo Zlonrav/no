@@ -563,7 +563,7 @@
       const now = performance.now();
       if (now - lastAdd >= ADD_INTERVAL) {
         // Чувствительнее: усиливаем средний уровень в 3 раза
-        const boosted = Math.min(255, avg * 3);
+        const boosted = Math.min(255, avg * 2.5);
         const h = 4 + (boosted / 255) * 72;
         addLine(h);
         lastAdd = now;
