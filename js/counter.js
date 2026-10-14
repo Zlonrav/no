@@ -27,18 +27,34 @@
   let showAll = false;
 
   function render() {
-    const start = window.Sober.getStart(); // ← было ensureStart
+    const start = window.Sober.getStart();
     const awardsWrap = document.querySelector('.counter-awards-wrap');
 
     if (!start) {
       // Дата не установлена
       valueEl.textContent = '—';
-      wordEl.textContent = 'дней трезвости';
-      startEl.textContent = 'Установите дату';
+      wordEl.textContent = '';
+      startEl.textContent = 'Установите дату →';
       inputEl.value = '';
       if (awardsWrap) awardsWrap.hidden = true;
       return;
     }
+
+    const n = window.Sober.daysSince(start);
+    const word = window.Sober.plural(n, ['день', 'дня', 'дней']);
+
+    valueEl.textContent = n;
+    wordEl.textContent = word + ' трезвости';
+
+    const d = new Date(start + 'T00:00:00');
+    const months = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+    startEl.textContent = 'с ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+
+    inputEl.value = start;
+
+    if (awardsWrap) awardsWrap.hidden = false;
+    renderAwards(n);
+  }
 
     const n = window.Sober.daysSince(start);
     const word = window.Sober.plural(n, ['день', 'дня', 'дней']);
