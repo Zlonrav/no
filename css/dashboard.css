@@ -262,7 +262,7 @@ html[data-theme="dark"] body.dashboard-body {
     font-weight: bold;
   }
 }
-@media (min-height: 850px) {
+@media (min-height: 800px) {
   .logo {
     position: fixed;
     top: 35px;
