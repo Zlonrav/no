@@ -10,9 +10,14 @@
   const startEl = document.getElementById('counter-start');
   const inputEl = document.getElementById('counter-input');
   const changeBtn = document.getElementById('counter-change');
-  const resetBtn = document.getElementById('counter-reset');
+  const confirmBox = document.getElementById('counter-confirm');
+  const confirmDate = document.getElementById('counter-confirm-date');
+  const confirmYes = document.getElementById('counter-confirm-yes');
+  const confirmNo = document.getElementById('counter-confirm-no');
 
   if (!valueEl) return;
+
+  let pendingDate = null;
 
   function render() {
     const start = window.Sober.ensureStart();
@@ -22,7 +27,6 @@
     valueEl.textContent = n;
     wordEl.textContent = word + ' трезвости';
 
-    // Дата в формате «7 октября 2026»
     const d = new Date(start + 'T00:00:00');
     const months = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
     startEl.textContent = 'с ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
@@ -37,20 +41,34 @@
     inputEl.click();
   }
 
-  inputEl.addEventListener('change', () => {
-    if (inputEl.value) {
-      window.Sober.setStart(inputEl.value);
-      render();
-    }
-  });
-
   changeBtn.addEventListener('click', openPicker);
 
-  resetBtn.addEventListener('click', () => {
-    if (confirm('Сбросить счётчик? Отсчёт начнётся с сегодняшнего дня.')) {
-      window.Sober.setStart(window.Sober.todayISO());
+  // Когда пользователь выбрал дату — показываем окно подтверждения
+  inputEl.addEventListener('change', () => {
+    if (!inputEl.value) return;
+
+    pendingDate = inputEl.value;
+
+    const d = new Date(pendingDate + 'T00:00:00');
+    const months = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+    confirmDate.textContent = d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+
+    confirmBox.hidden = false;
+  });
+
+  confirmYes.addEventListener('click', () => {
+    if (pendingDate) {
+      window.Sober.setStart(pendingDate);
       render();
     }
+    confirmBox.hidden = true;
+    pendingDate = null;
+  });
+
+  confirmNo.addEventListener('click', () => {
+    confirmBox.hidden = true;
+    pendingDate = null;
+    inputEl.value = window.Sober.getStart();
   });
 
   render();
