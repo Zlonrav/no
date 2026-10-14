@@ -1,4 +1,4 @@
-const CACHE = 'net-cards-v3.49';
+const CACHE = 'net-cards-v3.50';
 
 const ASSETS = [
   './',
@@ -17,6 +17,7 @@ const ASSETS = [
   './js/dashboard.js',
   './js/counter.js',
   './js/trgz.js',
+  './js/awards.js',
 
   './pages/trgz.html',
   './pages/rumination.html',
