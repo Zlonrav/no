@@ -266,4 +266,5 @@ html[data-theme="dark"] body.dashboard-body {
 .logo {
     position: fixed;
     top: 35px;
+   }
 }
