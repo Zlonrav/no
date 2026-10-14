@@ -223,7 +223,7 @@ html[data-theme="dark"] body.dashboard-body {
 /* ===== ЛОГОТИП (только десктоп) ===== */
 .logo {display: none;}
 
-@media (min-height: 800px) {
+@media (min-height: 825px) {
   .logo {
     position: fixed;
     top: 35px;
