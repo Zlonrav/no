@@ -262,8 +262,3 @@ html[data-theme="dark"] body.dashboard-body {
     font-weight: bold;
   }
 }
-@media (min-width: 710px) and (min-height: 950px) {
-  .logo {
-    top: 70px;
-  }
-}
