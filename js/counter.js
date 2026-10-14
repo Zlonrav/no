@@ -3,7 +3,7 @@
    ============================================================ */
 
 (function () {
-  if (!window.Sober) return;
+  if (!window.Sober || !window.Awards) return;
 
   const valueEl = document.getElementById('counter-value');
   const wordEl = document.getElementById('counter-word');
@@ -15,9 +15,16 @@
   const confirmYes = document.getElementById('counter-confirm-yes');
   const confirmNo = document.getElementById('counter-confirm-no');
 
+  const awardsBox = document.getElementById('counter-awards');
+  const awardsMore = document.getElementById('counter-awards-more');
+  const awardOverlay = document.getElementById('award-overlay');
+  const awardOverlayContent = document.getElementById('award-overlay-content');
+  const awardOverlayClose = document.getElementById('award-overlay-close');
+
   if (!valueEl) return;
 
   let pendingDate = null;
+  let showAll = false;
 
   function render() {
     const start = window.Sober.ensureStart();
@@ -32,8 +39,78 @@
     startEl.textContent = 'с ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
 
     inputEl.value = start;
+
+    renderAwards(n);
   }
 
+  function renderAwards(days) {
+    if (!awardsBox) return;
+
+    const all = window.Awards.list;
+    let visible;
+
+    if (showAll) {
+      visible = all;
+    } else {
+      // Полученные + следующий
+      const got = all.filter(a => days >= a.days);
+      const next = all.find(a => days < a.days);
+      visible = next ? got.concat([next]) : got;
+    }
+
+    awardsBox.innerHTML = '';
+
+    visible.forEach(award => {
+      const got = days >= award.days;
+      const btn = document.createElement('button');
+      btn.className = 'award-shield' + (got ? '' : ' locked');
+      btn.type = 'button';
+      btn.innerHTML = window.Awards.shieldSVG(award.color, award.days, 40);
+      btn.addEventListener('click', () => openAwardOverlay(award, got, days));
+      awardsBox.appendChild(btn);
+    });
+
+    // Ссылка «Показать все» / «Свернуть»
+    if (awardsMore) {
+      const hasHidden = all.length > visible.length;
+      if (hasHidden && !showAll) {
+        awardsMore.textContent = 'Показать все';
+        awardsMore.hidden = false;
+      } else if (showAll) {
+        awardsMore.textContent = 'Свернуть';
+        awardsMore.hidden = false;
+      } else {
+        awardsMore.hidden = true;
+      }
+    }
+  }
+
+  function openAwardOverlay(award, got, currentDays) {
+    if (!awardOverlay || !awardOverlayContent) return;
+
+    const remaining = award.days - currentDays;
+
+    awardOverlayContent.innerHTML = `
+      <div class="award-overlay__shield">
+        ${window.Awards.shieldSVG(award.color, award.days, 120)}
+      </div>
+      <div class="award-overlay__name">${award.name}</div>
+      <div class="award-overlay__status">
+        ${got
+          ? 'Получен за ' + award.days + ' дней трезвости'
+          : 'До получения: ' + remaining + ' ' + window.Sober.plural(remaining, ['день', 'дня', 'дней'])
+        }
+      </div>
+    `;
+
+    awardOverlay.hidden = false;
+  }
+
+  function closeAwardOverlay() {
+    if (awardOverlay) awardOverlay.hidden = true;
+  }
+
+  // Открытие календаря
   function openPicker() {
     if (typeof inputEl.showPicker === 'function') {
       try { inputEl.showPicker(); return; } catch (e) {}
@@ -43,10 +120,8 @@
 
   changeBtn.addEventListener('click', openPicker);
 
-  // Когда пользователь выбрал дату — показываем окно подтверждения
   inputEl.addEventListener('change', () => {
     if (!inputEl.value) return;
-
     pendingDate = inputEl.value;
 
     const d = new Date(pendingDate + 'T00:00:00');
@@ -69,6 +144,27 @@
     confirmBox.hidden = true;
     pendingDate = null;
     inputEl.value = window.Sober.getStart();
+  });
+
+  // «Показать все»
+  if (awardsMore) {
+    awardsMore.addEventListener('click', () => {
+      showAll = !showAll;
+      renderAwards(window.Sober.daysSince(window.Sober.getStart()));
+    });
+  }
+
+  // Закрытие оверлея
+  if (awardOverlay) {
+    awardOverlay.addEventListener('click', (e) => {
+      if (e.target === awardOverlay) closeAwardOverlay();
+    });
+  }
+  if (awardOverlayClose) {
+    awardOverlayClose.addEventListener('click', closeAwardOverlay);
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && awardOverlay && !awardOverlay.hidden) closeAwardOverlay();
   });
 
   render();
