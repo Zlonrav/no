@@ -8,6 +8,7 @@ body.dashboard-body {
   min-height: 100vh;
   min-height: 100svh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 20px;
@@ -221,21 +222,20 @@ html[data-theme="dark"] body.dashboard-body {
 
 
 /* ===== ЛОГОТИП (только десктоп) ===== */
-.logo {display: none;}
+.logo {
+  display: none;
+}
 
-@media (min-height: 825px) {
+@media (min-height: 800px) {
   .logo {
-    position: fixed;
-    top: 35px;
-    left: 50%;
-    transform: translateX(-50%);
     display: inline-flex;
     align-items: center;
     gap: 12px;
-    z-index: 200;
     color: #d92b3a;
     font-family: Arial, Helvetica, sans-serif;
     pointer-events: none;
+    flex-shrink: 0;
+    margin-bottom: 40px;
   }
 
   .logo svg {
