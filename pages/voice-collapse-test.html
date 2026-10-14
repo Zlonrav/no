@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='none' stroke='%23c1121f' stroke-width='14'/><line x1='22' y1='22' x2='78' y2='78' stroke='%23c1121f' stroke-width='14' stroke-linecap='round'/></svg>">
+<title>Голос → текст — тест</title>
+<meta name="theme-color" content="#0a0a0f">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="stylesheet" href="../css/styles.css">
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  body.voice-body {
+    background: linear-gradient(180deg, #17171c 0%, #0f1525 45%, #081430 100%);
+    color: #e8eaed;
+    min-height: 100dvh;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  body.voice-body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(circle at 50% 35%, rgba(30,58,138,0.18), transparent 55%),
+      radial-gradient(circle at 50% 100%, rgba(10,21,53,0.9), transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .voice-body .back-btn {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,255,255,0.10);
+    color: #e8eaed;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+    top: max(20px, env(safe-area-inset-top));
+    left: max(20px, env(safe-area-inset-left));
+  }
+
+  .voice-page {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 80px 20px 40px;
+    box-sizing: border-box;
+    overflow-y: auto;
+  }
+
+  .voice-content {
+    width: 100%;
+    max-width: 480px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .voice-title {
+    font-size: 11pt;
+    font-weight: bold;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin: 0 0 4px;
+    text-align: center;
+  }
+
+  /* ===== Поле ===== */
+  .voice-field {
+    position: relative;
+    height: 280px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 14px;
+    overflow: hidden;
+  }
+
+  .voice-field__placeholder {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    right: 14px;
+    font-size: 11pt;
+    font-style: italic;
+    color: rgba(232, 234, 237, 0.28);
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .voice-field__placeholder.hidden {
+    opacity: 0;
+  }
+
+  .voice-field__content {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: 3px;
+    height: 100%;
+  }
+
+  /* Полоска */
+  .voice-line {
+    display: block;
+    width: 3px;
+    border-radius: 2px;
+    background: linear-gradient(180deg, #ff4a5a 0%, #c1121f 100%);
+    align-self: flex-start;
+    transition: height 0.05s linear;
+  }
+
+  /* Режим «слияние» — все полоски становятся одинаковой высоты,
+     зазор схлопывается, полоски превращаются в «строчки текста» */
+  .voice-field__content.collapsed {
+    gap: 0;
+    align-content: flex-start;
+  }
+
+  .voice-field__content.collapsed .voice-line {
+    transition: height 0.6s ease, width 0.4s ease, border-radius 0.4s ease, opacity 0.4s ease;
+    width: 4px;
+    height: 16px;
+    border-radius: 0;
+    opacity: 0.9;
+  }
+
+  /* Строки */
+  .voice-field__content.collapsed .voice-line.row-end {
+    margin-right: 10px;
+  }
+
+  /* ===== Кнопки ===== */
+  .voice-controls {
+    display: flex;
+    gap: 10px;
+  }
+
+  .voice-btn {
+    flex: 1;
+    font-family: inherit;
+    font-size: 11pt;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.05);
+    color: #e8eaed;
+    cursor: pointer;
+    transition: transform 0.15s ease, background 0.15s ease, opacity 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .voice-btn:hover:not(:disabled) { background: rgba(255,255,255,0.10); }
+  .voice-btn:active:not(:disabled) { transform: scale(0.97); }
+  .voice-btn:disabled { opacity: 0.35; cursor: default; }
+
+  .voice-btn.rec {
+    background: linear-gradient(135deg, #c1121f 0%, #8a0f1a 100%);
+    border-color: transparent;
+    color: #fff;
+  }
+
+  .voice-btn.rec.active {
+    background: linear-gradient(135deg, #ff4a5a 0%, #c1121f 100%);
+    animation: pulse 1.2s ease-in-out infinite;
+  }
+
+  .voice-btn.finish {
+    background: linear-gradient(135deg, #1e3a8a 0%, #0f1e4a 100%);
+    border-color: transparent;
+    color: #fff;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+
+  .voice-hint {
+    font-size: 10pt;
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    margin: 0;
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body class="voice-body">
+
+<a class="back-btn" href="../index.html" aria-label="Назад">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/>
+  </svg>
+</a>
+
+<div class="voice-page">
+  <div class="voice-content">
+
+    <p class="voice-title">Говори — заполняется. Стоп — сливается в текст.</p>
+
+    <div class="voice-field">
+      <p class="voice-field__placeholder" id="placeholder">Говори. Волна запишется в поле.</p>
+      <div class="voice-field__content" id="content"></div>
+    </div>
+
+    <div class="voice-controls">
+      <button class="voice-btn rec" id="rec" type="button">🎤 Говорить</button>
+      <button class="voice-btn finish" id="finish" type="button" disabled>Стоп</button>
+    </div>
+
+    <p class="voice-hint">
+      Ничего не сохраняется и никуда не отправляется. Только визуализация уровня звука.
+    </p>
+
+  </div>
+</div>
+
+<script>
+  const content = document.getElementById('content');
+  const placeholder = document.getElementById('placeholder');
+  const recBtn = document.getElementById('rec');
+  const finishBtn = document.getElementById('finish');
+
+  let audioCtx = null;
+  let analyser = null;
+  let source = null;
+  let stream = null;
+  let rafId = null;
+  let recording = false;
+  let collapsed = false;
+
+  const MAX_LINES = 500;
+  const ADD_INTERVAL = 45; // мс между полосками
+  let lastAdd = 0;
+
+  /* ===== Добавить полоску ===== */
+  function addLine(height) {
+    const el = document.createElement('span');
+    el.className = 'voice-line';
+    el.style.height = Math.max(4, height) + 'px';
+    content.appendChild(el);
+
+    // Ограничение
+    const lines = content.querySelectorAll('.voice-line');
+    if (lines.length > MAX_LINES) {
+      lines[0].remove();
+    }
+
+    placeholder.classList.add('hidden');
+  }
+
+  /* ===== Слияние ===== */
+  function collapse() {
+    if (collapsed) return;
+    collapsed = true;
+
+    // Определяем границы строк — группируем полоски по их верхнему краю
+    const lines = Array.from(content.querySelectorAll('.voice-line'));
+    if (!lines.length) return;
+
+    // Группируем по вертикальному положению (округляем до 4px)
+    const rows = {};
+    lines.forEach(el => {
+      const top = Math.round(el.getBoundingClientRect().top / 4) * 4;
+      if (!rows[top]) rows[top] = [];
+      rows[top].push(el);
+    });
+
+    // Для каждой строки — отмечаем последнюю полоску (для отступа между строками)
+    Object.values(rows).forEach(row => {
+      if (row.length) {
+        row[row.length - 1].classList.add('row-end');
+      }
+    });
+
+    // Запускаем анимацию сжатия
+    content.classList.add('collapsed');
+
+    // Все полоски — плавно к одинаковой высоте
+    // Плюс небольшой сдвиг по времени для эффекта «сливания»
+    lines.forEach((el, i) => {
+      el.style.transitionDelay = (i * 0.004) + 's';
+    });
+  }
+
+  /* ===== Сброс ===== */
+  function reset() {
+    content.innerHTML = '';
+    content.classList.remove('collapsed');
+    placeholder.classList.remove('hidden');
+    collapsed = false;
+  }
+
+  /* ===== Микрофон ===== */
+  async function startMic() {
+    if (collapsed) reset();
+
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    } catch (e) {
+      alert('Не удалось получить доступ к микрофону. Разреши в браузере.');
+      return;
+    }
+
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 256;
+    analyser.smoothingTimeConstant = 0.6;
+
+    source = audioCtx.createMediaStreamSource(stream);
+    source.connect(analyser);
+
+    recording = true;
+    recBtn.classList.add('active');
+    recBtn.textContent = '⏹ Идёт запись';
+    finishBtn.disabled = false;
+
+    draw();
+  }
+
+  function stopMic() {
+    if (rafId) cancelAnimationFrame(rafId);
+    rafId = null;
+    if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
+    if (audioCtx) { audioCtx.close(); audioCtx = null; }
+    analyser = null;
+    source = null;
+    recording = false;
+    recBtn.classList.remove('active');
+    recBtn.textContent = '🎤 Говорить';
+    finishBtn.disabled = true;
+  }
+
+  function draw() {
+    const data = new Uint8Array(analyser.frequencyBinCount);
+
+    function loop() {
+      if (!analyser) return;
+      analyser.getByteFrequencyData(data);
+
+      let sum = 0;
+      for (let i = 0; i < data.length; i++) sum += data[i];
+      const avg = sum / data.length;
+
+      const now = performance.now();
+      if (now - lastAdd >= ADD_INTERVAL) {
+        const h = 4 + (avg / 255) * 60;
+        addLine(h);
+        lastAdd = now;
+      }
+
+      rafId = requestAnimationFrame(loop);
+    }
+
+    loop();
+  }
+
+  /* ===== Обработчики ===== */
+  recBtn.addEventListener('click', () => {
+    if (recording) {
+      stopMic();
+    } else {
+      startMic();
+    }
+  });
+
+  finishBtn.addEventListener('click', () => {
+    stopMic();
+    collapse();
+  });
+
+  window.addEventListener('pagehide', stopMic);
+</script>
+</body>
+</html>
