@@ -47,42 +47,23 @@
     if (!awardsBox) return;
 
     const all = window.Awards.list;
-    let visible;
 
-    if (showAll) {
-      visible = all;
-    } else {
-      // Полученные + следующий
-      const got = all.filter(a => days >= a.days);
-      const next = all.find(a => days < a.days);
-      visible = next ? got.concat([next]) : got;
-    }
+    // Только полученные + следующий (полупрозрачный)
+    const got = all.filter(a => days >= a.days);
+    const next = all.find(a => days < a.days);
+    const visible = next ? got.concat([next]) : got;
 
     awardsBox.innerHTML = '';
 
     visible.forEach(award => {
-      const got = days >= award.days;
+      const isGot = days >= award.days;
       const btn = document.createElement('button');
-      btn.className = 'award-shield' + (got ? '' : ' locked');
+      btn.className = 'award-shield' + (isGot ? '' : ' locked');
       btn.type = 'button';
-      btn.innerHTML = window.Awards.shieldSVG(award.color, award.days, 40);
-      btn.addEventListener('click', () => openAwardOverlay(award, got, days));
+      btn.innerHTML = window.Awards.shieldSVG(award.color, award.days, 44);
+      btn.addEventListener('click', () => openAwardOverlay(award, isGot, days));
       awardsBox.appendChild(btn);
     });
-
-    // Ссылка «Показать все» / «Свернуть»
-    if (awardsMore) {
-      const hasHidden = all.length > visible.length;
-      if (hasHidden && !showAll) {
-        awardsMore.textContent = 'Показать все';
-        awardsMore.hidden = false;
-      } else if (showAll) {
-        awardsMore.textContent = 'Свернуть';
-        awardsMore.hidden = false;
-      } else {
-        awardsMore.hidden = true;
-      }
-    }
   }
 
   function openAwardOverlay(award, got, currentDays) {
