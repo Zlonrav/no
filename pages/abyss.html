@@ -73,7 +73,7 @@
     align-items: center;
     justify-content: center;
     z-index: 100;
-    transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.2s ease, color 0.2s ease;
+    transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.2s ease, color 0.2s ease, opacity 0.2s ease;
     -webkit-tap-highlight-color: transparent;
     padding: 0;
     font-family: inherit;
@@ -101,6 +101,12 @@
     color: #cfe0ff;
     box-shadow: 0 4px 16px rgba(30,58,138,0.55),
                 0 0 0 1px rgba(120,160,255,0.20);
+  }
+
+  /* Заблокирована — когда в поле полоски (звук) */
+  .abyss-whisper.disabled {
+    opacity: 0.3;
+    pointer-events: none;
   }
 
   /* ===== КОНТЕЙНЕР ===== */
@@ -178,13 +184,14 @@
     line-height: 1.6;
     letter-spacing: 0.2px;
     transition: opacity 0.3s ease;
+    z-index: 3;
   }
 
   .abyss-placeholder.hidden {
     opacity: 0;
   }
 
-  /* ===== СЦЕНА ДЛЯ АНИМАЦИИ ===== */
+  /* ===== СЦЕНА ДЛЯ АНИМАЦИИ ТЕКСТА ===== */
   .abyss-stage {
     position: absolute;
     top: 0;
@@ -195,6 +202,7 @@
     overflow: hidden;
     padding: 5px;
     box-sizing: border-box;
+    z-index: 4;
   }
 
   .abyss-line {
@@ -215,15 +223,13 @@
       filter       1.6s cubic-bezier(0.55, 0.05, 0.85, 0.5);
   }
 
-  /* Уход без шёпота: только вниз + гаснет. Без растяжения */
   .abyss-line.sinking {
-    transform: translateY(140px) scaleY(1.01);;
+    transform: translateY(140px) scaleY(1.01);
     color: rgba(232, 234, 237, 0);
     opacity: 0;
-  
   }
 
-  /* Шёпот в сцене — копия textarea.whispered */
+  /* Шёпот в сцене */
   .abyss-stage.whispered .abyss-line {
     color: rgb(255 255 255 / 65%);
     text-shadow:
@@ -232,9 +238,8 @@
     filter: url(#abyss-whisper-filter);
   }
 
-  /* Уход в шёпоте: остаётся размытым, гаснет и уходит вниз */
   .abyss-stage.whispered .abyss-line.sinking {
-    transform: translateY(140px) scaleY(1.01);;
+    transform: translateY(140px) scaleY(1.01);
     color: rgb(255 255 255 / 0%);
     text-shadow:
       0 0 8px  rgba(255, 255, 255, 0.55),
@@ -242,14 +247,55 @@
     opacity: 0;
   }
 
-  /* ===== КНОПКА «ОТПУСТИТЬ» ===== */
+  /* ===== СЛОЙ ПОЛОСОК (звук) ===== */
+  .voice-content {
+    position: absolute;
+    inset: 0;
+    padding: 5px;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 6px);
+    grid-auto-rows: 80px;
+    justify-content: space-between;
+    align-content: start;
+    gap: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 2;
+  }
+
+  .voice-cell {
+    position: relative;
+    width: 6px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .voice-line {
+    display: block;
+    width: 3px;
+    border-radius: 2px;
+    background: linear-gradient(180deg, #ff4a5a 0%, #c1121f 100%);
+    transition: height 0.05s linear;
+    min-height: 4px;
+  }
+
+  /* ===== КНОПКИ ВНИЗУ ===== */
+  .abyss-controls {
+    display: flex;
+    gap: 10px;
+    flex: 0 0 auto;
+  }
+
   .abyss-button {
     font-family: inherit;
     font-size: 12pt;
     font-weight: bold;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    padding: 16px 32px;
+    padding: 16px 28px;
     border-radius: 14px;
     border: 1px solid rgba(255,255,255,0.10);
     background: linear-gradient(135deg, #1e2a4a 0%, #0a1535 100%);
@@ -257,16 +303,12 @@
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.3s ease, opacity 0.3s ease;
     box-shadow: 0 4px 16px rgba(0,0,0,0.4);
-    align-self: center;
-    min-width: 200px;
-    flex: 0 0 auto;
+    flex: 1;
     -webkit-tap-highlight-color: transparent;
   }
 
   .abyss-button:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(30,58,138,0.4),
-                0 0 0 1px rgba(255,255,255,0.15);
   }
 
   .abyss-button:active:not(:disabled) {
@@ -278,6 +320,21 @@
     cursor: default;
   }
 
+  .abyss-button.rec {
+    background: linear-gradient(135deg, #c1121f 0%, #8a0f1a 100%);
+    border-color: transparent;
+  }
+
+  .abyss-button.rec.active {
+    background: linear-gradient(135deg, #ff4a5a 0%, #c1121f 100%);
+    animation: pulse 1.2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+
   @media (max-width: 700px) {
     .abyss-container {
       padding: 82px 18px 22px;
@@ -287,7 +344,7 @@
     .abyss-textarea,
     .abyss-placeholder,
     .abyss-line { font-size: 13pt; }
-    .abyss-button { padding: 14px 28px; font-size: 11pt; min-width: 180px; }
+    .abyss-button { padding: 14px 20px; font-size: 11pt; }
     .abyss-whisper { top: max(14px, env(safe-area-inset-top)); right: max(14px, env(safe-area-inset-right)); width: 44px; height: 44px; }
     .abyss-whisper svg { width: 20px; height: 20px; }
     .abyss-body .back-btn { top: max(14px, env(safe-area-inset-top)); left: max(14px, env(safe-area-inset-left)); }
@@ -323,34 +380,72 @@
 
 <div class="abyss-container">
 
-  <div class="abyss-input-wrap">
+  <div class="abyss-input-wrap" id="abyss-wrap">
+    <div class="voice-content" id="voice-content"></div>
     <textarea
       id="abyss-input"
       class="abyss-textarea"
       spellcheck="false"></textarea>
-    <div class="abyss-placeholder" id="abyss-placeholder">Напиши всё, что не даёт покоя. Это уйдёт навсегда</div>
+    <div class="abyss-placeholder" id="abyss-placeholder">Напиши всё, что не даёт покоя. Или скажи голосом</div>
   </div>
 
-  <button id="abyss-release" class="abyss-button">Отпустить</button>
+  <div class="abyss-controls">
+    <button class="abyss-button rec" id="abyss-rec" type="button">🎤 Говорить</button>
+    <button class="abyss-button" id="abyss-release">Отпустить</button>
+  </div>
 
 </div>
 
 <script>
 (function () {
+  const wrap = document.getElementById('abyss-wrap');
   const input = document.getElementById('abyss-input');
+  const content = document.getElementById('voice-content');
   const placeholder = document.getElementById('abyss-placeholder');
-  const btn = document.getElementById('abyss-release');
+  const recBtn = document.getElementById('abyss-rec');
+  const relBtn = document.getElementById('abyss-release');
   const whisperBtn = document.getElementById('abyss-whisper');
-  const wrap = input.parentNode;
+
+  let audioCtx = null;
+  let analyser = null;
+  let source = null;
+  let stream = null;
+  let rafId = null;
+  let recording = false;
+  let lastAdd = 0;
   let busy = false;
 
-  function updatePlaceholder() {
-    placeholder.classList.toggle('hidden', input.value.length > 0);
-  }
-  input.addEventListener('input', updatePlaceholder);
-  updatePlaceholder();
+  const ADD_INTERVAL = 45;
+  const MAX_LINES = 2000;
 
+  /* ===== Режим: 'empty' | 'text' | 'voice' ===== */
+  let mode = 'empty';
+
+  function setMode(m) {
+    mode = m;
+
+    if (m === 'voice') {
+      input.style.display = 'none';
+      // Шёпот не действует на звук — блокируем кнопку
+      whisperBtn.classList.add('disabled');
+      recBtn.disabled = true;
+      relBtn.disabled = false;
+    } else if (m === 'text') {
+      input.style.display = '';
+      whisperBtn.classList.remove('disabled');
+      recBtn.disabled = true;
+      relBtn.disabled = false;
+    } else {
+      input.style.display = '';
+      whisperBtn.classList.remove('disabled');
+      recBtn.disabled = false;
+      relBtn.disabled = true;
+    }
+  }
+
+  /* ===== Шёпот ===== */
   function applyWhisper(on) {
+    if (mode === 'voice') return; // не применяем к звуку
     input.classList.toggle('whispered', on);
     whisperBtn.classList.toggle('active', on);
     whisperBtn.title = on ? 'Шёпот включён' : 'Шептать';
@@ -366,56 +461,138 @@
   applyWhisper(getWhisper());
 
   whisperBtn.addEventListener('click', () => {
+    if (mode === 'voice') return;
     applyWhisper(!input.classList.contains('whispered'));
   });
 
-  function playWater() {
-    try {
-      const Ctx = window.AudioContext || window.webkitAudioContext;
-      if (!Ctx) return;
-      const ctx = new Ctx();
-      const duration = 3.2;
-      const size = Math.floor(ctx.sampleRate * duration);
-      const buffer = ctx.createBuffer(1, size, ctx.sampleRate);
-      const data = buffer.getChannelData(0);
-      for (let i = 0; i < size; i++) data[i] = Math.random() * 2 - 1;
-
-      const src = ctx.createBufferSource();
-      src.buffer = buffer;
-
-      const filter = ctx.createBiquadFilter();
-      filter.type = 'bandpass';
-      filter.frequency.value = 850;
-      filter.Q.value = 0.8;
-
-      const gain = ctx.createGain();
-      gain.gain.setValueAtTime(0.0001, ctx.currentTime);
-      gain.gain.linearRampToValueAtTime(0.06, ctx.currentTime + 0.5);
-      gain.gain.linearRampToValueAtTime(0.04, ctx.currentTime + 1.8);
-      gain.gain.linearRampToValueAtTime(0.0001, ctx.currentTime + duration);
-
-      src.connect(filter);
-      filter.connect(gain);
-      gain.connect(ctx.destination);
-
-      src.start(0);
-      src.stop(ctx.currentTime + duration);
-
-      setTimeout(() => { try { ctx.close(); } catch (e) {} }, duration * 1000 + 200);
-    } catch (e) {}
+  /* ===== Placeholder для текста ===== */
+  function updatePlaceholder() {
+    if (mode === 'voice') return;
+    placeholder.classList.toggle('hidden', input.value.length > 0);
   }
 
+  input.addEventListener('input', () => {
+    if (input.value.length > 0 && mode === 'empty') {
+      setMode('text');
+    } else if (input.value.length === 0 && mode === 'text') {
+      setMode('empty');
+    }
+    updatePlaceholder();
+  });
+
+  /* ===== Микрофон ===== */
+  async function startMic() {
+    if (busy || mode === 'text') return;
+
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    } catch (e) {
+      alert('Не удалось получить доступ к микрофону. Разреши в браузере.');
+      return;
+    }
+
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 256;
+    analyser.smoothingTimeConstant = 0.6;
+
+    source = audioCtx.createMediaStreamSource(stream);
+    source.connect(analyser);
+
+    recording = true;
+    recBtn.classList.add('active');
+    recBtn.textContent = '⏹ Стоп';
+    placeholder.classList.add('hidden');
+
+    draw();
+  }
+
+  function stopMic() {
+    if (rafId) cancelAnimationFrame(rafId);
+    rafId = null;
+    if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
+    if (audioCtx) { audioCtx.close(); audioCtx = null; }
+    analyser = null;
+    source = null;
+    recording = false;
+
+    recBtn.classList.remove('active');
+    recBtn.textContent = '🎤 Говорить';
+
+    // Если что-то записали — переходим в режим «звук»
+    if (content.querySelectorAll('.voice-line').length > 0) {
+      setMode('voice');
+    } else {
+      setMode('empty');
+      placeholder.classList.remove('hidden');
+    }
+  }
+
+  function draw() {
+    const data = new Uint8Array(analyser.frequencyBinCount);
+
+    function loop() {
+      if (!analyser) return;
+      analyser.getByteFrequencyData(data);
+
+      let sum = 0;
+      for (let i = 0; i < data.length; i++) sum += data[i];
+      const avg = sum / data.length;
+
+      const now = performance.now();
+      if (now - lastAdd >= ADD_INTERVAL) {
+        // Чувствительнее: усиливаем средний уровень в 3 раза
+        const boosted = Math.min(255, avg * 3);
+        const h = 4 + (boosted / 255) * 72;
+        addLine(h);
+        lastAdd = now;
+      }
+
+      rafId = requestAnimationFrame(loop);
+    }
+    loop();
+  }
+
+  function addLine(height) {
+    const cell = document.createElement('div');
+    cell.className = 'voice-cell';
+
+    const el = document.createElement('span');
+    el.className = 'voice-line';
+    el.style.height = Math.max(4, height) + 'px';
+
+    cell.appendChild(el);
+    content.appendChild(cell);
+
+    const cells = content.querySelectorAll('.voice-cell');
+    if (cells.length > MAX_LINES) cells[0].remove();
+  }
+
+  /* ===== Уход: и текст, и полоски ===== */
   function release() {
     if (busy) return;
-    if (!input.value.trim()) return;
+
+    const hasText = input.value.trim().length > 0;
+    const hasVoice = content.querySelectorAll('.voice-line').length > 0;
+
+    if (!hasText && !hasVoice) return;
 
     busy = true;
-    btn.disabled = true;
+    relBtn.disabled = true;
+    recBtn.disabled = true;
 
+    if (hasText) {
+      releaseText();
+    } else {
+      releaseVoice();
+    }
+  }
+
+  /* ===== Уход текста ===== */
+  function releaseText() {
     const text = input.value;
     const wasWhispered = input.classList.contains('whispered');
 
-    // ===== Измеряем ширину через canvas, учитывая шрифт textarea =====
     const style = getComputedStyle(input);
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
@@ -425,12 +602,10 @@
     const padRight = parseFloat(style.paddingRight) || 0;
     const maxWidth = input.clientWidth - padLeft - padRight;
 
-    // Ручной учёт letter-spacing (canvas его не знает)
     function measure(str) {
       return ctx.measureText(str).width + (str.length - 1) * letterSpacing;
     }
 
-    // Разбиваем каждую логическую строку на визуальные
     const visualLines = [];
     const logicalLines = text.split('\n');
 
@@ -440,13 +615,12 @@
       const words = line.split(' ');
       let current = '';
 
-      words.forEach((word, i) => {
+      words.forEach((word) => {
         const candidate = current ? current + ' ' + word : word;
         if (measure(candidate) <= maxWidth) {
           current = candidate;
         } else {
           if (current) visualLines.push(current);
-          // Если одно слово шире строки — режем посимвольно
           if (measure(word) > maxWidth) {
             let chunk = '';
             for (let c = 0; c < word.length; c++) {
@@ -466,7 +640,6 @@
       if (current) visualLines.push(current);
     });
 
-    // ===== Строим сцену из визуальных строк =====
     const stage = document.createElement('div');
     stage.className = 'abyss-stage';
     if (wasWhispered) stage.classList.add('whispered');
@@ -486,7 +659,6 @@
 
     const lines = stage.querySelectorAll('.abyss-line');
     const count = lines.length;
-
     const step = Math.max(0.12, Math.min(0.24, 2.2 / count));
     const lineDur = 1.6;
 
@@ -505,13 +677,140 @@
       placeholder.style.display = '';
       input.value = '';
       updatePlaceholder();
-
-      btn.disabled = false;
+      setMode('empty');
       busy = false;
     }, totalTime * 1000 + 250);
   }
 
-  btn.addEventListener('click', release);
+  /* ===== Уход звука (полоски вниз) ===== */
+  function releaseVoice() {
+    const lines = Array.from(content.querySelectorAll('.voice-line'));
+    if (!lines.length) return;
+
+    playWater();
+
+    const stage = document.createElement('div');
+    stage.className = 'abyss-stage';
+
+    const wrapRect = wrap.getBoundingClientRect();
+    const positions = lines.map(el => {
+      const r = el.getBoundingClientRect();
+      return {
+        x: r.left - wrapRect.left,
+        y: r.top - wrapRect.top,
+        w: r.width,
+        h: r.height
+      };
+    });
+
+    const rowMap = {};
+    positions.forEach(p => {
+      const key = Math.round(p.y / 4) * 4;
+      if (!rowMap[key]) rowMap[key] = [];
+      rowMap[key].push(p);
+    });
+
+    const rowKeys = Object.keys(rowMap).map(Number).sort((a, b) => a - b);
+    const blocks = rowKeys.map(key => {
+      const row = rowMap[key];
+      const minX = Math.min(...row.map(p => p.x));
+      const maxX = Math.max(...row.map(p => p.x + p.w));
+      const minY = Math.min(...row.map(p => p.y));
+      const maxY = Math.max(...row.map(p => p.y + p.h));
+
+      const block = document.createElement('div');
+      block.style.position = 'absolute';
+      block.style.left = minX + 'px';
+      block.style.top = minY + 'px';
+      block.style.width = (maxX - minX) + 'px';
+      block.style.height = (maxY - minY) + 'px';
+      block.style.willChange = 'transform, opacity';
+      block.style.transition =
+        'transform 1.6s cubic-bezier(0.55, 0.05, 0.85, 0.5), ' +
+        'opacity 1.6s cubic-bezier(0.55, 0.05, 0.85, 0.5)';
+
+      row.forEach(p => {
+        const copy = document.createElement('span');
+        copy.style.position = 'absolute';
+        copy.style.left = (p.x - minX) + 'px';
+        copy.style.top = (p.y - minY) + 'px';
+        copy.style.width = p.w + 'px';
+        copy.style.height = p.h + 'px';
+        copy.style.borderRadius = '2px';
+        copy.style.background = 'linear-gradient(180deg, #ff4a5a 0%, #c1121f 100%)';
+        block.appendChild(copy);
+      });
+
+      return block;
+    });
+
+    blocks.forEach(b => stage.appendChild(b));
+    content.style.visibility = 'hidden';
+    wrap.appendChild(stage);
+
+    const count = blocks.length;
+    const step = Math.max(0.12, Math.min(0.24, 2.2 / count));
+    const lineDur = 1.6;
+
+    blocks.forEach((block, i) => {
+      const reverseIndex = count - 1 - i;
+      block.style.transitionDelay = (reverseIndex * step) + 's';
+      void block.offsetWidth;
+      block.style.transform = 'translateY(140px)';
+      block.style.opacity = '0';
+    });
+
+    const totalTime = (count - 1) * step + lineDur;
+
+    setTimeout(() => {
+      stage.remove();
+      content.innerHTML = '';
+      content.style.visibility = '';
+      placeholder.classList.remove('hidden');
+      setMode('empty');
+      busy = false;
+    }, totalTime * 1000 + 250);
+  }
+
+  /* ===== Звук воды ===== */
+  function playWater() {
+    try {
+      const Ctx = window.AudioContext || window.webkitAudioContext;
+      if (!Ctx) return;
+      const ctx = new Ctx();
+      const duration = 3.2;
+      const size = Math.floor(ctx.sampleRate * duration);
+      const buffer = ctx.createBuffer(1, size, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < size; i++) data[i] = Math.random() * 2 - 1;
+
+      const src = ctx.createBufferSource();
+      src.buffer = buffer;
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.value = 850;
+      filter.Q.value = 0.8;
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.06, ctx.currentTime + 0.5);
+      gain.gain.linearRampToValueAtTime(0.04, ctx.currentTime + 1.8);
+      gain.gain.linearRampToValueAtTime(0.0001, ctx.currentTime + duration);
+      src.connect(filter);
+      filter.connect(gain);
+      gain.connect(ctx.destination);
+      src.start(0);
+      src.stop(ctx.currentTime + duration);
+      setTimeout(() => { try { ctx.close(); } catch (e) {} }, duration * 1000 + 200);
+    } catch (e) {}
+  }
+
+  /* ===== Обработчики ===== */
+  recBtn.addEventListener('click', () => {
+    if (recording) stopMic();
+    else startMic();
+  });
+
+  relBtn.addEventListener('click', release);
 
   input.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
@@ -519,6 +818,12 @@
       release();
     }
   });
+
+  window.addEventListener('pagehide', stopMic);
+
+  /* Стартовое состояние */
+  setMode('empty');
+  updatePlaceholder();
 })();
 </script>
 </body>
