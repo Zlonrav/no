@@ -82,6 +82,7 @@
           : 'До получения: ' + remaining + ' ' + window.Sober.plural(remaining, ['день', 'дня', 'дней'])
         }
       </div>
+      <div class="award-overlay__text">${award.text}</div>
     `;
 
     awardOverlay.hidden = false;
