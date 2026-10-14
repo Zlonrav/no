@@ -27,7 +27,19 @@
   let showAll = false;
 
   function render() {
-    const start = window.Sober.ensureStart();
+    const start = window.Sober.getStart(); // ← было ensureStart
+    const awardsWrap = document.querySelector('.counter-awards-wrap');
+
+    if (!start) {
+      // Дата не установлена
+      valueEl.textContent = '—';
+      wordEl.textContent = 'дней трезвости';
+      startEl.textContent = 'Установите дату';
+      inputEl.value = '';
+      if (awardsWrap) awardsWrap.hidden = true;
+      return;
+    }
+
     const n = window.Sober.daysSince(start);
     const word = window.Sober.plural(n, ['день', 'дня', 'дней']);
 
@@ -40,6 +52,7 @@
 
     inputEl.value = start;
 
+    if (awardsWrap) awardsWrap.hidden = false;
     renderAwards(n);
   }
 
