@@ -92,7 +92,7 @@
       <div class="award-overlay__status">
         ${got
           ? 'Получен за ' + award.days + ' дней трезвости.'
-          : 'До получения: ' + remaining + ' ' + window.Sober.plural(remaining, ['день', 'дня', 'дней.'])
+          : 'До получения: ' + remaining + ' ' + window.Sober.plural(remaining, ['день', 'дня', 'дней']) + '.'
         }
       </div>
       ${got ? '<div class="award-overlay__text">' + award.text + '</div>' : ''}
