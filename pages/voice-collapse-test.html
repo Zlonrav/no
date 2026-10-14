@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='none' stroke='%23c1121f' stroke-width='14'/><line x1='22' y1='22' x2='78' y2='78' stroke='%23c1121f' stroke-width='14' stroke-linecap='round'/></svg>">
-<title>Голос → текст — тест</title>
+<title>Голос в Бездне — тест</title>
 <meta name="theme-color" content="#0a0a0f">
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="stylesheet" href="../css/styles.css">
@@ -16,14 +16,16 @@
     overflow: hidden;
   }
 
-  body.voice-body {
+  body.abyss-body {
     background: linear-gradient(180deg, #17171c 0%, #0f1525 45%, #081430 100%);
     color: #e8eaed;
+    display: block;
+    padding: 0;
     min-height: 100dvh;
-    font-family: Arial, Helvetica, sans-serif;
+    position: relative;
   }
 
-  body.voice-body::before {
+  body.abyss-body::before {
     content: "";
     position: fixed;
     inset: 0;
@@ -34,7 +36,15 @@
     z-index: 0;
   }
 
-  .voice-body .back-btn {
+  .abyss-svg-defs {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .abyss-body .back-btn {
     background: rgba(255,255,255,0.06);
     border-color: rgba(255,255,255,0.10);
     color: #e8eaed;
@@ -43,73 +53,112 @@
     left: max(20px, env(safe-area-inset-left));
   }
 
-  .voice-page {
+  /* ===== КНОПКА «ШЕПТАТЬ» ===== */
+  .abyss-whisper {
+    position: fixed;
+    top: max(20px, env(safe-area-inset-top));
+    right: max(20px, env(safe-area-inset-right));
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.10);
+    color: #e8eaed;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.2s ease, color 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+    padding: 0;
+    font-family: inherit;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+  }
+
+  .abyss-whisper:hover {
+    background: rgba(255,255,255,0.12);
+    transform: translateY(-1px);
+  }
+
+  .abyss-whisper.active {
+    background: linear-gradient(135deg, #1e3a8a 0%, #0f1e4a 100%);
+    border-color: rgba(120,160,255,0.35);
+    color: #cfe0ff;
+  }
+
+  .abyss-whisper svg {
+    display: block;
+    width: 22px;
+    height: 22px;
+  }
+
+  /* ===== КОНТЕЙНЕР ===== */
+  .abyss-container {
     position: fixed;
     inset: 0;
     z-index: 1;
-    display: flex;
-    flex-direction: column;
-    padding: 80px 20px 40px;
-    box-sizing: border-box;
-    overflow-y: auto;
-  }
-
-  .voice-content {
     width: 100%;
-    max-width: 480px;
-    margin: auto;
+    max-width: 720px;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    padding: 90px 24px 28px;
+    padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px));
+    box-sizing: border-box;
+    gap: 16px;
   }
 
-  .voice-title {
-    font-size: 11pt;
-    font-weight: bold;
-    color: rgba(255,255,255,0.5);
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin: 0 0 4px;
-    text-align: center;
-  }
-
-  /* ===== Поле ===== */
-  .voice-field {
+  .abyss-input-wrap {
     position: relative;
-    height: 280px;
-    background: rgba(255,255,255,0.02);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 14px;
-    padding: 14px;
+    flex: 1 1 0;
+    min-height: 0;
+    display: flex;
     overflow: hidden;
   }
 
-  .voice-field__placeholder {
+  .abyss-textarea {
+    flex: 1 1 auto;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #e8eaed;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15pt;
+    line-height: 1.6;
+    resize: none;
+    padding: 5px;
+    margin: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .abyss-textarea.whispered {
+    color: rgb(255 255 255 / 65%);
+    text-shadow:
+      0 0 2px  rgb(255 255 255),
+      0 0 14px rgba(180, 200, 240, 0.30);
+    filter: url(#abyss-whisper-filter);
+  }
+
+  /* ===== Полоски-«буквы» внутри textarea ===== */
+  .voice-content {
     position: absolute;
-    top: 14px;
-    left: 14px;
-    right: 14px;
-    font-size: 11pt;
-    font-style: italic;
-    color: rgba(232, 234, 237, 0.28);
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-  }
-
-  .voice-field__placeholder.hidden {
-    opacity: 0;
-  }
-
-  .voice-field__content {
-    position: relative;
+    inset: 0;
+    padding: 5px;
+    box-sizing: border-box;
     display: flex;
     flex-wrap: wrap;
     align-content: flex-start;
     gap: 3px;
-    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 2;
   }
 
-  /* Полоска */
   .voice-line {
     display: block;
     width: 3px;
@@ -119,67 +168,115 @@
     transition: height 0.05s linear;
   }
 
-  /* Режим «слияние» — все полоски становятся одинаковой высоты,
-     зазор схлопывается, полоски превращаются в «строчки текста» */
-  .voice-field__content.collapsed {
-    gap: 0;
-    align-content: flex-start;
+  .voice-content.hidden {
+    display: none;
   }
 
-  .voice-field__content.collapsed .voice-line {
-    transition: height 0.6s ease, width 0.4s ease, border-radius 0.4s ease, opacity 0.4s ease;
-    width: 4px;
-    height: 16px;
-    border-radius: 0;
-    opacity: 0.9;
+  /* ===== Placeholder ===== */
+  .abyss-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 5px;
+    box-sizing: border-box;
+    pointer-events: none;
+    color: rgba(232, 234, 237, 0.28);
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: italic;
+    font-size: 15pt;
+    line-height: 1.6;
+    transition: opacity 0.3s ease;
+    z-index: 3;
   }
 
-  /* Строки */
-  .voice-field__content.collapsed .voice-line.row-end {
-    margin-right: 10px;
+  .abyss-placeholder.hidden {
+    opacity: 0;
   }
 
-  /* ===== Кнопки ===== */
-  .voice-controls {
+  /* ===== СЦЕНА УХОДА ===== */
+  .abyss-stage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    overflow: hidden;
+    padding: 5px;
+    box-sizing: border-box;
+    z-index: 4;
+  }
+
+  .abyss-line {
+    display: block;
+    color: #e8eaed;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15pt;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-word;
+    will-change: transform, opacity, color, text-shadow, filter;
+    transition:
+      transform    1.6s cubic-bezier(0.55, 0.05, 0.85, 0.5),
+      opacity      1.6s cubic-bezier(0.55, 0.05, 0.85, 0.5),
+      color        1.6s cubic-bezier(0.55, 0.05, 0.85, 0.5),
+      text-shadow  1.6s cubic-bezier(0.55, 0.05, 0.85, 0.5),
+      filter       1.6s cubic-bezier(0.55, 0.05, 0.85, 0.5);
+  }
+
+  .abyss-line.sinking {
+    transform: translateY(140px) scaleY(1.01);
+    color: rgba(232, 234, 237, 0);
+    opacity: 0;
+  }
+
+  /* ===== КНОПКИ ВНИЗУ ===== */
+  .abyss-controls {
     display: flex;
     gap: 10px;
+    flex: 0 0 auto;
   }
 
-  .voice-btn {
-    flex: 1;
+  .abyss-button {
     font-family: inherit;
-    font-size: 11pt;
+    font-size: 12pt;
     font-weight: bold;
-    letter-spacing: 0.5px;
-    padding: 14px 16px;
-    border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.12);
-    background: rgba(255,255,255,0.05);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 16px 28px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.10);
+    background: linear-gradient(135deg, #1e2a4a 0%, #0a1535 100%);
     color: #e8eaed;
     cursor: pointer;
-    transition: transform 0.15s ease, background 0.15s ease, opacity 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    flex: 1;
     -webkit-tap-highlight-color: transparent;
   }
 
-  .voice-btn:hover:not(:disabled) { background: rgba(255,255,255,0.10); }
-  .voice-btn:active:not(:disabled) { transform: scale(0.97); }
-  .voice-btn:disabled { opacity: 0.35; cursor: default; }
+  .abyss-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+  }
 
-  .voice-btn.rec {
+  .abyss-button:active:not(:disabled) {
+    transform: translateY(0) scale(0.98);
+  }
+
+  .abyss-button:disabled {
+    opacity: 0.3;
+    cursor: default;
+  }
+
+  .abyss-button.rec {
     background: linear-gradient(135deg, #c1121f 0%, #8a0f1a 100%);
     border-color: transparent;
-    color: #fff;
   }
 
-  .voice-btn.rec.active {
+  .abyss-button.rec.active {
     background: linear-gradient(135deg, #ff4a5a 0%, #c1121f 100%);
     animation: pulse 1.2s ease-in-out infinite;
-  }
-
-  .voice-btn.finish {
-    background: linear-gradient(135deg, #1e3a8a 0%, #0f1e4a 100%);
-    border-color: transparent;
-    color: #fff;
   }
 
   @keyframes pulse {
@@ -187,16 +284,29 @@
     50% { opacity: 0.7; }
   }
 
-  .voice-hint {
-    font-size: 10pt;
-    color: rgba(255,255,255,0.5);
-    text-align: center;
-    margin: 0;
-    line-height: 1.5;
+  @media (max-width: 700px) {
+    .abyss-container {
+      padding: 82px 18px 22px;
+      padding-bottom: calc(22px + env(safe-area-inset-bottom, 0px));
+      gap: 14px;
+    }
+    .abyss-placeholder { font-size: 13pt; }
+    .abyss-button { padding: 14px 20px; font-size: 11pt; }
+    .abyss-whisper { top: max(14px, env(safe-area-inset-top)); right: max(14px, env(safe-area-inset-right)); width: 44px; height: 44px; }
+    .abyss-whisper svg { width: 20px; height: 20px; }
+    .abyss-body .back-btn { top: max(14px, env(safe-area-inset-top)); left: max(14px, env(safe-area-inset-left)); }
   }
 </style>
 </head>
-<body class="voice-body">
+<body class="abyss-body">
+
+<svg class="abyss-svg-defs" aria-hidden="true" focusable="false">
+  <defs>
+    <filter id="abyss-whisper-filter" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3.2"/>
+    </filter>
+  </defs>
+</svg>
 
 <a class="back-btn" href="../index.html" aria-label="Назад">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -204,33 +314,39 @@
   </svg>
 </a>
 
-<div class="voice-page">
-  <div class="voice-content">
+<button class="abyss-whisper" id="abyss-whisper" title="Шептать" aria-label="Режим шёпота">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3 11c2 3 5.5 5 9 5s7-2 9-5"/>
+    <path d="M6 13.5l-1.5 2"/>
+    <path d="M9.5 15.2l-1 2.3"/>
+    <path d="M12 16v2.5"/>
+    <path d="M14.5 15.2l1 2.3"/>
+    <path d="M18 13.5l1.5 2"/>
+  </svg>
+</button>
 
-    <p class="voice-title">Говори — заполняется. Стоп — сливается в текст.</p>
+<div class="abyss-container">
 
-    <div class="voice-field">
-      <p class="voice-field__placeholder" id="placeholder">Говори. Волна запишется в поле.</p>
-      <div class="voice-field__content" id="content"></div>
-    </div>
-
-    <div class="voice-controls">
-      <button class="voice-btn rec" id="rec" type="button">🎤 Говорить</button>
-      <button class="voice-btn finish" id="finish" type="button" disabled>Стоп</button>
-    </div>
-
-    <p class="voice-hint">
-      Ничего не сохраняется и никуда не отправляется. Только визуализация уровня звука.
-    </p>
-
+  <div class="abyss-input-wrap" id="abyss-wrap">
+    <div class="voice-content" id="voice-content"></div>
+    <div class="abyss-placeholder" id="abyss-placeholder">Нажми «Говорить» и скажи, что не даёт покоя</div>
   </div>
+
+  <div class="abyss-controls">
+    <button class="abyss-button rec" id="abyss-rec" type="button">🎤 Говорить</button>
+    <button class="abyss-button" id="abyss-release" disabled>Отпустить</button>
+  </div>
+
 </div>
 
 <script>
-  const content = document.getElementById('content');
-  const placeholder = document.getElementById('placeholder');
-  const recBtn = document.getElementById('rec');
-  const finishBtn = document.getElementById('finish');
+(function () {
+  const wrap = document.getElementById('abyss-wrap');
+  const content = document.getElementById('voice-content');
+  const placeholder = document.getElementById('abyss-placeholder');
+  const recBtn = document.getElementById('abyss-rec');
+  const relBtn = document.getElementById('abyss-release');
+  const whisperBtn = document.getElementById('abyss-whisper');
 
   let audioCtx = null;
   let analyser = null;
@@ -238,73 +354,30 @@
   let stream = null;
   let rafId = null;
   let recording = false;
-  let collapsed = false;
-
-  const MAX_LINES = 500;
-  const ADD_INTERVAL = 45; // мс между полосками
   let lastAdd = 0;
+  let busy = false;
 
-  /* ===== Добавить полоску ===== */
-  function addLine(height) {
-    const el = document.createElement('span');
-    el.className = 'voice-line';
-    el.style.height = Math.max(4, height) + 'px';
-    content.appendChild(el);
+  const ADD_INTERVAL = 45;
+  const MAX_LINES = 2000;
 
-    // Ограничение
-    const lines = content.querySelectorAll('.voice-line');
-    if (lines.length > MAX_LINES) {
-      lines[0].remove();
-    }
-
-    placeholder.classList.add('hidden');
+  /* ===== Whisper ===== */
+  function applyWhisper(on) {
+    content.classList.toggle('whispered', on);
+    whisperBtn.classList.toggle('active', on);
+    try { localStorage.setItem('abyss-whisper', on ? '1' : '0'); } catch (e) {}
   }
-
-  /* ===== Слияние ===== */
-  function collapse() {
-    if (collapsed) return;
-    collapsed = true;
-
-    // Определяем границы строк — группируем полоски по их верхнему краю
-    const lines = Array.from(content.querySelectorAll('.voice-line'));
-    if (!lines.length) return;
-
-    // Группируем по вертикальному положению (округляем до 4px)
-    const rows = {};
-    lines.forEach(el => {
-      const top = Math.round(el.getBoundingClientRect().top / 4) * 4;
-      if (!rows[top]) rows[top] = [];
-      rows[top].push(el);
-    });
-
-    // Для каждой строки — отмечаем последнюю полоску (для отступа между строками)
-    Object.values(rows).forEach(row => {
-      if (row.length) {
-        row[row.length - 1].classList.add('row-end');
-      }
-    });
-
-    // Запускаем анимацию сжатия
-    content.classList.add('collapsed');
-
-    // Все полоски — плавно к одинаковой высоте
-    // Плюс небольшой сдвиг по времени для эффекта «сливания»
-    lines.forEach((el, i) => {
-      el.style.transitionDelay = (i * 0.004) + 's';
-    });
+  function getWhisper() {
+    try { return localStorage.getItem('abyss-whisper') === '1'; }
+    catch (e) { return false; }
   }
-
-  /* ===== Сброс ===== */
-  function reset() {
-    content.innerHTML = '';
-    content.classList.remove('collapsed');
-    placeholder.classList.remove('hidden');
-    collapsed = false;
-  }
+  applyWhisper(getWhisper());
+  whisperBtn.addEventListener('click', () => {
+    applyWhisper(!content.classList.contains('whispered'));
+  });
 
   /* ===== Микрофон ===== */
   async function startMic() {
-    if (collapsed) reset();
+    if (busy) return;
 
     try {
       stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -323,8 +396,9 @@
 
     recording = true;
     recBtn.classList.add('active');
-    recBtn.textContent = '⏹ Идёт запись';
-    finishBtn.disabled = false;
+    recBtn.textContent = '⏹ Стоп';
+    relBtn.disabled = true;
+    placeholder.classList.add('hidden');
 
     draw();
   }
@@ -337,9 +411,16 @@
     analyser = null;
     source = null;
     recording = false;
+
     recBtn.classList.remove('active');
     recBtn.textContent = '🎤 Говорить';
-    finishBtn.disabled = true;
+
+    // Если что-то записали — включаем «Отпустить»
+    if (content.querySelectorAll('.voice-line').length > 0) {
+      relBtn.disabled = false;
+    } else {
+      placeholder.classList.remove('hidden');
+    }
   }
 
   function draw() {
@@ -362,25 +443,148 @@
 
       rafId = requestAnimationFrame(loop);
     }
-
     loop();
+  }
+
+  function addLine(height) {
+    const el = document.createElement('span');
+    el.className = 'voice-line';
+    el.style.height = Math.max(4, height) + 'px';
+    content.appendChild(el);
+
+    const lines = content.querySelectorAll('.voice-line');
+    if (lines.length > MAX_LINES) lines[0].remove();
+  }
+
+  /* ===== Уход полосок вниз ===== */
+  function release() {
+    if (busy) return;
+    const lines = Array.from(content.querySelectorAll('.voice-line'));
+    if (!lines.length) return;
+
+    busy = true;
+    relBtn.disabled = true;
+
+    playWater();
+
+    // Создаём сцену поверх — копируем полоски
+    const stage = document.createElement('div');
+    stage.className = 'abyss-stage';
+    if (content.classList.contains('whispered')) stage.classList.add('whispered');
+
+    // Группируем полоски по строкам — по верхнему краю
+    const rows = {};
+    lines.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      const wrapRect = wrap.getBoundingClientRect();
+      const top = Math.round((rect.top - wrapRect.top) / 4) * 4;
+      if (!rows[top]) rows[top] = [];
+      rows[top].push(el);
+    });
+
+    // Сортируем строки сверху вниз
+    const sortedTops = Object.keys(rows).map(Number).sort((a, b) => a - b);
+
+    // Создаём по одному «блоку» на строку — как визуальную строку
+    const blocks = sortedTops.map(top => {
+      const rowEls = rows[top];
+      const block = document.createElement('div');
+      block.className = 'abyss-line-block';
+
+      rowEls.forEach(el => {
+        const copy = document.createElement('span');
+        copy.className = 'voice-line-copy';
+        copy.style.height = el.style.height;
+        copy.style.width = '3px';
+        copy.style.borderRadius = '2px';
+        copy.style.background = 'linear-gradient(180deg, #ff4a5a 0%, #c1121f 100%)';
+        block.appendChild(copy);
+      });
+
+      block.style.position = 'absolute';
+      block.style.top = top + 'px';
+      block.style.left = '5px';
+      block.style.right = '5px';
+      block.style.display = 'flex';
+      block.style.gap = '3px';
+      block.style.willChange = 'transform, opacity';
+      block.style.transition =
+        'transform 1.6s cubic-bezier(0.55, 0.05, 0.85, 0.5), ' +
+        'opacity 1.6s cubic-bezier(0.55, 0.05, 0.85, 0.5)';
+      return block;
+    });
+
+    blocks.forEach(b => stage.appendChild(b));
+    content.style.visibility = 'hidden';
+    wrap.appendChild(stage);
+
+    // Уходим волной снизу вверх
+    const count = blocks.length;
+    const step = Math.max(0.12, Math.min(0.24, 2.2 / count));
+    const lineDur = 1.6;
+
+    blocks.forEach((block, i) => {
+      const reverseIndex = count - 1 - i;
+      block.style.transitionDelay = (reverseIndex * step) + 's';
+      void block.offsetWidth;
+      block.style.transform = 'translateY(140px)';
+      block.style.opacity = '0';
+    });
+
+    const totalTime = (count - 1) * step + lineDur;
+
+    setTimeout(() => {
+      stage.remove();
+      content.innerHTML = '';
+      content.style.visibility = '';
+      placeholder.classList.remove('hidden');
+      relBtn.disabled = true;
+      busy = false;
+    }, totalTime * 1000 + 250);
+  }
+
+  /* ===== Звук воды ===== */
+  function playWater() {
+    try {
+      const Ctx = window.AudioContext || window.webkitAudioContext;
+      if (!Ctx) return;
+      const ctx = new Ctx();
+      const duration = 3.2;
+      const size = Math.floor(ctx.sampleRate * duration);
+      const buffer = ctx.createBuffer(1, size, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < size; i++) data[i] = Math.random() * 2 - 1;
+
+      const src = ctx.createBufferSource();
+      src.buffer = buffer;
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.value = 850;
+      filter.Q.value = 0.8;
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.06, ctx.currentTime + 0.5);
+      gain.gain.linearRampToValueAtTime(0.04, ctx.currentTime + 1.8);
+      gain.gain.linearRampToValueAtTime(0.0001, ctx.currentTime + duration);
+      src.connect(filter);
+      filter.connect(gain);
+      gain.connect(ctx.destination);
+      src.start(0);
+      src.stop(ctx.currentTime + duration);
+      setTimeout(() => { try { ctx.close(); } catch (e) {} }, duration * 1000 + 200);
+    } catch (e) {}
   }
 
   /* ===== Обработчики ===== */
   recBtn.addEventListener('click', () => {
-    if (recording) {
-      stopMic();
-    } else {
-      startMic();
-    }
+    if (recording) stopMic();
+    else startMic();
   });
 
-  finishBtn.addEventListener('click', () => {
-    stopMic();
-    collapse();
-  });
+  relBtn.addEventListener('click', release);
 
   window.addEventListener('pagehide', stopMic);
+})();
 </script>
 </body>
 </html>
