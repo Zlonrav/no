@@ -52,6 +52,11 @@
               stroke="rgba(255,255,255,0.25)"
               stroke-width="1"
               stroke-linejoin="round"/>
+        <path d="M40 9 L15 18 L15 40 C15 56 27 67 40 72"
+              fill="none"
+              stroke="rgba(255,255,255,0.25)"
+              stroke-width="1"
+              stroke-linejoin="round"/>
         <text x="40" y="48" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="${textColor}">${days}</text>
       </svg>
     `;
