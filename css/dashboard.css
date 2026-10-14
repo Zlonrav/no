@@ -223,10 +223,10 @@ html[data-theme="dark"] body.dashboard-body {
 /* ===== ЛОГОТИП (только десктоп) ===== */
 .logo {display: none;}
 
-@media (min-width: /*900*/710px) and (min-height: 950px) {
+@media (min-height: 800px) {
   .logo {
     position: fixed;
-    top: 70px;
+    top: 35px;
     left: 50%;
     transform: translateX(-50%);
     display: inline-flex;
@@ -262,10 +262,10 @@ html[data-theme="dark"] body.dashboard-body {
     font-weight: bold;
   }
 }
-@media (min-height: 800px) {
+@media (min-width: /*900*/710px) and (min-height: 950px) {
   .logo {
     position: fixed;
-    top: 35px;
+    top: 70px;
     left: 50%;
     transform: translateX(-50%);
     display: inline-flex;
