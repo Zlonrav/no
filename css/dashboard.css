@@ -262,42 +262,8 @@ html[data-theme="dark"] body.dashboard-body {
     font-weight: bold;
   }
 }
-@media (min-width: /*900*/710px) and (min-height: 950px) {
+@media (min-width: 710px) and (min-height: 950px) {
   .logo {
-    position: fixed;
     top: 70px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    z-index: 200;
-    color: #d92b3a;
-    font-family: Arial, Helvetica, sans-serif;
-    pointer-events: none;
-  }
-
-  .logo svg {
-    display: block;
-    width: 32px;
-    height: 32px;
-    stroke: currentColor;
-    stroke-width: 14;
-    fill: none;
-    stroke-linecap: round;
-    flex-shrink: 0;
-  }
-
-  .logo-text {
-    font-size: 20pt;
-    font-weight: bold;
-    letter-spacing: 0.5px;
-    color: currentColor;
-    white-space: nowrap;
-  }
-
-  .logo-text strong {
-    color: currentColor;
-    font-weight: bold;
   }
 }
