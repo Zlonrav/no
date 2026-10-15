@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='none' stroke='%23c1121f' stroke-width='14'/><line x1='22' y1='22' x2='78' y2='78' stroke='%23c1121f' stroke-width='14' stroke-linecap='round'/></svg>">
+<title>Понять — Нет!</title>
+<meta name="theme-color" content="#1e3a8a" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#16181c" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<script src="../js/theme-init.js"></script>
+<link rel="stylesheet" href="../css/styles.css">
+<style>
+  body.understand-body {
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  .mini-pult {
+    --cols: 2;
+    --rows: 2;
+    --gap: 14px;
+    --pad: 20px;
+
+    --tile-w: calc((100vw - 2 * var(--pad) - (var(--cols) - 1) * var(--gap)) / var(--cols));
+    --tile-h: calc((100svh - 2 * var(--pad) - (var(--rows) - 1) * var(--gap)) / var(--rows));
+    --tile: min(var(--tile-w), var(--tile-h), 200px);
+
+    display: grid;
+    grid-template-columns: repeat(var(--cols), var(--tile));
+    grid-auto-rows: var(--tile);
+    gap: var(--gap);
+    justify-content: center;
+    align-content: center;
+  }
+
+  .mini-tile {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    border-radius: 20px;
+    text-decoration: none;
+    color: #fff;
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform 0.15s ease, box-shadow 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+    border: none;
+    padding: 0;
+    font-family: inherit;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.10),
+                0 12px 28px rgba(0,0,0,0.08),
+                inset 0 -2px 4px rgba(0,0,0,0.15),
+                inset 0 2px 3px rgba(255,255,255,0.18);
+  }
+
+  .mini-tile:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.14),
+                0 16px 36px rgba(0,0,0,0.12),
+                inset 0 -2px 4px rgba(0,0,0,0.15),
+                inset 0 2px 3px rgba(255,255,255,0.18);
+  }
+
+  .mini-tile:active {
+    transform: translateY(-1px) scale(0.98);
+  }
+
+  .mini-tile svg {
+    width: 40px;
+    height: 40px;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.15));
+  }
+
+  .mini-tile .label {
+    font-size: 12pt;
+    font-weight: bold;
+    letter-spacing: 0.4px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.20);
+  }
+
+  .mini-tile.trgz {
+    background: linear-gradient(135deg, #7c3aed 0%, #4c1d95 100%);
+  }
+
+  .mini-tile.stezenko {
+    background: linear-gradient(135deg, #1e3a8a 0%, #0f1e4a 100%);
+  }
+
+  .mini-tile.brain {
+    background: linear-gradient(135deg, #0f766e 0%, #134e4a 100%);
+  }
+
+  .mini-tile.habit {
+    background: linear-gradient(135deg, #059669 0%, #064e3b 100%);
+  }
+
+  .mini-tile.bottom {
+    background: linear-gradient(135deg, #7f1d1d 0%, #2a0606 100%);
+  }
+
+  @media (max-width: 700px) {
+    body.understand-body { padding: 14px; }
+    .mini-pult { --gap: 12px; --pad: 14px; }
+    .mini-tile svg { width: 32px; height: 32px; }
+    .mini-tile .label { font-size: 10.5pt; }
+  }
+</style>
+</head>
+<body class="understand-body">
+
+<a class="back-btn" href="../index.html" aria-label="Назад">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/>
+  </svg>
+</a>
+
+<div class="mini-pult" id="mini-pult">
+
+  <a class="mini-tile trgz" href="trgz.html">
+    <svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3 8-8 9-5-1-8-4-8-9V6z"/><path d="M12 8v5"/><circle cx="12" cy="16" r="0.6" fill="currentColor" stroke="none"/></svg>
+    <span class="label">ТРГЗ</span>
+  </a>
+
+  <a class="mini-tile stezenko" href="stezenko.html">
+    <svg viewBox="0 0 24 24"><path d="M2 4h8a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H2z"/><path d="M22 4h-8a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h9z"/></svg>
+    <span class="label">Стеценко</span>
+  </a>
+
+  <a class="mini-tile brain" href="brain.html">
+    <svg viewBox="0 0 24 24">
+      <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/>
+      <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/>
+    </svg>
+    <span class="label">Мозг</span>
+  </a>
+
+  <a class="mini-tile habit" href="habit.html">
+    <svg viewBox="0 0 24 24">
+      <path d="M3 12a9 9 0 0 1 9-9c2 0 4 .6 5.5 1.8"/>
+      <path d="M21 12a9 9 0 0 1-9 9c-2 0-4-.6-5.5-1.8"/>
+      <path d="M21 3v6h-6"/>
+      <path d="M3 21v-6h6"/>
+    </svg>
+    <span class="label">Привычка</span>
+  </a>
+
+  <a class="mini-tile bottom" href="bottom.html">
+    <svg viewBox="0 0 24 24">
+      <path d="M12 3v12"/>
+      <path d="M7 10l5 5 5-5"/>
+      <path d="M5 20h14"/>
+    </svg>
+    <span class="label">Дно</span>
+  </a>
+
+</div>
+
+<script>
+(function () {
+  const pult = document.getElementById('mini-pult');
+  if (!pult) return;
+
+  const count = pult.querySelectorAll('.mini-tile').length;
+
+  function pickColumns() {
+    const isMobile = window.matchMedia('(max-width: 700px)').matches;
+    if (isMobile) return 2;
+    return Math.min(Math.ceil(count / 2), 4);
+  }
+
+  function applyGrid() {
+    const cols = pickColumns();
+    const rows = Math.ceil(count / cols);
+    document.documentElement.style.setProperty('--cols', cols);
+    document.documentElement.style.setProperty('--rows', rows);
+  }
+
+  applyGrid();
+  window.addEventListener('resize', applyGrid);
+})();
+</script>
+
+<script src="../js/app.js" defer></script>
+</body>
+</html>
