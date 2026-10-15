@@ -22,7 +22,7 @@
   }
 
   .mini-pult {
-    --cols: 2;
+    --cols: 3;
     --rows: 2;
     --gap: 14px;
     --pad: 20px;
@@ -114,7 +114,12 @@
 
   @media (max-width: 700px) {
     body.understand-body { padding: 14px; }
-    .mini-pult { --gap: 12px; --pad: 14px; }
+    .mini-pult {
+      --cols: 2;
+      --rows: 3;
+      --gap: 12px;
+      --pad: 14px;
+    }
     .mini-tile svg { width: 32px; height: 32px; }
     .mini-tile .label { font-size: 10.5pt; }
   }
@@ -128,7 +133,7 @@
   </svg>
 </a>
 
-<div class="mini-pult" id="mini-pult">
+<div class="mini-pult">
 
   <a class="mini-tile trgz" href="trgz.html">
     <svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3 8-8 9-5-1-8-4-8-9V6z"/><path d="M12 8v5"/><circle cx="12" cy="16" r="0.6" fill="currentColor" stroke="none"/></svg>
@@ -168,31 +173,6 @@
   </a>
 
 </div>
-
-<script>
-(function () {
-  const pult = document.getElementById('mini-pult');
-  if (!pult) return;
-
-  const count = pult.querySelectorAll('.mini-tile').length;
-
-  function pickColumns() {
-    const isMobile = window.matchMedia('(max-width: 700px)').matches;
-    if (isMobile) return 2;
-    return Math.min(Math.ceil(count / 2), 4);
-  }
-
-  function applyGrid() {
-    const cols = pickColumns();
-    const rows = Math.ceil(count / cols);
-    document.documentElement.style.setProperty('--cols', cols);
-    document.documentElement.style.setProperty('--rows', rows);
-  }
-
-  applyGrid();
-  window.addEventListener('resize', applyGrid);
-})();
-</script>
 
 <script src="../js/app.js" defer></script>
 </body>
