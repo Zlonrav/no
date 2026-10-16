@@ -22,18 +22,11 @@
       icon: '<svg viewBox="0 0 24 24"><circle cx="8" cy="12" r="5"/><circle cx="16" cy="12" r="5"/></svg>'
     },
     {
-      id: 'stress',
-      label: 'Стресс',
-      href: 'pages/stress.html',
-      color: 'stress',
-      icon: '<svg viewBox="0 0 24 24"><path d="M13 2L3 14h8l-1 8 10-12h-8z"/></svg>'
-    },
-    {
-      id: 'prokrutka',
-      label: 'Прокрутка',
-      href: 'pages/rumination.html',
-      color: 'prokrutka',
-      icon: '<svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-3-6.2"/><path d="M20 3v6h-6"/></svg>'
+      id: 'overload',
+      label: 'Перегрузка',
+      href: 'pages/overload.html',
+      color: 'overload',
+      icon: '<svg viewBox="0 0 24 24"><path d="M10 7h4"/><path d="M7 12h10"/><path d="M4 17h16"/></svg>'
     },
     {
       id: 'understand',
