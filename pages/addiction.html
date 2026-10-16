@@ -5,59 +5,118 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='none' stroke='%23c1121f' stroke-width='14'/><line x1='22' y1='22' x2='78' y2='78' stroke='%23c1121f' stroke-width='14' stroke-linecap='round'/></svg>">
 <title>Зависимость — Нет!</title>
-<meta name="theme-color" content="#c1121f" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#d92b3a" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#16181c" media="(prefers-color-scheme: dark)">
 <meta name="mobile-web-app-capable" content="yes">
 <script src="../js/theme-init.js"></script>
 <link rel="stylesheet" href="../css/styles.css">
 <style>
-  .card { position: relative; }
-
-  .card::after {
-    content: "";
-    position: absolute;
-    top: 18px;
-    right: 18px;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: #8a8f96;
-    box-shadow: 0 0 0 2px rgba(255,255,255,0.6);
-  }
-  html[data-theme="dark"] .card::after {
-    box-shadow: 0 0 0 2px rgba(30,32,38,0.6);
-  }
-  .card.dot-alcohol::after { background: #1a6dc9; }
-  .card.dot-vape::after    { background: #eab308; }
-  
-  .legend {
-    max-width: 1400px;
-    margin: 48px auto 20px;
+  body.addiction-body {
+    min-height: 100vh;
+    min-height: 100svh;
     display: flex;
-    justify-content: center;
-    gap: 20px;
-    font-size: 10pt;
-    color: var(--ui-color);
-    letter-spacing: 0.3px;
-    flex-wrap: wrap;
-  }
-  .legend span {
-    display: inline-flex;
     align-items: center;
-    gap: 7px;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
   }
-  .legend i {
-    width: 9px;
-    height: 9px;
-    border-radius: 50%;
-    display: inline-block;
+
+  .mini-pult {
+    --cols: 2;
+    --rows: 2;
+    --gap: 14px;
+    --pad: 20px;
+
+    --tile-w: calc((100vw - 2 * var(--pad) - (var(--cols) - 1) * var(--gap)) / var(--cols));
+    --tile-h: calc((100svh - 2 * var(--pad) - (var(--rows) - 1) * var(--gap)) / var(--rows));
+    --tile: min(var(--tile-w), var(--tile-h), 220px);
+
+    display: grid;
+    grid-template-columns: repeat(var(--cols), var(--tile));
+    grid-auto-rows: var(--tile);
+    gap: var(--gap);
+    justify-content: center;
+    align-content: center;
   }
-  .legend .lg-alcohol { background: #1a6dc9; }
-  .legend .lg-vape    { background: #eab308; }
-  .legend .lg-common  { background: #8a8f96; }
+
+  .mini-tile {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    border-radius: 20px;
+    text-decoration: none;
+    color: #fff;
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform 0.15s ease, box-shadow 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+    border: none;
+    padding: 0;
+    font-family: inherit;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.10),
+                0 12px 28px rgba(0,0,0,0.08),
+                inset 0 -2px 4px rgba(0,0,0,0.15),
+                inset 0 2px 3px rgba(255,255,255,0.18);
+  }
+
+  .mini-tile:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.14),
+                0 16px 36px rgba(0,0,0,0.12),
+                inset 0 -2px 4px rgba(0,0,0,0.15),
+                inset 0 2px 3px rgba(255,255,255,0.18);
+  }
+
+  .mini-tile:active {
+    transform: translateY(-1px) scale(0.98);
+  }
+
+  .mini-tile svg {
+    width: 40px;
+    height: 40px;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.15));
+  }
+
+  .mini-tile .label {
+    font-size: 12pt;
+    font-weight: bold;
+    letter-spacing: 0.4px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.20);
+  }
+
+  .mini-tile.alcohol {
+    background: linear-gradient(135deg, #d92b3a 0%, #8a0f1a 100%);
+  }
+
+  .mini-tile.vape {
+    background: linear-gradient(135deg, #f59e0b 0%, #92400e 100%);
+  }
+
+  .mini-tile.cigarettes {
+    background: linear-gradient(135deg, #78350f 0%, #451a03 100%);
+  }
+
+  .mini-tile.scroll {
+    background: linear-gradient(135deg, #c2410c 0%, #7c2d12 100%);
+  }
+
+  @media (max-width: 700px) {
+    body.addiction-body { padding: 14px; }
+    .mini-pult { --gap: 12px; --pad: 14px; }
+    .mini-tile svg { width: 32px; height: 32px; }
+    .mini-tile .label { font-size: 10.5pt; }
+  }
 </style>
 </head>
-<body>
+<body class="addiction-body">
 
 <a class="back-btn" href="../index.html" aria-label="Назад">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -65,265 +124,47 @@
   </svg>
 </a>
 
-<!-- ==================== ЭКСТРЕННО ==================== -->
-<div class="group-title red">Экстренная помощь</div>
-<div class="cards-grid">
+<div class="mini-pult">
 
-  <div class="card red">
-    <h3>1. СТОП. ЭТО ЗВЕРЬ</h3>
-    <ul>
-      <li>Заметил мысль о выпивке или затяжке? Это он — <a href="trgz.html">Зверь (Голос Зависимости)</a>.</li>
-      <li>Не спорь. Не объясняй. Не уговаривай себя.</li>
-      <li>Просто: <strong>«А, это Зверь»</strong> или <strong>«Опять ты»</strong>.</li>
-      <li>Он парализован. У него нет рук, нет тела, нет власти. Только <strong>ты</strong> можешь взять стакан или вэйп.</li>
-      <li>Заметил, распознал, понял — переключился на что угодно, кроме него.</li>
-    </ul>
-  </div>
+  <a class="mini-tile alcohol" href="alcohol.html">
+    <svg viewBox="0 0 24 24">
+      <path d="M7 3h10l-1.5 7a3.5 3.5 0 0 1-3.5 3 3.5 3.5 0 0 1-3.5-3z"/>
+      <path d="M12 13v6"/>
+      <path d="M8 21h8"/>
+    </svg>
+    <span class="label">Алкоголь</span>
+  </a>
 
-  <div class="card red">
-    <h3>2. СИЛЬНАЯ ТЯГА</h3>
-    <p><strong>1. Осознай: это просто волна</strong></p>
-    <ul>
-      <li>Пик длится 15–30 минут. Скоро отпустит. Твоя задача — просто переждать этот пик.</li>
-    </ul>
-    <p><strong>2. Переключи тело (смени обстановку)</strong></p>
-    <ul>
-      <li><strong>Смени место:</strong> выйди из комнаты, машины, компании.</li>
-      <li><strong>Включи движение:</strong> если на улице — иди быстрым шагом. Дома — приседай, отжимайся или начни убираться.</li>
-      <li><strong>Займи руки:</strong> игра, книга, готовка. Движение сбивает тягу.</li>
-    </ul>
-    <p><strong>3. Обмани рецепторы</strong></p>
-    <ul>
-      <li><strong>Перебей вкус:</strong> выпей стакан ледяной воды, крепкий кофе или кислый лимонад.</li>
-      <li><strong>Съешь:</strong> дольку горького шоколада, фрукт, горсть орехов или мятную жвачку.</li>
-      <li><strong>Сбей температуру:</strong> умойся холодной водой, подставь запястья под ледяную струю.</li>
-    </ul>
-    <p><strong>4. Зафиксируй установку</strong></p>
-    <ul>
-      <li>Скажи вслух и уверенно: <strong>«Я сегодня не пью»</strong> или <strong>«Я сегодня не парю».</strong> Только на один этот день.</li>
-    </ul>
-    <p><strong>5. Поставь таймер</strong></p>
-    <ul>
-      <li>Включи 20 минут. Через этот отрезок времени волна пойдёт на спад. Ты справишься.</li>
-    </ul>
-  </div>
+  <a class="mini-tile vape" href="vape.html">
+    <svg viewBox="0 0 24 24">
+      <rect x="2" y="10" width="14" height="4" rx="1"/>
+      <rect x="16" y="10" width="4" height="4" rx="0.5"/>
+      <path d="M20 8c1 0 1-2 2-2"/>
+      <path d="M20 6c1 0 1-2 2-2" opacity="0.5"/>
+    </svg>
+    <span class="label">Вэйп</span>
+  </a>
 
-  <div class="card red">
-    <h3>3. СДЕЛАЛ ГЛОТОК / ЗАТЯЖКУ</h3>
-    <p><strong>1. Закурил — не докуривай!</strong></p>
-    <p>Одна затяжка — не разрешение на вторую. Выбрось вэйп. Прямо сейчас.</p>
-    <p><strong>2. Выпил — не допивай!</strong></p>
-    <p>Один глоток — не разрешение продолжать. Вылей остаток. Прямо сейчас.</p>
-    <p><strong>3. Уйди оттуда!</strong></p>
-    <p>Выйди из комнаты, из компании, из гаража. Туда, где не пьют и не курят.</p>
-    <p><strong>4. Действуй!</strong></p>
-    <p>Подыши 4–4–6 — 10 раз, медленно (вдох 4 сек — пауза 4 — выдох 6). Переключи тело. Займи руки. Читай карточку №2.</p>
-    <p><strong>5. Скажи себе</strong></p>
-    <p><strong>«Ошибка — не приговор. Я продолжаю трезвую и здоровую жизнь прямо сейчас, не "с понедельника".»</strong></p>
-  </div>
+  <a class="mini-tile cigarettes" href="cigarettes.html">
+    <svg viewBox="0 0 24 24">
+      <rect x="2" y="11" width="16" height="4" rx="1"/>
+      <path d="M20 11v4"/>
+      <path d="M22 6c0 1.5-1 2-1 3.5"/>
+      <path d="M19 5c0 1.5-1 2-1 3.5"/>
+    </svg>
+    <span class="label">Сигареты</span>
+  </a>
 
-  <div class="card red">
-    <h3>4. СОБЛАЗНЫ</h3>
-    <p><strong>В компании</strong></p>
-    <ul>
-      <li>Спокойно откажись: <strong>«Я за рулём»</strong> / <strong>«Сейчас не пью»</strong>.</li>
-      <li>Держи в руке что-то другое: вода, лимонад, чай.</li>
-      <li>Приходи вовремя, уходи рано. Пришёл — когда все трезвые. Ушёл — в разгаре пьянки.</li>
-      <li>Если давят — уходи. Не оправдывайся. Просто встань и уйди.</li>
-    </ul>
-    <p><strong>По пути</strong></p>
-    <ul>
-      <li>Не верь картинке. Эйфорическая память врёт.</li>
-      <li>Вспомни правду: отвратительное самочувствие, мутная голова, тошнота, тремор.</li>
-      <li>Не заходи в алкомаркет и вэйп магазин. Проходи мимо.</li>
-      <li>Дома займись тем, что радует. Игра, отдых, еда, кино.</li>
-    </ul>
-  </div>
+  <a class="mini-tile scroll" href="scroll.html">
+    <svg viewBox="0 0 24 24">
+      <rect x="6" y="2" width="12" height="20" rx="2"/>
+      <path d="M10 18h4"/>
+      <path d="M12 6v6"/>
+      <path d="M9 9l3 3 3-3"/>
+    </svg>
+    <span class="label">Думскроллинг</span>
+  </a>
 
-</div>
-
-<!-- ==================== ОПОРА ==================== -->
-<div class="group-title green">Опора</div>
-<div class="cards-grid">
-
-  <div class="card green">
-    <h3>СЧЁТ ДНЕЙ</h3>
-    <ul>
-      <li>Отмечай каждый трезвый день.</li>
-      <li>Крестик в календаре или счётчик в приложении.</li>
-      <li>Цепочка мотивирует.</li>
-      <li>Срыв — не обнуление. Продолжай.</li>
-      <li>Чувство «упускаю» (FOMO — Fear Of Missing Out) живёт ~14 дней. Дальше уходит.</li>
-      <li>Каждый день — шаг к облегчению.</li>
-    </ul>
-  </div>
-
-  <div class="card green">
-    <h3>ЗАЧЕМ Я ЭТО ДЕЛАЮ</h3>
-    <p><strong>Для алкоголя</strong></p>
-    <ul>
-      <li>Трезвое утро — каждое утро без похмелья и с ясной головой.</li>
-      <li>Каждый день, который ты помнишь.</li>
-      <li>Деньги и здоровье — меньше тратишь, лучше спишь.</li>
-      <li>Эмоции — стабильное состояние.</li>
-      <li>Уважение к себе.</li>
-      <li>Время — на ремонт, тренировки, книги, дела.</li>
-      <li>Тело — крепче, выносливее, бодрее.</li>
-    </ul>
-    <p><strong>Для вэйпа</strong></p>
-    <ul>
-      <li>Отвратительное самочувствие после каждой тяги.</li>
-      <li>Лишний расход денег.</li>
-      <li>Зависимость.</li>
-      <li>Свобода от поисков.</li>
-      <li>Улучшение самочувствия.</li>
-    </ul>
-  </div>
-
-  <div class="card green dot-alcohol">
-    <h3>ЗА РУЛЁМ — ЗАЩИТА</h3>
-    <ul>
-      <li>За рулём ты не пьёшь. Это не запрет — это обстоятельство.</li>
-      <li>Работает везде: в гостях, в бане, в компании, в пятницу, в отпуске.</li>
-      <li>Друзьям можно сказать просто: «Я за рулём». И всё. Без объяснений.</li>
-      <li>Машина выручает в любой ситуации. Держи её под рукой.</li>
-    </ul>
-  </div>
-
-  <div class="card green dot-alcohol">
-    <h3>ПОДЪЁМ НЕ ПОЗЖЕ 9:00</h3>
-    <ul>
-      <li>Утром встал — день твой. Проспал — день потерян.</li>
-      <li>Рано встал — сделал дела, пока все спят.</li>
-      <li>Утренние дела — награда за трезвый вечер.</li>
-      <li>Утренняя ясная голова — то, чего не бывает после пьянки.</li>
-    </ul>
-  </div>
-
-  <div class="card green dot-alcohol">
-    <h3>ФРАЗЫ-ЯКОРЯ</h3>
-    <ul>
-      <li>«Я не пью сегодня».</li>
-      <li>«Я выбираю трезвое утро».</li>
-      <li>«Ошибка — не приговор».</li>
-      <li>«Один глоток — не разрешение».</li>
-      <li>«А, это Зверь». «Опять ты».</li>
-      <li>«Волна спадёт».</li>
-      <li>«Я продолжаю».</li>
-    </ul>
-  </div>
-
-  <div class="card green dot-alcohol">
-    <h3>HALT</h3>
-    <ul>
-      <li><strong>H — Hungry</strong> (голодный). Поешь.</li>
-      <li><strong>A — Angry</strong> (злой). Выпусти пар.</li>
-      <li><strong>L — Lonely</strong> (одинокий). Отвлекись — прогулка, игра, книга.</li>
-      <li><strong>T — Tired</strong> (уставший). Отдохни.</li>
-      <li>Сначала устрани причину. Потом решай про алкоголь.</li>
-    </ul>
-  </div>
-
-  <div class="card green dot-vape">
-    <h3>ТАЙМЛАЙН</h3>
-    <ul>
-      <li>Острая тяга — 1–2 недели.</li>
-      <li>Психологическая — до 3 месяцев.</li>
-      <li>Через 2–3 дня уже легко. Ты это знаешь.</li>
-      <li>Волны будут реже и слабее.</li>
-      <li>Предвкушение уходит последним.</li>
-      <li>Каждый день без вэйпа — шаг.</li>
-    </ul>
-  </div>
-
-  <div class="card green dot-vape">
-    <h3>ВЕЧЕР ДОМА</h3>
-    <ul>
-      <li>Дома нет ни алкоголя, ни вэйпа! Принёс — возможность сорваться.</li>
-      <li>Если хочется — поешь, попей.</li>
-      <li>Займи руки: книги, игры, интернет-сёрфинг.</li>
-      <li>Утром будет ясная голова. Это награда.</li>
-    </ul>
-  </div>
-
-  <!--<div class="card green">
-    <h3>РАЗБОР СРЫВА</h3>
-    <p><strong>1. Что было за день до?</strong></p>
-    <p>Не только час. Всё, что привело: усталость, стресс, конфликт, скука.</p>
-    <p><strong>2. Где я был?</strong></p>
-    <p>Место. Дом, работа, баня, компания, магазин.</p>
-    <p><strong>3. С кем я был?</strong></p>
-    <p>Один или с кем-то. Кто был рядом.</p>
-    <p><strong>4. Что чувствовал в теле?</strong></p>
-    <p>Напряжение, пустота, тяжесть, тревога. Тело замечает раньше головы.</p>
-    <p><strong>5. О чём думал?</strong></p>
-    <p>Какая мысль запустила цепочку: «заслужил», «всё равно», «один раз можно»?</p>
-    <p><strong>6. Какой триггер сработал?</strong></p>
-    <p>Голод, злость, одиночество, усталость, доступность, компания.</p>
-    <p><strong>7. Что добавлю в план?</strong></p>
-    <p>Не «сделаю иначе», а <strong>какой конкретный шаг</strong> появится в следующий раз.</p>
-  </div>-->
-
-</div>
-
-<!-- ==================== ЗАМЕНЫ ==================== -->
-<div class="group-title amber">Замены</div>
-<div class="cards-grid">
-
-  <div class="card amber">
-    <h3>ТЕРМОЯДЕРНЫЙ ИМБИРЬ</h3>
-    <ul>
-      <li>Замена крепкого и пива в гараже.</li>
-      <li>В термос натереть свежий имбирь (3–4 см).</li>
-      <li>0,5 лимона, порезать с коркой — для правильной горечи.</li>
-      <li>Палочка корицы, залить кипятком.</li>
-      <li>Пить мелкими глотками, когда мозг требует обжига.</li>
-    </ul>
-  </div>
-
-  <div class="card amber">
-    <h3>ТОМАТНОЕ БЕЗУМИЕ</h3>
-    <ul>
-      <li>Вместо пива в бане. Плотный, солёный вкус.</li>
-      <li>Основа — густой томатный сок.</li>
-      <li>1 ч. ложка Табаско.</li>
-      <li>1 ч. ложка Ворчестера.</li>
-      <li>1 ст. ложка сока лимона.</li>
-      <li>Немного огуречного или оливкового рассола.</li>
-      <li>Чёрная соль сверху. Эндорфины от остроты.</li>
-    </ul>
-  </div>
-
-  <div class="card amber">
-    <h3>ГОРЬКИЙ ТОНИК</h3>
-    <ul>
-      <li>Для посиделок с компанией.</li>
-      <li>Качественный горький тоник.</li>
-      <li>Размять в кашу четвертинку лайма или лимона.</li>
-      <li>Горечь хинина мозг считывает как маркер алкоголя. Снимает FOMO (Fear Of Missing Out — страх упустить что-то важное, боязнь оказаться не в теме).</li>
-    </ul>
-  </div>
-
-  <div class="card amber">
-    <h3>КИСЛАЯ ШИПУЧКА</h3>
-    <ul>
-      <li>Снятие стресса в будни после работы.</li>
-      <li>Лечебно-столовая минералка с газом (Ессентуки, Боржоми).</li>
-      <li>Смешать с кислым соком — гранат или яблоко. Один к одному.</li>
-      <li>Размять листья мяты, добавить.</li>
-      <li>Газ и соли бьют по рецепторам, переключают режим.</li>
-    </ul>
-  </div>
-
-</div>
-
-</div>
-
-<!-- Легенда -->
-<div class="legend">
-  <span><i class="lg-alcohol"></i>алкоголь</span>
-  <span><i class="lg-vape"></i>вэйп</span>
-  <span><i class="lg-common"></i>общее</span>
 </div>
 
 <script src="../js/app.js" defer></script>
