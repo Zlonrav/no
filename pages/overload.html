@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='none' stroke='%23be185d' stroke-width='14'/><line x1='22' y1='22' x2='78' y2='78' stroke='%23be185d' stroke-width='14' stroke-linecap='round'/></svg>">
+<title>Перегрузка — Нет!</title>
+<meta name="theme-color" content="#be185d" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#16181c" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<script src="../js/theme-init.js"></script>
+<link rel="stylesheet" href="../css/styles.css">
+<style>
+  body.overload-body {
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  .mini-pult {
+    --cols: 2;
+    --rows: 1;
+    --gap: 14px;
+    --pad: 20px;
+
+    --tile-w: calc((100vw - 2 * var(--pad) - (var(--cols) - 1) * var(--gap)) / var(--cols));
+    --tile-h: calc((100svh - 2 * var(--pad) - (var(--rows) - 1) * var(--gap)) / var(--rows));
+    --tile: min(var(--tile-w), var(--tile-h), 240px);
+
+    display: grid;
+    grid-template-columns: repeat(var(--cols), var(--tile));
+    grid-auto-rows: var(--tile);
+    gap: var(--gap);
+    justify-content: center;
+    align-content: center;
+  }
+
+  .mini-tile {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    border-radius: 20px;
+    text-decoration: none;
+    color: #fff;
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform 0.15s ease, box-shadow 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+    border: none;
+    padding: 0;
+    font-family: inherit;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.10),
+                0 12px 28px rgba(0,0,0,0.08),
+                inset 0 -2px 4px rgba(0,0,0,0.15),
+                inset 0 2px 3px rgba(255,255,255,0.18);
+  }
+
+  .mini-tile:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.14),
+                0 16px 36px rgba(0,0,0,0.12),
+                inset 0 -2px 4px rgba(0,0,0,0.15),
+                inset 0 2px 3px rgba(255,255,255,0.18);
+  }
+
+  .mini-tile:active {
+    transform: translateY(-1px) scale(0.98);
+  }
+
+  .mini-tile svg {
+    width: 40px;
+    height: 40px;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.15));
+  }
+
+  .mini-tile .label {
+    font-size: 12pt;
+    font-weight: bold;
+    letter-spacing: 0.4px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.20);
+  }
+
+  .mini-tile.stress {
+    background: linear-gradient(135deg, #be185d 0%, #831843 100%);
+  }
+
+  .mini-tile.prokrutka {
+    background: linear-gradient(135deg, #ea580c 0%, #9a3412 100%);
+  }
+
+  @media (max-width: 700px) {
+    body.overload-body { padding: 14px; }
+    .mini-pult { --gap: 12px; --pad: 14px; }
+    .mini-tile svg { width: 32px; height: 32px; }
+    .mini-tile .label { font-size: 10.5pt; }
+  }
+</style>
+</head>
+<body class="overload-body">
+
+<a class="back-btn" href="../index.html" aria-label="Назад">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/>
+  </svg>
+</a>
+
+<div class="mini-pult">
+
+  <a class="mini-tile stress" href="stress.html">
+    <svg viewBox="0 0 24 24"><path d="M13 2L3 14h8l-1 8 10-12h-8z"/></svg>
+    <span class="label">Стресс</span>
+  </a>
+
+  <a class="mini-tile prokrutka" href="rumination.html">
+    <svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-3-6.2"/><path d="M20 3v6h-6"/></svg>
+    <span class="label">Прокрутка</span>
+  </a>
+
+</div>
+
+<script src="../js/app.js" defer></script>
+</body>
+</html>
