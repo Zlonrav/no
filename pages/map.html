@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='none' stroke='%230f766e' stroke-width='14'/><line x1='22' y1='22' x2='78' y2='78' stroke='%230f766e' stroke-width='14' stroke-linecap='round'/></svg>">
+<title>Карта сайта — Нет!</title>
+<meta name="theme-color" content="#0f766e" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#16181c" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<script src="../js/theme-init.js"></script>
+<link rel="stylesheet" href="../css/styles.css">
+<style>
+  body.map-body {
+    padding: 80px 24px 60px;
+    max-width: 900px;
+    margin: 0 auto;
+    font-family: inherit;
+  }
+
+  .map-title {
+    font-size: 22pt;
+    font-weight: bold;
+    color: var(--text-main);
+    margin: 0 0 8px;
+    letter-spacing: 0.3px;
+  }
+
+  .map-subtitle {
+    font-size: 11pt;
+    color: var(--ui-color);
+    margin: 0 0 40px;
+    letter-spacing: 0.3px;
+  }
+
+  .tree {
+    font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 10.5pt;
+    line-height: 1.9;
+    color: var(--text-main);
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 24px 28px;
+    margin: 0 0 32px;
+    overflow-x: auto;
+    white-space: pre;
+    box-shadow: var(--card-shadow);
+  }
+
+  .tree a {
+    color: var(--teal, #0f766e);
+    text-decoration: none;
+    border-bottom: 1px dashed currentColor;
+    padding-bottom: 1px;
+  }
+
+  .tree a:hover {
+    border-bottom-style: solid;
+    color: var(--text-main);
+  }
+
+  html[data-theme="dark"] .tree a {
+    color: #4fd1c5;
+  }
+
+  .tree .folder {
+    color: var(--text-main);
+    font-weight: bold;
+  }
+
+  .tree .dim {
+    color: var(--ui-color);
+  }
+
+  .tree .note {
+    color: var(--ui-color);
+    font-style: italic;
+  }
+
+  .section-title {
+    font-size: 13pt;
+    font-weight: bold;
+    color: var(--text-main);
+    margin: 40px 0 16px;
+    letter-spacing: 0.3px;
+  }
+
+  .legend-box {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin: 0 0 24px;
+    box-shadow: var(--card-shadow);
+  }
+
+  .legend-box p {
+    margin: 0 0 10px;
+    font-size: 10.5pt;
+    line-height: 1.6;
+  }
+
+  .legend-box p:last-child {
+    margin-bottom: 0;
+  }
+
+  .legend-box strong {
+    color: var(--text-main);
+  }
+
+  .legend-box em {
+    color: var(--ui-color);
+    font-style: normal;
+  }
+
+  @media (max-width: 700px) {
+    body.map-body { padding: 70px 16px 40px; }
+    .tree { font-size: 9pt; padding: 18px 20px; line-height: 1.8; }
+    .map-title { font-size: 18pt; }
+  }
+</style>
+</head>
+<body class="map-body">
+
+<a class="back-btn" href="../index.html" aria-label="Назад">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/>
+  </svg>
+</a>
+
+<h1 class="map-title">Карта сайта</h1>
+<p class="map-subtitle">Структура проекта «Нет!». Все переходы, файлы и содержание страниц.</p>
+
+<div class="section-title">Главная страница (index.html)</div>
+<div class="tree">8 плиток на пульте:
+
+  <a href="emergency.html">■ Экстренно</a>      <span class="note">тёмно-красный, первая — для момента «накрыло»</span>
+  <a href="addiction.html">■ Зависимость</a>     <span class="note">красный, мини-пульт: алкоголь / вэйп / сигареты / думскроллинг</span>
+  <a href="stress.html">■ Стресс</a>             <span class="note">малиновый</span>
+  <a href="rumination.html">■ Прокрутка</a>      <span class="note">оранжевый</span>
+  <a href="understand.html">■ Теория</a>         <span class="note">синий, мини-пульт: мозг / тело / дно / ТРГЗ / Стеценко / привычка</span>
+  <a href="breath.html">■ Дыхание</a>           <span class="note">бирюзовый</span>
+  <a href="abyss.html">■ Бездна</a>             <span class="note">графит</span>
+  <a href="counter.html">■ Счётчик</a>          <span class="note">зелёный, широкий</span></div>
+
+<div class="section-title">Уровень 2 — вложенные пульты</div>
+<div class="tree"><span class="folder">addiction.html</span> — мини-пульт «Зависимость»
+  ├── <a href="alcohol.html">Алкоголь</a>
+  ├── <a href="vape.html">Вэйп</a>
+  ├── <a href="cigarettes.html">Сигареты</a>
+  └── <a href="scroll.html">Думскроллинг</a>
+
+<span class="folder">understand.html</span> — мини-пульт «Теория»
+  ├── <a href="brain.html">Мозг</a>            <span class="note">12 карточек: петля, толерантность, абстиненция, палимпсест, розовая, ПАС, стена, восстановление, тяга, сухой срыв, киндлинг, один глоток</span>
+  ├── <a href="body.html">Тело</a>            <span class="note">12 карточек: делирий, похмелье, печень, почки, нервы, обмен, сердце, ЖКТ, иммунитет, лёгкие, репродуктивная, цирроз</span>
+  ├── <a href="bottom.html">Дно</a>            <span class="note">14 карточек: анозогнозия, стыд, тупость, эгоцентризм, распад, Корсаковский, энцефалопатия, атрофия дофамина, соцвакуум, бессилие, перестать копать, опора, восстановимость</span>
+  ├── <a href="trgz.html">ТРГЗ</a>           <span class="note">интенсив 28 шагов + короткая 10 карточек</span>
+  ├── <a href="stezenko.html">Стеценко</a>       <span class="note">12 карточек</span>
+  └── <a href="habit.html">Привычка</a>       <span class="note">5 карточек: петля, триггеры, замена, среда, «не сейчас»</span>
+
+<span class="folder">emergency.html</span> — общие экстренные карточки <span class="note">(в разработке)</span>
+  ~ 8 карточек: Зверь, тяга, сорвался, соблазны, якоря, HALT, дыхание, кому написать</div>
+
+<div class="section-title">Уровень 3 — темы (по 12 карточек, в разработке)</div>
+<div class="tree">Структура каждой темы (alcohol / vape / cigarettes / scroll):
+
+  <span class="folder">Группа 1 — Сейчас (красный)</span>
+    1. Тяга — что делать в момент
+    2. Срыв — если уже сорвался
+    3. Триггер — что запускает именно у меня
+
+  <span class="folder">Группа 2 — Механика (цвет темы)</span>
+    4. Откуда берётся — первое знакомство
+    5. Ритуалы — автоматическое поведение
+    6. Сценарии — компания, вечер, стресс
+
+  <span class="folder">Группа 3 — Выход (зелёный)</span>
+    7. Замены — конкретные
+    8. Первый день
+    9. Первая неделя
+
+  <span class="folder">Группа 4 — Правда (синий, ссылки на теорию)</span>
+    10. Что с мозгом → <a href="brain.html">brain.html</a>
+    11. Что с телом → <a href="body.html">body.html</a>
+    12. Если не бросать — финал</div>
+
+<div class="section-title">Кросс-ссылки</div>
+<div class="legend-box">
+  <p><strong>Короткая карточка в теме → полная в теории.</strong> Внутри темы карточки «что с мозгом» и «что с телом» даются в 2–3 строки, со ссылкой «Подробнее →» на конкретный якорь в <em>brain.html</em> или <em>body.html</em>. Пример: <em>brain.html#tolerance</em>, <em>body.html#liver</em>.</p>
+  <p><strong>Якоря.</strong> У карточек в brain/body/dno добавляются <em>id</em> — английские короткие: <em>#dopamine</em>, <em>#tolerance</em>, <em>#withdrawal</em>, <em>#palimpsest</em>, <em>#liver</em>, <em>#kidneys</em>, <em>#heart</em>, <em>#pancreas</em>, <em>#lungs</em>.</p>
+  <p><strong>Из «Прокрутки» → «Бездна».</strong> Уже сделано в карточке «Выгрузи на бумагу».</p>
+</div>
+
+<div class="section-title">Стилевые договорённости</div>
+<div class="legend-box">
+  <p><strong>Общение:</strong> коротко, по делу, без воды. Обращение — «Антон».</p>
+  <p><strong>Карточки:</strong> сплошной текст без <em>&lt;ul&gt;</em> внутри длинных карточек, если это раздувает высоту. Заголовки — императив или констатация. Внутри можно прошедшее.</p>
+  <p><strong>Цвета по системам:</strong> мозг и нервы — <em>фиолетовый</em>; сердце, сосуды, кровь — <em>красный</em>; печень, поджелудочная — <em>янтарный</em>; почки, лёгкие — <em>синий</em>; ЖКТ, обмен — <em>оранжевый</em>; общее, природа зависимости — <em>синий</em>.</p>
+  <p><strong>Код:</strong> целиком, не кусками. После правок — поднимать версию в <em>sw.js</em>.</p>
+</div>
+
+<div class="section-title">Ключи localStorage</div>
+<div class="legend-box">
+  <p><em>theme-pref</em> — тема, <em>cards-set</em> — набор карточек, <em>addiction-version</em>, <em>trgz-version</em>, <em>sober-start</em> — дата начала трезвости, <em>abyss-whisper</em> — режим шёпота.</p>
+</div>
+
+<div class="section-title">Служебные</div>
+<div class="legend-box">
+  <p><em>manifest.json</em>, <em>sw.js</em>, <em>robots.txt</em>, <em>sitemap.xml</em>, <em>icon.svg</em>, <em>icon-192.png</em>, <em>icon-512.png</em>.</p>
+  <p><strong>Репозиторий:</strong> Zlonrav/no, ветка main, папка /. <strong>Домен:</strong> prosto-net.ru.</p>
+</div>
+
+<script src="../js/app.js" defer></script>
+</body>
+</html>
