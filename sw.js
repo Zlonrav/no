@@ -32,6 +32,7 @@ const ASSETS = [
   './pages/breath.html',
   './pages/bottom.html',
   './pages/body.html',
+  './pages/emergency.html',
 ];
 
 self.addEventListener('install', (e) => {
