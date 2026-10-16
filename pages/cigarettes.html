@@ -3,167 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='none' stroke='%2378350f' stroke-width='14'/><line x1='22' y1='22' x2='78' y2='78' stroke='%23c1121f' stroke-width='14' stroke-linecap='round'/></svg>">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='none' stroke='%2378350f' stroke-width='14'/><line x1='22' y1='22' x2='78' y2='78' stroke='%23d92b3a' stroke-width='14' stroke-linecap='round'/></svg>">
 <title>Сигареты — Нет!</title>
 <meta name="theme-color" content="#d92b3a" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#16181c" media="(prefers-color-scheme: dark)">
 <meta name="mobile-web-app-capable" content="yes">
 <script src="../js/theme-init.js"></script>
 <link rel="stylesheet" href="../css/styles.css">
-<style>
-  body.addiction-body {
-    min-height: 100vh;
-    min-height: 100svh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    box-sizing: border-box;
-  }
-
-  .mini-pult {
-    --cols: 2;
-    --rows: 2;
-    --gap: 14px;
-    --pad: 20px;
-
-    --tile-w: calc((100vw - 2 * var(--pad) - (var(--cols) - 1) * var(--gap)) / var(--cols));
-    --tile-h: calc((100svh - 2 * var(--pad) - (var(--rows) - 1) * var(--gap)) / var(--rows));
-    --tile: min(var(--tile-w), var(--tile-h), 220px);
-
-    display: grid;
-    grid-template-columns: repeat(var(--cols), var(--tile));
-    grid-auto-rows: var(--tile);
-    gap: var(--gap);
-    justify-content: center;
-    align-content: center;
-  }
-
-  .mini-tile {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    border-radius: 20px;
-    text-decoration: none;
-    color: #fff;
-    cursor: pointer;
-    overflow: hidden;
-    transition: transform 0.15s ease, box-shadow 0.2s ease;
-    -webkit-tap-highlight-color: transparent;
-    border: none;
-    padding: 0;
-    font-family: inherit;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.10),
-                0 12px 28px rgba(0,0,0,0.08),
-                inset 0 -2px 4px rgba(0,0,0,0.15),
-                inset 0 2px 3px rgba(255,255,255,0.18);
-  }
-
-  .mini-tile:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.14),
-                0 16px 36px rgba(0,0,0,0.12),
-                inset 0 -2px 4px rgba(0,0,0,0.15),
-                inset 0 2px 3px rgba(255,255,255,0.18);
-  }
-
-  .mini-tile:active {
-    transform: translateY(-1px) scale(0.98);
-  }
-
-  .mini-tile svg {
-    width: 40px;
-    height: 40px;
-    stroke: currentColor;
-    stroke-width: 1.8;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    fill: none;
-    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.15));
-  }
-
-  .mini-tile .label {
-    font-size: 12pt;
-    font-weight: bold;
-    letter-spacing: 0.4px;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.20);
-  }
-
-  .mini-tile.alcohol {
-    background: linear-gradient(135deg, #d92b3a 0%, #8a0f1a 100%);
-  }
-
-  .mini-tile.vape {
-    background: linear-gradient(135deg, #f59e0b 0%, #92400e 100%);
-  }
-
-  .mini-tile.cigarettes {
-    background: linear-gradient(135deg, #78350f 0%, #451a03 100%);
-  }
-
-  .mini-tile.scroll {
-    background: linear-gradient(135deg, #c2410c 0%, #7c2d12 100%);
-  }
-
-  @media (max-width: 700px) {
-    body.addiction-body { padding: 14px; }
-    .mini-pult { --gap: 12px; --pad: 14px; }
-    .mini-tile svg { width: 32px; height: 32px; }
-    .mini-tile .label { font-size: 10.5pt; }
-  }
-</style>
 </head>
-<body class="addiction-body">
+<body>
 
-<a class="back-btn" href="../index.html" aria-label="Назад">
+<a class="back-btn" href="addiction.html" aria-label="Назад">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/>
   </svg>
 </a>
 
-<div class="mini-pult">
+<div class="group-title red">Алкоголь</div>
+<div class="cards-grid">
 
-  <a class="mini-tile alcohol" href="alcohol.html">
-    <svg viewBox="0 0 24 24">
-      <path d="M7 3h10l-1.5 7a3.5 3.5 0 0 1-3.5 3 3.5 3.5 0 0 1-3.5-3z"/>
-      <path d="M12 13v6"/>
-      <path d="M8 21h8"/>
-    </svg>
-    <span class="label">Алкоголь</span>
-  </a>
-
-  <a class="mini-tile vape" href="vape.html">
-    <svg viewBox="0 0 24 24">
-      <rect x="2" y="10" width="14" height="4" rx="1"/>
-      <rect x="16" y="10" width="4" height="4" rx="0.5"/>
-      <path d="M20 8c1 0 1-2 2-2"/>
-      <path d="M20 6c1 0 1-2 2-2" opacity="0.5"/>
-    </svg>
-    <span class="label">Вэйп</span>
-  </a>
-
-  <a class="mini-tile cigarettes" href="cigarettes.html">
-    <svg viewBox="0 0 24 24">
-      <rect x="2" y="11" width="16" height="4" rx="1"/>
-      <path d="M20 11v4"/>
-      <path d="M22 6c0 1.5-1 2-1 3.5"/>
-      <path d="M19 5c0 1.5-1 2-1 3.5"/>
-    </svg>
-    <span class="label">Сигареты</span>
-  </a>
-
-  <a class="mini-tile scroll" href="scroll.html">
-    <svg viewBox="0 0 24 24">
-      <rect x="6" y="2" width="12" height="20" rx="2"/>
-      <path d="M10 18h4"/>
-      <path d="M12 6v6"/>
-      <path d="M9 9l3 3 3-3"/>
-    </svg>
-    <span class="label">Думскроллинг</span>
-  </a>
+  <div class="card red">
+    <h3>РАЗДЕЛ В РАЗРАБОТКЕ</h3>
+    <p>Здесь будут карточки: триггеры, ритуалы, сценарии, замены, первый день, первая неделя, что с мозгом, что с телом, разбор срыва, финал.</p>
+    <p>Пока используй <a href="emergency.html">Экстренно</a> — там всё, что нужно в момент тяги.</p>
+  </div>
 
 </div>
 
