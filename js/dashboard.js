@@ -8,6 +8,13 @@
 
   const TILES = [
     {
+      id: 'emergency',
+      label: 'Экстренно',
+      href: 'pages/emergency.html',
+      color: 'emergency',
+      icon: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 7v6"/><circle cx="12" cy="16.5" r="0.7" fill="currentColor" stroke="none"/></svg>'
+    },
+    {
       id: 'addiction',
       label: 'Зависимость',
       href: 'pages/addiction.html',
@@ -30,7 +37,7 @@
     },
     {
       id: 'understand',
-      label: 'Понять',
+      label: 'Теория',
       href: 'pages/understand.html',
       color: 'understand',
       icon: '<svg viewBox="0 0 24 24"><path d="M2 4h8a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H2z"/><path d="M22 4h-8a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h9z"/></svg>'
