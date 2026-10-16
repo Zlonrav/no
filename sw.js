@@ -1,4 +1,4 @@
-const CACHE = 'net-cards-v4.05';
+const CACHE = 'net-cards-v4.07';
 
 const ASSETS = [
   './',
@@ -34,9 +34,10 @@ const ASSETS = [
   './pages/body.html',
   './pages/emergency.html',
   './pages/alcohol.html',
-  './pages/pages/vape.html',
+  './pages/vape.html',
   './pages/cigarettes.html',
   './pages/scroll.html',
+  './pages/overload.html',
 ];
 
 self.addEventListener('install', (e) => {
