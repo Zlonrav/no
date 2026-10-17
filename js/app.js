@@ -116,3 +116,39 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register(swPath).catch(() => {});
   });
 }
+
+/* ============================================================
+   АВТОЗАПОЛНЕНИЕ СЕТКИ (пустые карточки)
+   ============================================================ */
+(function() {
+  function fillGrid() {
+    const grids = document.querySelectorAll('.cards-grid');
+    
+    grids.forEach(grid => {
+      grid.querySelectorAll('.card-ghost').forEach(el => el.remove());
+
+      const cards = Array.from(grid.querySelectorAll('.card'));
+      if (cards.length === 0) return;
+
+      const gridStyle = window.getComputedStyle(grid);
+      const columns = gridStyle.gridTemplateColumns.split(' ').length;
+
+      const remainder = cards.length % columns;
+      const missing = remainder === 0 ? 0 : columns - remainder;
+
+      for (let i = 0; i < missing; i++) {
+        const ghost = document.createElement('div');
+        ghost.className = 'card-ghost';
+        grid.appendChild(ghost);
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', fillGrid);
+  
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(fillGrid, 150);
+  });
+})();
