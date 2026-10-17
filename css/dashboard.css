@@ -165,7 +165,7 @@ html[data-theme="dark"] body.dashboard-body {
 }
 
 /* ===== ЦВЕТА ПЛАШЕК ===== */
-.tile-emergency  { background: linear-gradient(135deg, #7f1d1d 0%, #450a0a 100%); }
+.tile-emergency  { background: linear-gradient(315deg, #8a1515 0%, #450a0a 100%); }
 .tile-addiction  { background: linear-gradient(135deg, #d92b3a 0%, #8a0f1a 100%); }
 .tile-understand { background: linear-gradient(135deg, #1e3a8a 0%, #0f1e4a 100%); }
 .tile-overload   { background: linear-gradient(135deg, #be185d 0%, #7c2d12 100%); }
