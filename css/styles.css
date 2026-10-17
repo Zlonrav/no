@@ -160,7 +160,7 @@ html[data-theme="dark"] body {
   display: grid;
   grid-template-columns: 1fr; /* Телефоны: 1 колонка */
   gap: 20px;
-  max-width: 1300px; /* Чуть уже, чтобы карточки не растягивались слишком сильно */
+  max-width: 1400px; 
   margin: 0 auto;
 }
 
