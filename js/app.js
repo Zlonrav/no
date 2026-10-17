@@ -156,3 +156,17 @@ window.addEventListener('resize', () => {
   clearTimeout(resizeGridTimer);
   resizeGridTimer = setTimeout(fillEmptyGridCells, 150);
 });
+
+// Показываем версию кэша (SW) в консоли для отладки
+document.addEventListener('DOMContentLoaded', () => {
+  if ('serviceWorker' in navigator) {
+    fetch('../sw.js')
+      .then(res => res.text())
+      .then(text => {
+        const match = text.match(/const CACHE = '(.*?)'/);
+        if (match && match[1]) {
+          console.log('%c SW Cache Version: ' + match[1], 'background: #222; color: #bada55; font-size: 12px; padding: 4px; border-radius: 4px;');
+        }
+      }).catch(() => {});
+  }
+});
