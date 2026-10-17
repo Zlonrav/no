@@ -164,6 +164,15 @@ html[data-theme="dark"] body {
   margin: 0 auto;
 }
 
+/* Заглушка для заполнения пустых мест в сетке */
+.card-ghost {
+  border: 1px dashed var(--card-border);
+  border-radius: 12px;
+  background: transparent;
+  opacity: 0.3; /* Делаем её бледной, чтобы не отвлекала */
+  pointer-events: none; /* Чтобы по ней нельзя было кликнуть */
+}
+
 /* Планшеты: 2 колонки */
 @media (min-width: 701px) {
   .cards-grid {
