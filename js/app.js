@@ -118,37 +118,41 @@ if ('serviceWorker' in navigator) {
 }
 
 /* ============================================================
-   АВТОЗАПОЛНЕНИЕ СЕТКИ (пустые карточки)
+   ЗАПОЛНЕНИЕ ПУСТЫХ МЕСТ В СЕТКЕ (ghost cards)
    ============================================================ */
-(function() {
-  function fillGrid() {
-    const grids = document.querySelectorAll('.cards-grid');
-    
-    grids.forEach(grid => {
-      grid.querySelectorAll('.card-ghost').forEach(el => el.remove());
-
-      const cards = Array.from(grid.querySelectorAll('.card'));
-      if (cards.length === 0) return;
-
-      const gridStyle = window.getComputedStyle(grid);
-      const columns = gridStyle.gridTemplateColumns.split(' ').length;
-
-      const remainder = cards.length % columns;
-      const missing = remainder === 0 ? 0 : columns - remainder;
-
-      for (let i = 0; i < missing; i++) {
-        const ghost = document.createElement('div');
-        ghost.className = 'card-ghost';
-        grid.appendChild(ghost);
-      }
-    });
-  }
-
-  document.addEventListener('DOMContentLoaded', fillGrid);
+function fillEmptyGridCells() {
+  const grids = document.querySelectorAll('.cards-grid');
   
-  let resizeTimer;
-  window.addEventListener('resize', () => {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(fillGrid, 150);
+  // Определяем количество колонок по ширине экрана (как в CSS)
+  let columns = 1;
+  const width = window.innerWidth;
+  if (width >= 1100) columns = 3;
+  else if (width >= 701) columns = 2;
+  
+  grids.forEach(grid => {
+    // Удаляем старые заглушки
+    grid.querySelectorAll('.card-ghost').forEach(el => el.remove());
+
+    // Ищем реальные карточки
+    const cards = Array.from(grid.querySelectorAll('.card'));
+    if (cards.length === 0) return;
+
+    // Считаем, сколько не хватает
+    const remainder = cards.length % columns;
+    const missing = remainder === 0 ? 0 : columns - remainder;
+
+    // Добавляем
+    for (let i = 0; i < missing; i++) {
+      const ghost = document.createElement('div');
+      ghost.className = 'card-ghost';
+      grid.appendChild(ghost);
+    }
   });
-})();
+}
+
+document.addEventListener('DOMContentLoaded', fillEmptyGridCells);
+let resizeGridTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeGridTimer);
+  resizeGridTimer = setTimeout(fillEmptyGridCells, 150);
+});
