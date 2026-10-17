@@ -150,7 +150,9 @@ function fillEmptyGridCells() {
   });
 }
 
-document.addEventListener('DOMContentLoaded', fillEmptyGridCells);
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(fillEmptyGridCells, 100);
+});
 let resizeGridTimer;
 window.addEventListener('resize', () => {
   clearTimeout(resizeGridTimer);
