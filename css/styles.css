@@ -169,8 +169,9 @@ html[data-theme="dark"] body {
   border: 1px dashed var(--card-border);
   border-radius: 12px;
   background: transparent;
-  opacity: 0.3; /* Делаем её бледной, чтобы не отвлекала */
-  pointer-events: none; /* Чтобы по ней нельзя было кликнуть */
+  opacity: 0.3; /* Чуть заметнее */
+  pointer-events: none;
+  min-height: 150px; /* Заставляем блок занимать место */
 }
 
 /* Планшеты: 2 колонки */
