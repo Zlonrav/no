@@ -158,10 +158,24 @@ html[data-theme="dark"] body {
 /* ===== СЕТКА КАРТОЧЕК ===== */
 .cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: 1fr; /* Телефоны: 1 колонка */
   gap: 20px;
-  max-width: 1400px;
+  max-width: 1300px; /* Чуть уже, чтобы карточки не растягивались слишком сильно */
   margin: 0 auto;
+}
+
+/* Планшеты: 2 колонки */
+@media (min-width: 701px) {
+  .cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ПК и ноутбуки: 3 колонки */
+@media (min-width: 1100px) {
+  .cards-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 /* ===== КАРТОЧКА ===== */
