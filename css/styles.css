@@ -166,12 +166,12 @@ html[data-theme="dark"] body {
 
 /* Заглушка для заполнения пустых мест в сетке */
 .card-ghost {
-  border: 1px dashed var(--card-border);
   border-radius: 12px;
-  background: transparent;
-  opacity: 0.3; /* Чуть заметнее */
+  background: var(--card-bg); /* Берём цвет карточки */
+  opacity: 0.3; /* Делаем бледной */
   pointer-events: none;
-  min-height: 150px; /* Заставляем блок занимать место */
+  min-height: 150px;
+  border: 1px solid var(--card-border); /* Оставляем тонкую рамку */
 }
 
 /* Планшеты: 2 колонки */
