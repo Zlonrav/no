@@ -123,25 +123,20 @@ if ('serviceWorker' in navigator) {
 function fillEmptyGridCells() {
   const grids = document.querySelectorAll('.cards-grid');
   
-  // Определяем количество колонок по ширине экрана (как в CSS)
   let columns = 1;
   const width = window.innerWidth;
   if (width >= 1100) columns = 3;
   else if (width >= 701) columns = 2;
   
   grids.forEach(grid => {
-    // Удаляем старые заглушки
     grid.querySelectorAll('.card-ghost').forEach(el => el.remove());
 
-    // Ищем реальные карточки
     const cards = Array.from(grid.querySelectorAll('.card'));
     if (cards.length === 0) return;
 
-    // Считаем, сколько не хватает
     const remainder = cards.length % columns;
     const missing = remainder === 0 ? 0 : columns - remainder;
 
-    // Добавляем
     for (let i = 0; i < missing; i++) {
       const ghost = document.createElement('div');
       ghost.className = 'card-ghost';
@@ -150,13 +145,59 @@ function fillEmptyGridCells() {
   });
 }
 
+/* ============================================================
+   ЕДИНАЯ ЛОГИКА СЕТКИ ДЛЯ ВСЕХ СТРАНИЦ (мини-пульты)
+   ============================================================ */
+function updateGridLogic() {
+  const grids = document.querySelectorAll('.mini-pult, .dashboard');
+  
+  grids.forEach(grid => {
+    const tiles = Array.from(grid.children).filter(el => 
+      !el.classList.contains('wide') && 
+      !el.classList.contains('card-ghost')
+    );
+    const count = tiles.length;
+    if (count === 0) return;
+
+    const width = window.innerWidth;
+    let cols = 3;
+
+    if (width <= 500) {
+      cols = 2;
+    } else if (grid.classList.contains('mini-pult') && count === 2) {
+      cols = 2;
+    } else if (width >= 1100 && count > 6) {
+      cols = 4;
+    }
+
+    const rows = Math.ceil(count / cols);
+
+    grid.style.setProperty('--cols', cols);
+    grid.style.setProperty('--rows', rows);
+  });
+}
+
+// Глобальный таймер для ресайза, чтобы не было дубля переменных
+let globalResizeTimer;
+
 document.addEventListener('DOMContentLoaded', () => {
-  setTimeout(fillEmptyGridCells, 100);
+  // 1. Заполняем пустые места в карточках
+  setTimeout(fillEmptyGridCells, 50);
+  
+  // 2. Если это не главная (там сетку строит dashboard.js), 
+  // то обновляем сетку плиток тут
+  if (!document.getElementById('dashboard')) {
+    updateGridLogic();
+  }
 });
-let resizeGridTimer;
+
+// Пересчитываем при изменении размера экрана
 window.addEventListener('resize', () => {
-  clearTimeout(resizeGridTimer);
-  resizeGridTimer = setTimeout(fillEmptyGridCells, 150);
+  clearTimeout(globalResizeTimer);
+  globalResizeTimer = setTimeout(() => {
+    fillEmptyGridCells();
+    updateGridLogic();
+  }, 150);
 });
 
 // Показываем версию кэша (SW) в консоли для отладки
@@ -171,51 +212,4 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }).catch(() => {});
   }
-});
-
-/* ============================================================
-   ЕДИНАЯ ЛОГИКА СЕТКИ ДЛЯ ВСЕХ СТРАНИЦ (мини-пульты)
-   ============================================================ */
-function updateGridLogic() {
-  // Ищем все контейнеры плиток (на главной это .dashboard, внутри разделов — .mini-pult)
-  const grids = document.querySelectorAll('.mini-pult, .dashboard');
-  
-  grids.forEach(grid => {
-    // Считаем плитки, исключая широкие (Счётчик) и пустые заглушки
-    const tiles = Array.from(grid.children).filter(el => 
-      !el.classList.contains('wide') && 
-      !el.classList.contains('card-ghost')
-    );
-    const count = tiles.length;
-    if (count === 0) return;
-
-    const width = window.innerWidth;
-    let cols = 3; // По умолчанию 3 колонки
-
-    if (width <= 500) {
-      cols = 2; // Телефон вертикально
-    } else if (grid.classList.contains('mini-pult') && count === 2) {
-      cols = 2; // Если в мини-пульте всего 2 плитки (например, Перегрузка) — всегда 2
-    } else if (width >= 1100 && count > 6) {
-      cols = 4; // На широких экранах, если плиток много, можно 4
-    }
-
-    const rows = Math.ceil(count / cols);
-
-    // Применяем переменные
-    grid.style.setProperty('--cols', cols);
-    grid.style.setProperty('--rows', rows);
-  });
-}
-
-// Запускаем ТОЛЬКО ОДИН РАЗ, когда страница и все скрипты полностью загружены
-window.addEventListener('load', () => {
-  updateGridLogic();
-});
-
-// Пересчитываем при изменении размера экрана
-let gridResizeTimer;
-window.addEventListener('resize', () => {
-  clearTimeout(gridResizeTimer);
-  gridResizeTimer = setTimeout(updateGridLogic, 150);
 });
