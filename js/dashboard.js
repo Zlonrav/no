@@ -92,4 +92,9 @@
 
     grid.appendChild(el);
   });
+
+  // ВАЖНО: Пересчитываем сетку сразу после того, как плитки добавлены в DOM
+  if (typeof updateGridLogic === 'function') {
+    updateGridLogic();
+  }
 })();
