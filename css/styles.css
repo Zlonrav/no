@@ -308,29 +308,28 @@ html[data-theme="dark"] body {
 
 /* ===== ПЕРЕКРЁСТНЫЕ ССЫЛКИ В КАРТОЧКАХ ===== */
 .card a {
-  color: inherit;
+  color: inherit; /* Цвет текста */
   font-weight: inherit;
   text-decoration: none;
-  border-bottom: 1px dashed currentColor;
+  border-bottom: 1px dashed currentColor; /* Пунктир цвета текста */
+  padding-bottom: 1px;
+  transition: color 0.15s ease, border-bottom-color 0.15s ease, border-bottom-style 0.15s ease;
   -webkit-tap-highlight-color: transparent;
 }
 
-.card a:hover {
-  border-bottom-style: solid;
+/* При наведении (на ПК) и нажатии (на телефоне) */
+.card a:hover, .card a:active {
+  color: #0055aa; /* Синий для светлой темы */
+  border-bottom-color: #0055aa;
+  border-bottom-style: solid; /* Пунктир становится сплошным */
 }
 
-.card a:active {
-  opacity: 0.6;
-}
-
-/* В карточках, где цвет группы — синий, ссылки делаем заметнее */
-.card.blue a {
+/* В тёмной теме при наведении/нажатии делаем голубым */
+html[data-theme="dark"] .card a:hover, 
+html[data-theme="dark"] .card a:active {
   color: #6ba7ff;
+  border-bottom-color: #6ba7ff;
 }
-.card.blue a:hover {
-  color: var(--red);
-}
-
 html[data-theme="dark"] .card blockquote {
   background: rgba(255,140,90,0.10);
 }
