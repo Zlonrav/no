@@ -11,120 +11,17 @@
 <script src="../js/theme-init.js"></script>
 <link rel="stylesheet" href="../css/styles.css">
 <style>
-  body.understand-body {
-    min-height: 100vh;
-    min-height: 100svh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    box-sizing: border-box;
-  }
-
-  .mini-pult {
-    --cols: 3;
-    --rows: 2;
-    --gap: 14px;
-    --pad: 20px;
-
-    --tile-w: calc((100vw - 2 * var(--pad) - (var(--cols) - 1) * var(--gap)) / var(--cols));
-    --tile-h: calc((100svh - 2 * var(--pad) - (var(--rows) - 1) * var(--gap)) / var(--rows));
-    --tile: min(var(--tile-w), var(--tile-h), 200px);
-
-    display: grid;
-    grid-template-columns: repeat(var(--cols), var(--tile));
-    grid-auto-rows: var(--tile);
-    gap: var(--gap);
-    justify-content: center;
-    align-content: center;
-  }
-
-  .mini-tile {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    border-radius: 20px;
-    text-decoration: none;
-    color: #fff;
-    cursor: pointer;
-    overflow: hidden;
-    transition: transform 0.15s ease, box-shadow 0.2s ease;
-    -webkit-tap-highlight-color: transparent;
-    border: none;
-    padding: 0;
-    font-family: inherit;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.10),
-                0 12px 28px rgba(0,0,0,0.08),
-                inset 0 -2px 4px rgba(0,0,0,0.15),
-                inset 0 2px 3px rgba(255,255,255,0.18);
-  }
-
-  .mini-tile:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.14),
-                0 16px 36px rgba(0,0,0,0.12),
-                inset 0 -2px 4px rgba(0,0,0,0.15),
-                inset 0 2px 3px rgba(255,255,255,0.18);
-  }
-
-  .mini-tile:active {
-    transform: translateY(-1px) scale(0.98);
-  }
-
-  .mini-tile svg {
-    width: 40px;
-    height: 40px;
-    stroke: currentColor;
-    stroke-width: 1.8;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    fill: none;
-    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.15));
-  }
-
-  .mini-tile .label {
-    font-size: 12pt;
-    font-weight: bold;
-    letter-spacing: 0.4px;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.20);
-  }
-
-  .mini-tile.trgz {
-    background: linear-gradient(135deg, #7c3aed 0%, #7c3aed 50%, #38107a 120%);
-  }
-
-  .mini-tile.stezenko {
-    background: linear-gradient(135deg, #1e3a8a 0%, #1e3a8a 50%, #0b1738 120%);
-  }
-
-  .mini-tile.brain {
-    background: linear-gradient(135deg, #0f766e 0%, #0f766e 50%, #063d38 120%);
-  }
-
-  .mini-tile.body {
-    background: linear-gradient(135deg, #a67c52 0%, #a67c52 50%, #513a24 120%);
-  }
-
-  .mini-tile.habit {
-    background: linear-gradient(135deg, #059669 0%, #059669 50%, #023d2a 120%);
-  }
-
-  .mini-tile.bottom {
-    background: linear-gradient(135deg, #991b1b 0%, #991b1b 50%, #450a0a 120%);
-  }
-
-  @media (max-width: 700px) {
-    body.understand-body { padding: 14px; }
-    .mini-pult { --gap: 12px; --pad: 14px; }
-    .mini-tile svg { width: 32px; height: 32px; }
-    .mini-tile .label { font-size: 10.5pt; }
-  }
+ <style>
+  .mini-tile.trgz     { background: linear-gradient(135deg, #7c3aed 0%, #7c3aed 50%, #38107a 120%); }
+  .mini-tile.stezenko { background: linear-gradient(135deg, #1e3a8a 0%, #1e3a8a 50%, #0b1738 120%); }
+  .mini-tile.brain    { background: linear-gradient(135deg, #0f766e 0%, #0f766e 50%, #063d38 120%); }
+  .mini-tile.body     { background: linear-gradient(135deg, #a67c52 0%, #a67c52 50%, #513a24 120%); }
+  .mini-tile.habit    { background: linear-gradient(135deg, #059669 0%, #059669 50%, #023d2a 120%); }
+  .mini-tile.bottom   { background: linear-gradient(135deg, #991b1b 0%, #991b1b 50%, #450a0a 120%); }
+</style>
 </style>
 </head>
-<body class="understand-body">
+<body class="mini-body">
 
 <a class="back-btn" href="../index.html" aria-label="Назад">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
