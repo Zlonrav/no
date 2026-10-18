@@ -59,25 +59,6 @@
     }
   ];
 
-  /* ===== СЧИТАЕМ КОЛОНКИ ===== */
-  const normalCount = TILES.filter(t => !t.wide).length;
-
-  function pickColumns() {
-    const isMobile = window.matchMedia('(max-width: 700px)').matches;
-    if (isMobile) return 2;
-    return Math.min(Math.ceil(normalCount / 2), 4);
-  }
-
-  function applyGrid() {
-    const cols = pickColumns();
-    const rows = Math.ceil(normalCount / cols);
-    document.documentElement.style.setProperty('--cols', cols);
-    document.documentElement.style.setProperty('--rows', rows);
-  }
-
-  applyGrid();
-  window.addEventListener('resize', applyGrid);
-
   /* ===== РЕНДЕР ПЛИТОК ===== */
   TILES.forEach((tile) => {
     const el = document.createElement('a');
