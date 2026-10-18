@@ -172,3 +172,50 @@ document.addEventListener('DOMContentLoaded', () => {
       }).catch(() => {});
   }
 });
+
+/* ============================================================
+   ЕДИНАЯ ЛОГИКА СЕТКИ ДЛЯ ВСЕХ СТРАНИЦ (мини-пульты)
+   ============================================================ */
+function updateGridLogic() {
+  // Ищем все контейнеры плиток (на главной это .dashboard, внутри разделов — .mini-pult)
+  const grids = document.querySelectorAll('.mini-pult, .dashboard');
+  
+  grids.forEach(grid => {
+    // Считаем плитки, исключая широкие (Счётчик) и пустые заглушки
+    const tiles = Array.from(grid.children).filter(el => 
+      !el.classList.contains('wide') && 
+      !el.classList.contains('card-ghost')
+    );
+    const count = tiles.length;
+    if (count === 0) return;
+
+    const width = window.innerWidth;
+    let cols = 3; // По умолчанию 3 колонки
+
+    if (width <= 500) {
+      cols = 2; // Телефон вертикально
+    } else if (grid.classList.contains('mini-pult') && count === 2) {
+      cols = 2; // Если в мини-пульте всего 2 плитки (например, Перегрузка) — всегда 2
+    } else if (width >= 1100 && count > 6) {
+      cols = 4; // На широких экранах, если плиток много, можно 4
+    }
+
+    const rows = Math.ceil(count / cols);
+
+    // Применяем переменные
+    grid.style.setProperty('--cols', cols);
+    grid.style.setProperty('--rows', rows);
+  });
+}
+
+// Запускаем после загрузки (с небольшой задержкой, чтобы dashboard.js успел отрисовать)
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(updateGridLogic, 50);
+});
+
+// Пересчитываем при изменении размера экрана
+let gridResizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(gridResizeTimer);
+  gridResizeTimer = setTimeout(updateGridLogic, 150);
+});
