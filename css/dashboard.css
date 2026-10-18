@@ -165,13 +165,14 @@ html[data-theme="dark"] body.dashboard-body {
 }
 
 /* ===== ЦВЕТА ПЛАШЕК ===== */
-.tile-emergency  { background: linear-gradient(135deg, #991b1b 0%, #991b1b 50%, #450a0a 120%); }
-.tile-addiction  { background: linear-gradient(135deg, #d92b3a 0%, #d92b3a 50%, #6b0c14 120%); }
-.tile-overload   { background: linear-gradient(135deg, #be185d 0%, #be185d 50%, #5c0b2b 120%); }
-.tile-understand { background: linear-gradient(135deg, #1e3a8a 0%, #1e3a8a 50%, #0b1738 120%); }
-.tile-breath     { background: linear-gradient(135deg, #0891b2 0%, #0891b2 50%, #064c5c 120%); }
-.tile-abyss      { background: linear-gradient(135deg, #2d2d3a 0%, #2d2d3a 50%, #101830 120%); }
-.tile-counter    { background: linear-gradient(135deg, #1f9e1f 0%, #1f9e1f 50%, #0c3d0c 120%); }
+/* ===== ЦВЕТА ПЛАШЕК ===== */
+.tile-emergency  { background: linear-gradient(135deg, color-mix(in srgb, #991b1b, white 50%) 0%, #991b1b 50%, #450a0a 100%); }
+.tile-addiction  { background: linear-gradient(135deg, color-mix(in srgb, #d92b3a, white 50%) 0%, #d92b3a 50%, #6b0c14 100%); }
+.tile-overload   { background: linear-gradient(135deg, color-mix(in srgb, #be185d, white 50%) 0%, #be185d 50%, #5c0b2b 100%); }
+.tile-understand { background: linear-gradient(135deg, color-mix(in srgb, #1e3a8a, white 50%) 0%, #1e3a8a 50%, #0b1738 100%); }
+.tile-breath     { background: linear-gradient(135deg, color-mix(in srgb, #0891b2, white 50%) 0%, #0891b2 50%, #064c5c 100%); }
+.tile-abyss      { background: linear-gradient(135deg, color-mix(in srgb, #2d2d3a, white 50%) 0%, #2d2d3a 50%, #101830 100%); }
+.tile-counter    { background: linear-gradient(135deg, color-mix(in srgb, #1f9e1f, white 50%) 0%, #1f9e1f 50%, #0c3d0c 100%); }
 
 /* ===== РАСТЯНУТАЯ ПЛАШКА (счётчик) ===== */
 .tile.wide {
