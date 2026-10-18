@@ -1,4 +1,4 @@
-const CACHE = 'net-cards-v4.35';
+const CACHE = 'net-cards-v4.36';
 
 const ASSETS = [
   './',
@@ -24,7 +24,7 @@ const ASSETS = [
   './pages/counter.html',
   './pages/stress.html',
   './pages/abyss.html',
-  './pages/understand.html',
+  './pages/theory.html',
   './pages/addiction.html',
   './pages/stezenko.html',
   './pages/brain.html',
