@@ -208,9 +208,9 @@ function updateGridLogic() {
   });
 }
 
-// Запускаем после загрузки (с небольшой задержкой, чтобы dashboard.js успел отрисовать)
-document.addEventListener('DOMContentLoaded', () => {
-  setTimeout(updateGridLogic, 50);
+// Запускаем ТОЛЬКО ОДИН РАЗ, когда страница и все скрипты полностью загружены
+window.addEventListener('load', () => {
+  updateGridLogic();
 });
 
 // Пересчитываем при изменении размера экрана
