@@ -199,24 +199,20 @@ body.dashboard-body::-webkit-scrollbar { display: none; }
   .theme-toggle { top: 14px; right: 14px; width: 44px; height: 44px; }
   .theme-toggle svg { width: 20px; height: 20px; }
 
-/* ===== СЕТКИ ПУЛЬТОВ ===== */
-.dashboard,
-.mini-pult {
-  --cols: 2;
-  --gap: 14px;
-  --pad: 14px; /* Отступы по краям экрана */
+  .dashboard, 
+  .mini-pult { 
+    --gap: 10px; 
+  }
+  
+  /* Убираем старую логику растягивания главной, теперь всё работает по формуле */
+  .dashboard { grid-template-columns: repeat(var(--cols, 2), var(--tile)); }
 
-  /* Магия: плитка сама вычисляет свой размер от ширины экрана */
-  --tile-w: calc((100vw - (2 * var(--pad)) - (var(--cols) - 1) * var(--gap)) / var(--cols));
-  --tile: min(var(--tile-w), 200px); /* Ограничитель для ПК, чтобы не были огромными */
-
-  display: grid;
-  grid-template-columns: repeat(var(--cols), var(--tile));
-  grid-auto-rows: var(--tile);
-  gap: var(--gap);
-  justify-content: center;
-  align-content: center;
-  width: 100%;
+  .tile svg, .mini-tile svg { width: 32px; height: 32px; }
+  .tile .tile-label, .mini-tile .label { font-size: 10pt; }
+  
+  .tile .tile-value { font-size: 24pt; }
+  .tile.wide .tile-value { font-size: 34pt; }
+  .tile.wide .wide-text .tile-label { font-size: 12pt; }
 }
   
   /* На телефоне главная тянется под экран, чтобы Счётчик влез */
