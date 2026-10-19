@@ -190,7 +190,8 @@ function updateGridLogic() {
   grids.forEach(grid => {
     const tiles = Array.from(grid.children).filter(el => 
       !el.classList.contains('wide') && 
-      !el.classList.contains('card-ghost')
+      !el.classList.contains('card-ghost') &&
+      !el.classList.contains('ghost')
     );
     const count = tiles.length;
     if (count === 0) return;
