@@ -199,7 +199,7 @@ body.dashboard-body::-webkit-scrollbar { display: none; }
   box-shadow: none;
   background: var(--card-bg);
   border: 1px solid var(--card-border);
-  opacity: 0.2; /* Сильно приглушаем */
+  opacity: 0.4; /* Сильно приглушаем */
 }
 
 /* ===== АДАПТИВ (УМЕНЬШЕНИЕ ОТСТУПОВ И ШРИФТОВ) ===== */
