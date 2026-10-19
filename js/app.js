@@ -146,6 +146,42 @@ function fillEmptyGridCells() {
 }
 
 /* ============================================================
+   ЗАПОЛНЕНИЕ ПРИЗРАЧНЫМИ ПЛИТКАМИ МИНИ-ПУЛЬТОВ
+   ============================================================ */
+function fillMiniPultGhosts() {
+  const pults = document.querySelectorAll('.mini-pult');
+  const width = window.innerWidth;
+
+  pults.forEach(pult => {
+    // 1. Удаляем старые заглушки, если они были
+    pult.querySelectorAll('.mini-tile.ghost').forEach(el => el.remove());
+    
+    // 2. Считаем реальные плитки
+    const realTiles = pult.querySelectorAll('.mini-tile:not(.ghost)').length;
+    if (realTiles === 0) return;
+
+    // 3. Определяем кол-во колонок (та же логика, что и в updateGridLogic)
+    let cols = 3;
+    if (width <= 500) {
+      cols = 2;
+    } else if (pult.classList.contains('mini-pult') && realTiles === 2) {
+      cols = 2;
+    }
+
+    // 4. Задаем цель: если 2 колонки — добиваем до 8, если 3 — до 9
+    const target = cols === 2 ? 8 : 9;
+    const missing = target - realTiles;
+
+    // 5. Добавляем невидимые заглушки
+    for (let i = 0; i < missing; i++) {
+      const ghost = document.createElement('div');
+      ghost.className = 'mini-tile ghost';
+      pult.appendChild(ghost);
+    }
+  });
+}
+
+/* ============================================================
    ЕДИНАЯ ЛОГИКА СЕТКИ ДЛЯ ВСЕХ СТРАНИЦ (мини-пульты)
    ============================================================ */
 function updateGridLogic() {
