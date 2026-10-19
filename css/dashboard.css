@@ -208,7 +208,7 @@ body.dashboard-body::-webkit-scrollbar { display: none; }
 
   /* Магия: плитка сама вычисляет свой размер от ширины экрана */
   --tile-w: calc((100vw - (2 * var(--pad)) - (var(--cols) - 1) * var(--gap)) / var(--cols));
-  --tile: min(var(--tile-w), 220px); /* Ограничитель для ПК, чтобы не были огромными */
+  --tile: min(var(--tile-w), 200px); /* Ограничитель для ПК, чтобы не были огромными */
 
   display: grid;
   grid-template-columns: repeat(var(--cols), var(--tile));
