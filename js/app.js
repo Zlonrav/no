@@ -244,3 +244,67 @@ document.addEventListener('DOMContentLoaded', () => {
       }).catch(() => {});
   }
 });
+
+/* ============================================================
+   ВКЛАДКИ В РАЗДЕЛЕ "ТЕЛО" + ОБРАБОТКА ЯКОРЕЙ
+   ============================================================ */
+function initBodyTabs() {
+  const tabsContainer = document.getElementById('body-tabs');
+  if (!tabsContainer) return;
+
+  const buttons = tabsContainer.querySelectorAll('button');
+  const versions = document.querySelectorAll('.body-version');
+
+  function switchTab(tabName, scrollTarget = null) {
+    // Переключаем кнопки
+    buttons.forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.version === tabName);
+    });
+    // Переключаем контент
+    versions.forEach(ver => {
+      ver.classList.toggle('active', ver.dataset.version === tabName);
+    });
+    // Запоминаем выбор
+    localStorage.setItem('body-tab', tabName);
+
+    // Если есть цель для скролла — едем к ней
+    if (scrollTarget) {
+      const el = document.getElementById(scrollTarget);
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      }
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  // Обработчик кликов по кнопкам
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => switchTab(btn.dataset.version));
+  });
+
+  // Обработка якоря при загрузке страницы
+  const hash = window.location.hash.replace('#', '');
+  let targetTab = localStorage.getItem('body-tab') || 'alcohol';
+  let scrollTarget = null;
+
+  if (hash) {
+    scrollTarget = hash;
+    // Проверяем, к какой вкладке относится якорь
+    if (hash === 'nicotine-body' || hash === 'nicotine') {
+      targetTab = 'nicotine';
+    } else if (hash === 'food-body' || hash === 'overeating') {
+      targetTab = 'overeating';
+    } else if (hash === 'alcohol') {
+      targetTab = 'alcohol';
+    }
+  }
+
+  // Включаем нужную вкладку (и скроллим, если есть якорь)
+  switchTab(targetTab, scrollTarget);
+}
+
+// Запускаем при загрузке
+document.addEventListener('DOMContentLoaded', initBodyTabs);
