@@ -153,18 +153,16 @@ function fillMiniPultGhosts() {
   const width = window.innerWidth;
 
   pults.forEach(pult => {
-    // 1. Удаляем старые заглушки, если они были (при ресайзе)
+    // 1. Удаляем старые заглушки
     pult.querySelectorAll('.mini-tile.ghost').forEach(el => el.remove());
     
     // 2. Считаем реальные плитки
     const realTiles = pult.querySelectorAll('.mini-tile:not(.ghost)').length;
     if (realTiles === 0) return;
 
-    // 3. Определяем кол-во колонок (синхронизировано с updateGridLogic)
+    // 3. Определяем кол-во колонок (только 2 на телефоне, иначе 3)
     let cols = 3;
     if (width <= 500) {
-      cols = 2;
-    } else if (pult.classList.contains('mini-pult') && realTiles === 2) {
       cols = 2;
     }
 
@@ -182,7 +180,7 @@ function fillMiniPultGhosts() {
 }
 
 /* ============================================================
-   ЕДИНАЯ ЛОГИКА СЕТКИ ДЛЯ ВСЕХ СТРАНИЦ (мини-пульты и главная)
+   ЕДИНАЯ ЛОГИКА СЕТКИ ДЛЯ ВСЕХ СТРАНИЦ
    ============================================================ */
 function updateGridLogic() {
   const grids = document.querySelectorAll('.mini-pult, .dashboard');
@@ -199,9 +197,8 @@ function updateGridLogic() {
     const width = window.innerWidth;
     let cols = 3;
 
+    // Только для мобильных делаем 2 колонки
     if (width <= 500) {
-      cols = 2;
-    } else if (grid.classList.contains('mini-pult') && count === 2) {
       cols = 2;
     }
 
@@ -212,24 +209,19 @@ function updateGridLogic() {
   });
 }
 
-// Глобальный таймер для ресайза, чтобы не было дубля переменных
+// Глобальный таймер для ресайза
 let globalResizeTimer;
 
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. Заполняем пустые места в карточках
   setTimeout(fillEmptyGridCells, 50);
   
-  // 2. Заполняем мини-пульты до 8 или 9 плиток
   fillMiniPultGhosts();
   
-  // 3. Если это не главная (там сетку строит dashboard.js), 
-  // то обновляем сетку плиток тут
   if (!document.getElementById('dashboard')) {
     updateGridLogic();
   }
 });
 
-// Пересчитываем при изменении размера экрана
 window.addEventListener('resize', () => {
   clearTimeout(globalResizeTimer);
   globalResizeTimer = setTimeout(() => {
@@ -239,7 +231,7 @@ window.addEventListener('resize', () => {
   }, 150);
 });
 
-// Показываем версию кэша (SW) в консоли для отладки
+// Отладка версии SW
 document.addEventListener('DOMContentLoaded', () => {
   if ('serviceWorker' in navigator) {
     fetch('../sw.js')
