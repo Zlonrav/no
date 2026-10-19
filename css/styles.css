@@ -240,7 +240,11 @@ html[data-theme="dark"] body {
 .card p.center { text-align: center; }
 .card p.shout { font-size: 14pt; font-weight: bold; text-align: center; color: var(--orange); margin: 14px 0; letter-spacing: 0.5px; }
 .card p.line { font-size: 12pt; font-weight: bold; text-align: center; color: var(--orange); margin: 14px 0; }
-.card em { color: var(--orange); font-style: italic; }
+.card em { 
+  color: var(--ui-color); 
+  font-style: italic; 
+  font-size: 10pt; /* Чуть уменьшим размер */
+}
 .card strong { color: var(--text-main); }
 
 .card blockquote {
