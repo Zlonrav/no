@@ -38,7 +38,7 @@ const ASSETS = [
   './pages/cigarettes.html',
   './pages/scroll.html',
   './pages/overload.html',
-  './pages/food.html', 
+  './pages/overeating.html', 
 ];
 
 self.addEventListener('install', (e) => {
