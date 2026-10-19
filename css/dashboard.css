@@ -2,7 +2,7 @@
    DASHBOARD.CSS — стили пультов (главная и мини-пульты)
    ============================================================ */
 
-/* ===== ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ (только главная) ===== */
+/* ===== ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ ===== */
 .theme-toggle {
   position: fixed;
   top: 20px;
@@ -49,7 +49,7 @@ body.mini-body {
 }
 body.dashboard-body::-webkit-scrollbar { display: none; }
 
-/* Логотип (только десктоп) */
+/* Логотип */
 .logo { display: none; }
 @media (min-height: 800px) {
   .logo {
@@ -66,26 +66,24 @@ body.dashboard-body::-webkit-scrollbar { display: none; }
   .logo-text { font-size: 20pt; font-weight: bold; letter-spacing: 0.5px; white-space: nowrap; }
 }
 
-/* ===== СЕТКИ ПУЛЬТОВ ===== */
-.dashboard {
+/* ===== СЕТКИ ПУЛЬТОВ (УНИВЕРСАЛЬНЫЕ) ===== */
+.dashboard,
+.mini-pult {
   --gap: 12px;
+  --pad: 14px;
+  --cols: 3; /* База для JS, чтобы не было мигания */
+
+  /* МАГИЯ: Считаем доступную ширину, но не даем плитке превысить 200px */
+  --tile-w: calc((100vw - (2 * var(--pad)) - (var(--cols) - 1) * var(--gap)) / var(--cols));
+  --tile: min(200px, var(--tile-w));
+
   display: grid;
-  grid-template-columns: repeat(var(--cols, 2), 200px);
-  grid-auto-rows: 200px;
+  grid-template-columns: repeat(var(--cols), var(--tile));
+  grid-auto-rows: var(--tile); /* Плитки всегда идеально квадратные */
   gap: var(--gap);
   justify-content: center;
   align-content: center;
   width: 100%;
-}
-
-.mini-pult {
-  --gap: 12px;
-  display: grid;
-  grid-template-columns: repeat(var(--cols, 2), 200px);
-  grid-auto-rows: 200px;
-  gap: var(--gap);
-  justify-content: center;
-  align-content: center;
 }
 
 /* ===== ОБЩИЕ СТИЛИ ПЛИТОК ===== */
@@ -194,48 +192,15 @@ body.dashboard-body::-webkit-scrollbar { display: none; }
 .mini-tile.stress    { background: linear-gradient(135deg, #db2777 0%, #9d174d 100%); }
 .mini-tile.prokrutka { background: linear-gradient(135deg, #ea580c 0%, #9a3412 100%); }
 
-
-/* ===== АДАПТИВ ПУЛЬТОВ ===== */
-@media (max-width: 700px) {
-  .theme-toggle { top: 14px; right: 14px; width: 44px; height: 44px; }
-  .theme-toggle svg { width: 20px; height: 20px; }
-
-/* ===== СЕТКИ ПУЛЬТОВ ===== */
-.dashboard,
-.mini-pult {
-  --gap: 14px;
-  --pad: 14px; /* Отступы по краям */
-
-  /* Универсальная формула: берем ширину экрана, вычитаем отступы и делим на кол-во колонок */
-  --tile-w: calc((100vw - (2 * var(--pad)) - (var(--cols, 2) - 1) * var(--gap)) / var(--cols, 2));
-  
-  /* На ПК (где колонок 3 или 4) плитка не будет больше 200px */
-  --tile: min(var(--tile-w), 200px);
-
-  display: grid;
-  grid-template-columns: repeat(var(--cols, 2), var(--tile));
-  grid-auto-rows: var(--tile);
-  gap: var(--gap);
-  justify-content: center;
-  align-content: center;
-  width: 100%;
-}
-
-/* ===== АДАПТИВ ПУЛЬТОВ ===== */
-@media (max-width: 700px) {
+/* ===== АДАПТИВ (УМЕНЬШЕНИЕ ОТСТУПОВ И ШРИФТОВ) ===== */
+@media (max-width: 500px) {
   .theme-toggle { top: 14px; right: 14px; width: 44px; height: 44px; }
   .theme-toggle svg { width: 20px; height: 20px; }
 
   .dashboard, 
   .mini-pult { 
     --gap: 10px; 
-    --pad: 14px;
-    
-    /* На телефонах всегда 2 колонки, невзирая на JS */
-    --cols: 2;
-    
-    /* Считаем идеальную ширину для мобилки (100% ширины минус отступы) */
-    --tile: calc((100vw - (2 * var(--pad)) - var(--gap)) / 2);
+    --pad: 12px; 
   }
 
   .tile svg, .mini-tile svg { width: 32px; height: 32px; }
