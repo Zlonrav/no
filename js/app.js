@@ -166,8 +166,6 @@ function updateGridLogic() {
       cols = 2;
     } else if (grid.classList.contains('mini-pult') && count === 2) {
       cols = 2;
-    } else if (width >= 1100 && count > 6) {
-      cols = 4;
     }
 
     const rows = Math.ceil(count / cols);
