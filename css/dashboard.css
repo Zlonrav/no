@@ -197,8 +197,8 @@ body.dashboard-body::-webkit-scrollbar { display: none; }
   visibility: visible; /* Делаем видимой */
   pointer-events: none; /* Но кликнуть нельзя */
   box-shadow: none;
-  background: transparent !important; /* Убираем цвет */
-  border: 1px dashed var(--ui-color); /* Еле заметная рамка */
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   opacity: 0.2; /* Сильно приглушаем */
 }
 
