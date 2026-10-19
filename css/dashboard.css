@@ -78,7 +78,7 @@ html[data-theme="dark"] body.dashboard-body {
 }
 
 /* ===== СЕТКА ПЛАШЕК ===== */
-.dashboard {
+/* .dashboard {*/
 /*  --gap: 14px;*/
 /*  --pad: 20px;*/
 
@@ -92,7 +92,7 @@ html[data-theme="dark"] body.dashboard-body {
   /*gap: var(--gap);*/
   /*justify-content: center;*/
   /*align-content: center;*/
-/*}
+/*}*/
 
 /* ===== СЕТКА ПЛАШЕК ===== */
 .dashboard {
