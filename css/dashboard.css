@@ -192,6 +192,15 @@ body.dashboard-body::-webkit-scrollbar { display: none; }
 .mini-tile.stress    { background: linear-gradient(135deg, #db2777 0%, #9d174d 100%); }
 .mini-tile.prokrutka { background: linear-gradient(135deg, #ea580c 0%, #9a3412 100%); }
 
+/* Призрачная плитка для заполнения пустых мест */
+.mini-tile.ghost {
+  visibility: hidden;
+  pointer-events: none;
+  box-shadow: none;
+  background: transparent !important;
+  border: none;
+}
+
 /* ===== АДАПТИВ (УМЕНЬШЕНИЕ ОТСТУПОВ И ШРИФТОВ) ===== */
 @media (max-width: 500px) {
   .theme-toggle { top: 14px; right: 14px; width: 44px; height: 44px; }
