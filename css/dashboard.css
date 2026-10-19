@@ -194,7 +194,7 @@ body.dashboard-body::-webkit-scrollbar { display: none; }
 .mini-tile.stress    { background: linear-gradient(135deg, #db2777 0%, #9d174d 100%); }
 .mini-tile.prokrutka { background: linear-gradient(135deg, #ea580c 0%, #9a3412 100%); }
 
-/* ===== АДАПТИВ ПУЛЬТОВ ===== */
+
 /* ===== АДАПТИВ ПУЛЬТОВ ===== */
 @media (max-width: 700px) {
   .theme-toggle { top: 14px; right: 14px; width: 44px; height: 44px; }
@@ -203,18 +203,17 @@ body.dashboard-body::-webkit-scrollbar { display: none; }
 /* ===== СЕТКИ ПУЛЬТОВ ===== */
 .dashboard,
 .mini-pult {
-  --cols: 2;
-  --gap: 12px;
-  --pad: 14px;
+  --gap: 14px;
+  --pad: 14px; /* Отступы по краям */
 
-  /* Формула: делим ширину экрана на кол-во колонок, минус отступы */
-  --tile-w: calc((100vw - (2 * var(--pad)) - (var(--cols) - 1) * var(--gap)) / var(--cols));
+  /* Универсальная формула: берем ширину экрана, вычитаем отступы и делим на кол-во колонок */
+  --tile-w: calc((100vw - (2 * var(--pad)) - (var(--cols, 2) - 1) * var(--gap)) / var(--cols, 2));
   
-  /* Ограничиваем максимальный размер 200px для ПК */
+  /* На ПК (где колонок 3 или 4) плитка не будет больше 200px */
   --tile: min(var(--tile-w), 200px);
 
   display: grid;
-  grid-template-columns: repeat(var(--cols), var(--tile));
+  grid-template-columns: repeat(var(--cols, 2), var(--tile));
   grid-auto-rows: var(--tile);
   gap: var(--gap);
   justify-content: center;
