@@ -199,7 +199,7 @@ body.dashboard-body::-webkit-scrollbar { display: none; }
   box-shadow: none;
   background: transparent !important; /* Убираем цвет */
   border: 1px dashed var(--ui-color); /* Еле заметная рамка */
-  opacity: 0.3; /* Сильно приглушаем */
+  opacity: 0.2; /* Сильно приглушаем */
 }
 
 /* ===== АДАПТИВ (УМЕНЬШЕНИЕ ОТСТУПОВ И ШРИФТОВ) ===== */
