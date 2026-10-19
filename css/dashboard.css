@@ -226,11 +226,16 @@ body.dashboard-body::-webkit-scrollbar { display: none; }
   .theme-toggle { top: 14px; right: 14px; width: 44px; height: 44px; }
   .theme-toggle svg { width: 20px; height: 20px; }
 
-  /* НА ТЕЛЕФОНЕ меняем переменную --cols на 2 (или оставляем 2) */
   .dashboard, 
   .mini-pult { 
-    --cols: 2;
     --gap: 10px; 
+    --pad: 14px;
+    
+    /* На телефонах всегда 2 колонки, невзирая на JS */
+    --cols: 2;
+    
+    /* Считаем идеальную ширину для мобилки (100% ширины минус отступы) */
+    --tile: calc((100vw - (2 * var(--pad)) - var(--gap)) / 2);
   }
 
   .tile svg, .mini-tile svg { width: 32px; height: 32px; }
