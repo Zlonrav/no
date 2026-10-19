@@ -687,6 +687,25 @@ body.mini-body {
 
 .mini-pult {
   /* Базовые значения (JS их перезапишет) */
+  /* --cols: 3; */
+ /*  --rows: 2; */
+ /*  --gap: 14px; */
+ /*  --pad: 20px; */
+
+/*   --tile-w: calc((100vw - 2 * var(--pad) - (var(--cols) - 1) * var(--gap)) / var(--cols)); */
+/*   --tile-h: calc((100svh - 2 * var(--pad) - (var(--rows) - 1) * var(--gap)) / var(--rows)); */
+/*   --tile: min(var(--tile-w), var(--tile-h), 200px); */
+
+/*   display: grid; */
+/*   grid-template-columns: repeat(var(--cols), var(--tile)); */
+/*   grid-auto-rows: var(--tile); */
+/*   gap: var(--gap); */
+/*   justify-content: center; */
+/*   align-content: center; */
+/* } */
+
+ .mini-pult {
+  /* Базовые значения */
   --cols: 3;
   --rows: 2;
   --gap: 14px;
@@ -694,6 +713,8 @@ body.mini-body {
 
   --tile-w: calc((100vw - 2 * var(--pad) - (var(--cols) - 1) * var(--gap)) / var(--cols));
   --tile-h: calc((100svh - 2 * var(--pad) - (var(--rows) - 1) * var(--gap)) / var(--rows));
+  
+  /* Одинаковое ограничение с главной */
   --tile: min(var(--tile-w), var(--tile-h), 200px);
 
   display: grid;
