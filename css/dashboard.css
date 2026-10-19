@@ -1,43 +1,8 @@
 /* ============================================================
-   DASHBOARD.CSS — стили главной страницы (пульта)
+   DASHBOARD.CSS — стили пультов (главная и внутренние)
    ============================================================ */
 
-html, body { margin: 0; padding: 0; }
-
-body.dashboard-body {
-  min-height: 100vh;
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
-  font-family: Arial, Helvetica, sans-serif;
-  color: var(--text-main);
-  background:
-    radial-gradient(circle at 20% 0%, rgba(255,255,255,0.9), transparent 50%),
-    radial-gradient(circle at 80% 100%, rgba(255,255,255,0.7), transparent 50%),
-    linear-gradient(160deg, var(--bg-1) 0%, var(--bg-2) 100%);
-  background-attachment: fixed;
-  overflow-y: auto;
-  overflow-x: hidden;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-body.dashboard-body::-webkit-scrollbar {
-  display: none;
-}
-
-html[data-theme="dark"] body.dashboard-body {
-  background:
-    radial-gradient(circle at 20% 0%, rgba(255,255,255,0.04), transparent 50%),
-    radial-gradient(circle at 80% 100%, rgba(255,255,255,0.03), transparent 50%),
-    linear-gradient(160deg, var(--bg-1), var(--bg-2));
-}
-
-/* ===== ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ ===== */
+/* ===== ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ (только для главной) ===== */
 .theme-toggle {
   position: fixed;
   top: 20px;
@@ -61,58 +26,73 @@ html[data-theme="dark"] body.dashboard-body {
   padding: 0;
   font-family: inherit;
 }
+.theme-toggle:hover { transform: translateY(-1px); background: rgba(128,128,128,0.12); }
+.theme-toggle:active { transform: scale(0.94); }
+.theme-toggle svg { display: block; width: 22px; height: 22px; }
 
-.theme-toggle:hover {
-  transform: translateY(-1px);
-  background: rgba(128,128,128,0.12);
+/* ===== ОБЩИЕ СТИЛИ ДЛЯ ВСЕХ ПУЛЬТОВ (ГЛАВНАЯ И МИНИ) ===== */
+body.dashboard-body,
+body.mini-body {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+  padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+  box-sizing: border-box;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+body.dashboard-body::-webkit-scrollbar { display: none; }
+
+/* Логотип (только десктоп) */
+.logo { display: none; }
+@media (min-height: 800px) {
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    color: #d92b3a;
+    font-family: Arial, Helvetica, sans-serif;
+    pointer-events: none;
+    flex-shrink: 0;
+    margin-bottom: 40px;
+  }
+  .logo svg { display: block; width: 32px; height: 32px; stroke: currentColor; stroke-width: 14; fill: none; stroke-linecap: round; }
+  .logo-text { font-size: 20pt; font-weight: bold; letter-spacing: 0.5px; white-space: nowrap; }
 }
 
-.theme-toggle:active {
-  transform: scale(0.94);
-}
-
-.theme-toggle svg {
-  display: block;
-  width: 22px;
-  height: 22px;
-}
-
-/* ===== СЕТКА ПЛАШЕК ===== */
-/* .dashboard {*/
-/*  --gap: 14px;*/
-/*  --pad: 20px;*/
-
-/*  --tile-w: calc((100vw - 2 * var(--pad) - (var(--cols, 2) - 1) * var(--gap)) / var(--cols, 2));*/
-/*  --tile-h: calc((100svh - 2 * var(--pad) - var(--rows, 3) * var(--gap) - 90px) / (var(--rows, 3) + 1));*/
-/*  --tile: min(var(--tile-w), var(--tile-h), 200px);*/
-
-  /*display: grid;*/
-  /*grid-template-columns: repeat(var(--cols, 2), var(--tile));*/
-  /*grid-auto-rows: var(--tile);*/
-  /*gap: var(--gap);*/
-  /*justify-content: center;*/
-  /*align-content: center;*/
-/*}*/
-
-/* ===== СЕТКА ПЛАШЕК ===== */
+/* ===== СЕТКИ ПУЛЬТОВ ===== */
+/* Главная */
 .dashboard {
-  --gap: 14px;
-  --pad: 20px;
-
-  --tile-w: calc((100vw - 2 * var(--pad) - (var(--cols, 2) - 1) * var(--gap)) / var(--cols, 2));
-  --tile-h: calc((100svh - 2 * var(--pad) - (var(--rows, 3) - 1) * var(--gap) - 90px) / (var(--rows, 3)));
-  --tile: min(var(--tile-w), var(--tile-h), 200px);
-
+  --gap: 12px;
   display: grid;
-  grid-template-columns: repeat(var(--cols, 2), var(--tile));
-  grid-auto-rows: var(--tile);
+  grid-template-columns: repeat(var(--cols, 2), 200px);
+  grid-auto-rows: 200px;
+  gap: var(--gap);
+  justify-content: center;
+  align-content: center;
+  width: 100%;
+}
+
+/* Внутренние пульты */
+.mini-pult {
+  --gap: 12px;
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 2), 200px);
+  grid-auto-rows: 200px;
   gap: var(--gap);
   justify-content: center;
   align-content: center;
 }
 
-/* ===== ПЛАШКА ===== */
-.tile {
+/* ===== ОБЩИЕ СТИЛИ ПЛИТОК ===== */
+.tile,
+.mini-tile {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -135,7 +115,8 @@ html[data-theme="dark"] body.dashboard-body {
               inset 0 2px 3px rgba(255,255,255,0.18);
 }
 
-.tile:hover {
+.tile:hover,
+.mini-tile:hover {
   transform: translateY(-3px);
   box-shadow: 0 6px 16px rgba(0,0,0,0.14),
               0 16px 36px rgba(0,0,0,0.12),
@@ -143,13 +124,15 @@ html[data-theme="dark"] body.dashboard-body {
               inset 0 2px 3px rgba(255,255,255,0.18);
 }
 
-.tile:active {
+.tile:active,
+.mini-tile:active {
   transform: translateY(-1px) scale(0.98);
 }
 
-.tile svg {
-  width: 40px;
-  height: 40px;
+.tile svg,
+.mini-tile svg {
+  width: 36px;
+  height: 36px;
   stroke: currentColor;
   stroke-width: 1.8;
   stroke-linecap: round;
@@ -158,13 +141,16 @@ html[data-theme="dark"] body.dashboard-body {
   filter: drop-shadow(0 1px 2px rgba(0,0,0,0.15));
 }
 
-.tile .tile-label {
-  font-size: 12pt;
+.tile .tile-label,
+.mini-tile .label {
+  font-size: 11pt;
   font-weight: bold;
   letter-spacing: 0.4px;
   text-shadow: 0 1px 2px rgba(0,0,0,0.20);
+  text-align: center;
 }
 
+/* Специфичные стили для главной (Счётчик) */
 .tile .tile-value {
   font-size: 28pt;
   font-weight: bold;
@@ -173,25 +159,6 @@ html[data-theme="dark"] body.dashboard-body {
   text-shadow: 0 1px 2px rgba(0,0,0,0.20);
 }
 
-.tile .tile-sub {
-  font-size: 10pt;
-  font-weight: normal;
-  opacity: 0.9;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.15);
-  margin-top: -4px;
-}
-
-
-/* ===== ЦВЕТА ПЛАШЕК (ПЕРЕНЕСЛИ В STYLES.CSS) ===== */
-/*.tile-emergency  { background: linear-gradient(135deg, color-mix(in srgb, #991b1b, white 50%) 0%, #991b1b 50%, #450a0a 100%); }*/
-/*.tile-addiction  { background: linear-gradient(135deg, color-mix(in srgb, #d92b3a, white 50%) 0%, #d92b3a 50%, #6b0c14 100%); }*/
-/*.tile-overload   { background: linear-gradient(135deg, color-mix(in srgb, #be185d, white 50%) 0%, #be185d 50%, #5c0b2b 100%); }*/
-/*.tile-understand { background: linear-gradient(135deg, color-mix(in srgb, #1e3a8a, white 50%) 0%, #1e3a8a 50%, #0b1738 100%); }*/
-/*.tile-breath     { background: linear-gradient(135deg, color-mix(in srgb, #0891b2, white 50%) 0%, #0891b2 50%, #064c5c 100%); }*/
-/*.tile-abyss      { background: linear-gradient(135deg, color-mix(in srgb, #2d2d3a, white 50%) 0%, #2d2d3a 50%, #101830 100%); }*/
-/*.tile-counter    { background: linear-gradient(135deg, color-mix(in srgb, #1f9e1f, white 50%) 0%, #1f9e1f 50%, #0c3d0c 100%); }*/
-
-/* ===== РАСТЯНУТАЯ ПЛАШКА (счётчик) ===== */
 .tile.wide {
   grid-column: 1 / -1;
   flex-direction: row;
@@ -199,84 +166,64 @@ html[data-theme="dark"] body.dashboard-body {
   min-height: 140px;
 }
 
-.tile.wide .tile-value {
-  font-size: 40pt;
-}
+.tile.wide .tile-value { font-size: 40pt; }
+.tile.wide .wide-text { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.tile.wide .wide-text .tile-label { font-size: 14pt; }
 
-.tile.wide .wide-text {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-}
+/* ===== ЦВЕТА ПЛИТОК (ГЛАВНАЯ) ===== */
+.tile-emergency  { background: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%); }
+.tile-addiction  { background: linear-gradient(135deg, #e63946 0%, #b91c1c 100%); }
+.tile-overload   { background: linear-gradient(135deg, #db2777 0%, #9d174d 100%); }
+.tile-understand { background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%); }
+.tile-breath     { background: linear-gradient(135deg, #06b6d4 0%, #0e7490 100%); }
+.tile-abyss      { background: linear-gradient(135deg, #334155 0%, #1e293b 100%); }
+.tile-counter    { background: linear-gradient(135deg, #22c55e 0%, #15803d 100%); }
 
-.tile.wide .wide-text .tile-label {
-  font-size: 14pt;
-}
+/* ===== ЦВЕТА ПЛИТОК (ВНУТРЕННИЕ ПУЛЬТЫ) ===== */
+/* Зависимости */
+.mini-tile.alcohol    { background: linear-gradient(135deg, #e63946 0%, #b91c1c 100%); }
+.mini-tile.vape       { background: linear-gradient(135deg, #f59e0b 0%, #b45309 100%); }
+.mini-tile.cigarettes { background: linear-gradient(135deg, #b45309 0%, #78350f 100%); }
+.mini-tile.scroll     { background: linear-gradient(135deg, #ea580c 0%, #9a3412 100%); }
+.mini-tile.food       { background: linear-gradient(135deg, #84cc16 0%, #4d7c0f 100%); }
+
+/* Теория */
+.mini-tile.trgz     { background: linear-gradient(135deg, #8b5cf6 0%, #5b21b6 100%); }
+.mini-tile.stezenko { background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%); }
+.mini-tile.brain    { background: linear-gradient(135deg, #0d9488 0%, #115e59 100%); }
+.mini-tile.body     { background: linear-gradient(135deg, #b45309 0%, #78350f 100%); }
+.mini-tile.habit    { background: linear-gradient(135deg, #10b981 0%, #047857 100%); }
+.mini-tile.bottom   { background: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%); }
+
+/* Перегрузка */
+.mini-tile.stress    { background: linear-gradient(135deg, #db2777 0%, #9d174d 100%); }
+.mini-tile.prokrutka { background: linear-gradient(135deg, #ea580c 0%, #9a3412 100%); }
 
 /* ===== АДАПТИВ ===== */
 @media (max-width: 700px) {
-   body.dashboard-body { padding: 10px; padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px)); }
-
-   .dashboard {--gap: 12px; --pad: 0px;}
-
   .theme-toggle { top: 14px; right: 14px; width: 44px; height: 44px; }
   .theme-toggle svg { width: 20px; height: 20px; }
+  
+  .dashboard, 
+  .mini-pult { --gap: 10px; }
 
-  .tile svg { width: 32px; height: 32px; }
-  .tile .tile-label { font-size: 10.5pt; }
+  /* На телефоне главная тянется под экран, чтобы Счётчик влез */
+  .dashboard { grid-template-columns: repeat(var(--cols, 2), minmax(0, 1fr)); }
+
+  .tile svg,
+  .mini-tile svg { width: 32px; height: 32px; }
+  
+  .tile .tile-label,
+  .mini-tile .label { font-size: 10pt; }
+  
   .tile .tile-value { font-size: 24pt; }
   .tile.wide .tile-value { font-size: 34pt; }
   .tile.wide .wide-text .tile-label { font-size: 12pt; }
 }
 
 @media (max-height: 600px) {
-  .tile svg { width: 26px; height: 26px; }
-  .tile .tile-label { font-size: 9.5pt; }
+  .tile svg, .mini-tile svg { width: 26px; height: 26px; }
+  .tile .tile-label, .mini-tile .label { font-size: 9pt; }
   .tile .tile-value { font-size: 20pt; }
   .tile.wide .tile-value { font-size: 28pt; }
-  .tile.wide .wide-text .tile-label { font-size: 11pt; }
-}
-
-
-/* ===== ЛОГОТИП (только десктоп) ===== */
-.logo {
-  display: none;
-}
-
-@media (min-height: 800px) {
-  .logo {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    color: #d92b3a;
-    font-family: Arial, Helvetica, sans-serif;
-    pointer-events: none;
-    flex-shrink: 0;
-    margin-bottom: 40px;
-  }
-
-  .logo svg {
-    display: block;
-    width: 32px;
-    height: 32px;
-    stroke: currentColor;
-    stroke-width: 14;
-    fill: none;
-    stroke-linecap: round;
-    flex-shrink: 0;
-  }
-
-  .logo-text {
-    font-size: 20pt;
-    font-weight: bold;
-    letter-spacing: 0.5px;
-    color: currentColor;
-    white-space: nowrap;
-  }
-
-  .logo-text strong {
-    color: currentColor;
-    font-weight: bold;
-  }
 }
