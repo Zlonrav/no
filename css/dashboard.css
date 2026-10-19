@@ -79,11 +79,28 @@ html[data-theme="dark"] body.dashboard-body {
 
 /* ===== СЕТКА ПЛАШЕК ===== */
 .dashboard {
+/*  --gap: 14px;*/
+/*  --pad: 20px;*/
+
+/*  --tile-w: calc((100vw - 2 * var(--pad) - (var(--cols, 2) - 1) * var(--gap)) / var(--cols, 2));*/
+/*  --tile-h: calc((100svh - 2 * var(--pad) - var(--rows, 3) * var(--gap) - 90px) / (var(--rows, 3) + 1));*/
+/*  --tile: min(var(--tile-w), var(--tile-h), 200px);*/
+
+  /*display: grid;*/
+  /*grid-template-columns: repeat(var(--cols, 2), var(--tile));*/
+  /*grid-auto-rows: var(--tile);*/
+  /*gap: var(--gap);*/
+  /*justify-content: center;*/
+  /*align-content: center;*/
+/*}
+
+/* ===== СЕТКА ПЛАШЕК ===== */
+.dashboard {
   --gap: 14px;
   --pad: 20px;
 
   --tile-w: calc((100vw - 2 * var(--pad) - (var(--cols, 2) - 1) * var(--gap)) / var(--cols, 2));
-  --tile-h: calc((100svh - 2 * var(--pad) - var(--rows, 3) * var(--gap) - 90px) / (var(--rows, 3) + 1));
+  --tile-h: calc((100svh - 2 * var(--pad) - (var(--rows, 3) - 1) * var(--gap) - 90px) / (var(--rows, 3)));
   --tile: min(var(--tile-w), var(--tile-h), 200px);
 
   display: grid;
