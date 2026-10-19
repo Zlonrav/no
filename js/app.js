@@ -118,7 +118,7 @@ if ('serviceWorker' in navigator) {
 }
 
 /* ============================================================
-   ЗАПОЛНЕНИЕ ПУСТЫХ МЕСТ В СЕТКЕ (ghost cards)
+   ЗАПОЛНЕНИЕ ПУСТЫХ МЕСТ В СЕТКЕ (ghost cards для статей)
    ============================================================ */
 function fillEmptyGridCells() {
   const grids = document.querySelectorAll('.cards-grid');
@@ -153,14 +153,14 @@ function fillMiniPultGhosts() {
   const width = window.innerWidth;
 
   pults.forEach(pult => {
-    // 1. Удаляем старые заглушки, если они были
+    // 1. Удаляем старые заглушки, если они были (при ресайзе)
     pult.querySelectorAll('.mini-tile.ghost').forEach(el => el.remove());
     
     // 2. Считаем реальные плитки
     const realTiles = pult.querySelectorAll('.mini-tile:not(.ghost)').length;
     if (realTiles === 0) return;
 
-    // 3. Определяем кол-во колонок (та же логика, что и в updateGridLogic)
+    // 3. Определяем кол-во колонок (синхронизировано с updateGridLogic)
     let cols = 3;
     if (width <= 500) {
       cols = 2;
@@ -182,7 +182,7 @@ function fillMiniPultGhosts() {
 }
 
 /* ============================================================
-   ЕДИНАЯ ЛОГИКА СЕТКИ ДЛЯ ВСЕХ СТРАНИЦ (мини-пульты)
+   ЕДИНАЯ ЛОГИКА СЕТКИ ДЛЯ ВСЕХ СТРАНИЦ (мини-пульты и главная)
    ============================================================ */
 function updateGridLogic() {
   const grids = document.querySelectorAll('.mini-pult, .dashboard');
@@ -219,7 +219,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // 1. Заполняем пустые места в карточках
   setTimeout(fillEmptyGridCells, 50);
   
-  // 2. Если это не главная (там сетку строит dashboard.js), 
+  // 2. Заполняем мини-пульты до 8 или 9 плиток
+  fillMiniPultGhosts();
+  
+  // 3. Если это не главная (там сетку строит dashboard.js), 
   // то обновляем сетку плиток тут
   if (!document.getElementById('dashboard')) {
     updateGridLogic();
@@ -231,6 +234,7 @@ window.addEventListener('resize', () => {
   clearTimeout(globalResizeTimer);
   globalResizeTimer = setTimeout(() => {
     fillEmptyGridCells();
+    fillMiniPultGhosts();
     updateGridLogic();
   }, 150);
 });
