@@ -685,7 +685,7 @@ body.mini-body {
   box-sizing: border-box;
 }
 
-.mini-pult {
+/*.mini-pult {*/
   /* Базовые значения (JS их перезапишет) */
   /* --cols: 3; */
  /*  --rows: 2; */
