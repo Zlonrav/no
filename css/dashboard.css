@@ -194,11 +194,12 @@ body.dashboard-body::-webkit-scrollbar { display: none; }
 
 /* Призрачная плитка для заполнения пустых мест */
 .mini-tile.ghost {
-  visibility: hidden;
-  pointer-events: none;
+  visibility: visible; /* Делаем видимой */
+  pointer-events: none; /* Но кликнуть нельзя */
   box-shadow: none;
-  background: transparent !important;
-  border: none;
+  background: transparent !important; /* Убираем цвет */
+  border: 1px dashed var(--ui-color); /* Еле заметная рамка */
+  opacity: 0.3; /* Сильно приглушаем */
 }
 
 /* ===== АДАПТИВ (УМЕНЬШЕНИЕ ОТСТУПОВ И ШРИФТОВ) ===== */
