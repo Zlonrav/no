@@ -26,7 +26,7 @@ const ASSETS = [
   './pages/abyss.html',
   './pages/theory.html',
   './pages/addiction.html',
-  './pages/stezenko.html',
+  './pages/doctors.html',
   './pages/brain.html',
   './pages/habit.html',
   './pages/breath.html',
