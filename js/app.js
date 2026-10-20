@@ -2,6 +2,15 @@
    APP.JS — общие утилиты для всех страниц
    ============================================================ */
 
+// ==========================================
+// ПАСХАЛКА В КОНСОЛИ
+// ==========================================
+console.log(
+  "%c ⊘ Просто — НЕТ! %c\n\nКарточки и техники против зависимости.\nЕсли ты это читаешь, значит, тебе не всё равно на свой код и свою жизнь. Молодец.",
+  "font-size: 28px; color: #d92b3a; font-weight: bold; background: #1c1f24; padding: 12px 24px; border-radius: 8px; border: 1px solid #333;",
+  "font-size: 13px; color: #a67c52; font-family: monospace; padding-left: 12px; line-height: 1.5;"
+);
+
 /* ===== ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ ===== */
 (function () {
   const btn = document.getElementById('theme-btn');
