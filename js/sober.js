@@ -36,7 +36,7 @@
     const start = new Date(iso + 'T00:00:00');
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    return Math.floor((today - start) / 86400000) + 1;
+    return Math.floor((today - start) / 86400000);
   }
 
   function plural(n, forms) {
